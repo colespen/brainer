@@ -1,0 +1,21 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.game-board {
+  height: 42em;
+  width: 42em;
+  display: grid;
+  grid-gap: 6px; /* Gap between cards */
+}
+
+.board-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #6769c4;
+  /* border: 1px solid #32a1d6; */
+}
