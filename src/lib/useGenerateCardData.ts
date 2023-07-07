@@ -3,11 +3,15 @@ import { colorMap } from "../datatypes.ts/colortypes";
 import { Card } from "../datatypes.ts/cardtypes";
 
 /**
- * all this is doing is assigning the specified number of card ids.
+ * @param gridN grid size
+ * @param paintMax max number of colored cards
+ * @param isNewRound boolean to trigger new round
+ * @returns cardData state and totalColorCards
+ * @description generates card data for game and randomly assigns colors to cards
  *  */
 function useGenerateCardData(
   gridN: number,
-  paintThresh: number,
+  paintMax: number,
   isNewRound: boolean
 ): {
   state: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
@@ -24,21 +28,38 @@ function useGenerateCardData(
 
     // Generate card ids (instead of c-style loop use from())
     const newData: Card[] = Array.from({ length: totalCards }, (_, i) => {
-      let randomPaint = colorMap.none;
-      let isColor = false;
-      if (Math.random() < paintThresh) {
-        randomPaint = colorMap.blue;
-        isColor = true;
-      }
       return {
         id: i,
-        color: randomPaint,
-        isColor,
+        color: colorMap.none,
+        isColor: false,
       };
     });
-    const totalColorCardsCount = newData.filter((card) => card.isColor).length;
+    let colorCardsCount = 0;
+
+    // assign at least one colored card
+    let randomIndex = Math.floor(Math.random() * totalCards);
+    newData[randomIndex].color = colorMap.blue;
+    newData[randomIndex].isColor = true;
+    colorCardsCount++;
+
+    // assign random color to remaining cards within range
+    const maxColorCards = Math.floor(totalCards * paintMax);
+    // create new array of all indexes to later splice from
+    const availableIndexes = Array.from({ length: totalCards }, (_, i) => i);
+
+   // assign colors until max
+    while (colorCardsCount < maxColorCards) {
+      randomIndex = Math.floor(Math.random() * availableIndexes.length);
+      // currentIndex is random deleted index retruned from splice
+      const currentIndex = availableIndexes.splice(randomIndex, 1)[0];
+
+      newData[currentIndex].color = colorMap.blue;
+      newData[currentIndex].isColor = true;
+      colorCardsCount++;
+    }
+
     setCardData(newData);
-    setTotalColorCards(totalColorCardsCount);
+    setTotalColorCards(colorCardsCount);
   }, [gridN, isNewRound]); // [..., blockFreq] ?
 
   return { state: [cardData, setCardData], totalColorCards };
