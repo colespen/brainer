@@ -5,3 +5,5 @@
 #### _Work In Progress_
 
 - to practice with React state manamenent - redux
+
+![main board gameplay sample](/docs/board1.png)
