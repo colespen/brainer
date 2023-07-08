@@ -12,6 +12,7 @@ const GameBoard = () => {
   const [cardsFound, setcardsFound] = useState<number>(0);
   const [totalFound, setTotalFound] = useState<number>(0);
   const [isNewRound, setIsNewRound] = useState<boolean>(true);
+  const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const [alert, setAlert] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean>(false);
   const [isLoss, setIsLoss] = useState<boolean>(false);
@@ -23,9 +24,9 @@ const GameBoard = () => {
   // console.log(roundData);
 
   // SETTINGS temp harcode
-  const gridN = 7; // TODO: make styling flexible with grid change
+  const gridN = 8; 
   const paintMax = 0.15; // difficulty / .1
-  const revealDelay = 1475; // 475
+  const revealDelay = 1490; // 475
 
   const { state, totalColorCards } = useGenerateCardData(
     gridN,
@@ -74,7 +75,7 @@ const GameBoard = () => {
       const newRoundTimeout = setTimeout(() => {
         setAlert(null);
         setIsNewRound(false);
-        // FACE UP NO CLICK
+        setIsRevealed(true)
         setFlippedCards(cardIdList); // turn cards face up
         if (flippedCards.length) setRoundCount((prev) => prev + 1);
       }, 3500);
@@ -84,14 +85,14 @@ const GameBoard = () => {
         clearTimeout(newRoundTimeout);
       };
     } else {
-      // FACE UP NO CLICK
+      setIsRevealed(true)
       setFlippedCards(cardIdList); // turn cards face up
 
       // handle card turnover for start of round
       const gridResetTimeout = setTimeout(() => {
         setAlert(null);
         setFlippedCards([]); // face down
-        // FACE DOWN CLICK OK
+        setIsRevealed(false)
       }, revealDelay);
       return () => clearTimeout(gridResetTimeout);
     }
@@ -152,7 +153,9 @@ const GameBoard = () => {
           </h2>
         </span>
 
-        <h1 className="game-alert">{alert || cardsFound}</h1>
+        <h1 className="game-alert">
+          {alert || (cardsFound < totalColorCards ? cardsFound : alert)}
+        </h1>
       </div>
       <div
         className="game-board"
@@ -170,7 +173,7 @@ const GameBoard = () => {
             isLoss={isLoss}
             isWin={isWin}
             isNewRound={isNewRound}
-            isRevealed={flippedCards.length === gridN * gridN}
+            isRevealed={isRevealed}
           />
         ))}
       </div>
@@ -180,7 +183,7 @@ const GameBoard = () => {
             {totalFound +
               (isNewRound || flippedCards.length === cardData.length
                 ? 0
-                : flippedCards.length)}
+                : cardsFound)}
           </h3>
           <p>points</p>
         </span>
