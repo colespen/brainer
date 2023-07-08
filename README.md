@@ -1,9 +1,10 @@
 # &nbsp;&nbsp; [ ***B R A I NER*** ]
-### working on a simple memory game what will help people improve their focus, retention of geometric configurations and visual memory recall
 
-#### ...and also just for fun
+### working on a simple memory game that will help people to improve their focus, retention of geometric configurations and visual memory recall
 
-### _Work In Progress_ ->-> *COMING SOON*
+#### . . .and also just for fun
+
+### _Work In Progress_ &nbsp;&nbsp; ->-> &nbsp;&nbsp; _COMING SOON_
 
 - to practice with React state manamenent - redux and custom hook
 

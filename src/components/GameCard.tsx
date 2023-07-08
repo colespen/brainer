@@ -1,15 +1,5 @@
 import { colorMap } from "../datatypes.ts/colortypes";
-
-export interface GameCardProps {
-  id: number;
-  flippedCards: number[];
-  color: string;
-  handleCardClick: (id: number) => void;
-  isLoss: boolean,
-  isWin: boolean,
-  isNewRound: boolean,
-  isRevealed: boolean
-}
+import { GameCardProps } from "../datatypes.ts/proptypes";
 
 const GameCard = ({
   id,
