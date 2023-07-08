@@ -1,20 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-
-export interface GameBoard {
-  gameBoard: {
-    isNewRound: boolean;
-    isRevealed: boolean;
-    isWin: boolean;
-    isLoss: boolean;
-    flippedCards: number[];
-    cardsFound: number;
-    totalFound: number;
-    alert: string | null;
-    roundAmount: number;
-    roundCount: number;
-  };
-}
+import { GameBoard } from "../datatypes/gameDatatypes";
 
 const initialState: GameBoard = {
   gameBoard: {
@@ -28,6 +13,7 @@ const initialState: GameBoard = {
     isLoss: false,
     roundAmount: 5,
     roundCount: 1,
+    winCount: 0,
   },
 };
 
@@ -44,6 +30,7 @@ const gameBoardSlice = createSlice({
         alert: null,
         cardsFound: 0,
         isNewRound: true,
+        winCount: (state.gameBoard.winCount += 1),
       };
     },
     winUpdated: (state, action: PayloadAction<{ totalFound: number }>) => {
@@ -55,6 +42,7 @@ const gameBoardSlice = createSlice({
         alert: null,
         cardsFound: 0,
         isNewRound: true,
+        winCount: (state.gameBoard.winCount += 1),
       };
     },
     newRoundUpdated: (
@@ -69,7 +57,7 @@ const gameBoardSlice = createSlice({
         isRevealed: true,
         isNewRound: false,
         flippedCards,
-        roundCount: (state.gameBoard.roundCount += (notFirstRound ? 1 : 0)),
+        roundCount: (state.gameBoard.roundCount += notFirstRound ? 1 : 0),
       };
     },
     boardFaceDown: (state) => {
@@ -90,23 +78,14 @@ const gameBoardSlice = createSlice({
     },
     alertUpdated: (state, action: PayloadAction<string>) => {
       const alert = action.payload;
-      state.gameBoard = {
-        ...state.gameBoard,
-        alert,
-      };
+      state.gameBoard.alert = alert;
     },
     cardsFaceDown: (state) => {
-      state.gameBoard = {
-        ...state.gameBoard,
-        flippedCards: [],
-      };
+      state.gameBoard.flippedCards = [];
     },
     cardsFlipped: (state, action: PayloadAction<number>) => {
       const id = action.payload;
-      state.gameBoard = {
-        ...state.gameBoard,
-        flippedCards: [...state.gameBoard.flippedCards, id],
-      };
+      state.gameBoard.flippedCards = [...state.gameBoard.flippedCards, id];
     },
     cardFound: (state) => {
       state.gameBoard.cardsFound += 1;

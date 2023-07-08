@@ -1,5 +1,5 @@
-import { colorMap } from "../datatypes.ts/colortypes";
-import { GameCardProps } from "../datatypes.ts/proptypes";
+import { colorMap } from "../datatypes/colortypes";
+import { GameCardProps } from "../datatypes/proptypes";
 
 const GameCard = ({
   id,

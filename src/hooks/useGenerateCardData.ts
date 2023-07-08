@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { colorMap } from "../datatypes.ts/colortypes";
-import { Card } from "../datatypes.ts/gameDatatypes";
+import { colorMap } from "../datatypes/colortypes";
+import { Card } from "../datatypes/gameDatatypes";
 
 /**
  * @param gridN grid size

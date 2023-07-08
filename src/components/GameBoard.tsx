@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useDispatch, useSelector } from "react-redux";
-import { winAdded, lossAdded } from "./gameDataSlice";
+import { winAdded, lossAdded, GameDataState } from "./gameDataSlice";
 import {
   winUpdated,
   lossUpdated,
@@ -15,14 +15,13 @@ import {
   winSet,
   newRoundSet,
 } from "./gameBoardSlice";
+import { RootState } from "../store";
 
 import GameCard from "./GameCard";
 import "./GameBoard.css";
-import { RootState } from "../store";
 
 const GameBoard = () => {
   const dispatch = useDispatch();
-  // access from store
   const { gameData, gameBoard } = useSelector((state: RootState) => {
     return {
       gameData: state.gameDataSlice.gameData,
@@ -30,6 +29,11 @@ const GameBoard = () => {
     };
   });
   console.log(gameData, gameBoard);
+
+  useEffect(() => {
+    const wins = gameData.find((round: GameDataState) => round.win === true);
+    console.log("wins:", wins);
+  }, [gameData]);
 
   // SETTINGS temp harcode
   const gridN = 6;
@@ -48,12 +52,13 @@ const GameBoard = () => {
   useEffect(() => {
     const cardIdList = cardData.map((card) => card.id);
 
+    // could combine isLoss || isWin but maybe more options if separate
     if (gameBoard.isLoss) {
       dispatch(alertUpdated("you got brained"));
       const lossTimeout = setTimeout(() => {
         dispatch(
           lossUpdated({
-            totalFound: gameBoard.cardsFound, // todo
+            totalFound: gameBoard.cardsFound,
           })
         );
       }, 2000);
@@ -65,7 +70,7 @@ const GameBoard = () => {
       const winTimeout = setTimeout(() => {
         dispatch(
           winUpdated({
-            totalFound: gameBoard.cardsFound, // todo
+            totalFound: gameBoard.cardsFound,
           })
         );
       }, 2000);
@@ -101,7 +106,7 @@ const GameBoard = () => {
     }
   }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin]);
 
-  // update GameData on win or loss
+  // update GameData (rounds) on win or loss
   useEffect(() => {
     if (cardData.length !== 0 && gameBoard.cardsFound === totalColorCards) {
       dispatch(winSet(true));
@@ -130,15 +135,15 @@ const GameBoard = () => {
   const handleCardClick = (id: number) => {
     if (!gameBoard.flippedCards.includes(id)) {
       dispatch(cardsFlipped(id));
-    }
-    if (cardData[id].isColor) {
-      console.log("card found");
-      // if correct card, cardsFound++
-      dispatch(cardFound());
-    } else {
-      // if wrong card, isLoss
-      dispatch(lossSet(true));
-      console.log("nope");
+      if (cardData[id].isColor) {
+        console.log("card found");
+        // if correct card, cardsFound++
+        dispatch(cardFound());
+      } else {
+        // if wrong card, isLoss
+        dispatch(lossSet(true));
+        console.log("nope");
+      }
     }
   };
 
@@ -193,8 +198,7 @@ const GameBoard = () => {
         <span className="round-count won">
           <p>won</p>
           <h2>
-            {/* TODO */}
-            {gameBoard.roundCount} / {gameBoard.roundAmount}
+            {gameBoard.winCount} / {gameBoard.roundAmount}
           </h2>
         </span>
       </div>

@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import gameDataReducer from "./components/gameDataSlice";
-import gameBoardReducer, { GameBoard } from "./components/gameBoardSlice";
-import { GameData } from "./datatypes.ts/gameDatatypes";
+import gameDataReducer, { GameDataState } from "./components/gameDataSlice";
+import gameBoardReducer from "./components/gameBoardSlice";
+import { GameBoard } from "./datatypes/gameDatatypes";
 
 export interface RootState {
-  gameDataSlice: {
-    gameData: GameData[];
-  };
+  gameDataSlice:  { gameData: GameDataState[] };
   gameBoardSlice: GameBoard;
 }
 

@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GameData } from "../datatypes.ts/gameDatatypes";
+import { GameData } from "../datatypes/gameDatatypes";
 
-interface GameDataState extends GameData {
+// export interface GameData {
+//   roundNum: number;
+//   points: number;
+//   guesses: number;
+// }
+
+export interface GameDataState extends GameData {
   win: boolean;
 }
 
