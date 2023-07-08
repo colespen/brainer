@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGenerateCardData } from "../lib/useGenerateCardData";
+import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useDispatch, useSelector } from "react-redux";
 import { addGameData } from "./gameDataSlice";
 
