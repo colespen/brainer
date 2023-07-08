@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { colorMap } from "../datatypes.ts/colortypes";
-import { Card } from "../datatypes.ts/cardtypes";
+import { Card } from "../datatypes.ts/gameDatatypes";
 
 /**
  * @param gridN grid size
@@ -47,9 +47,9 @@ function useGenerateCardData(
     // create new array of all indexes to later splice from
     const availableIndexes = Array.from({ length: totalCards }, (_, i) => i);
 
-   // assign colors until max
+    // assign colors until max
     while (colorCardsCount < maxColorCards) {
-      randomIndex = Math.floor(Math.random() * availableIndexes.length);
+      let randomIndex = Math.floor(Math.random() * availableIndexes.length);
       // currentIndex is random deleted index retruned from splice
       const currentIndex = availableIndexes.splice(randomIndex, 1)[0];
 
@@ -61,6 +61,8 @@ function useGenerateCardData(
     setCardData(newData);
     setTotalColorCards(colorCardsCount);
   }, [gridN, isNewRound]); // [..., blockFreq] ?
+
+  // console.log("cardData", cardData);
 
   return { state: [cardData, setCardData], totalColorCards };
 }

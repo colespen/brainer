@@ -15,8 +15,9 @@
 }
 
 #root {
+  /* height: 60vh; */
+  margin-top: auto;
   max-width: 1280px;
-  margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
@@ -34,9 +35,11 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
   background-color: #161821;
+  height: 100vh;
 }
 
 h1 {
@@ -58,7 +61,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #6769c4;;
+  border-color: #9294ff;
 }
 /* button:focus,
 button:focus-visible {

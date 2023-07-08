@@ -8,6 +8,7 @@ export interface GameCardProps {
   isLoss: boolean,
   isWin: boolean,
   isNewRound: boolean,
+  isRevealed: boolean
 }
 
 const GameCard = ({
@@ -17,7 +18,8 @@ const GameCard = ({
   handleCardClick,
   isLoss,
   isWin,
-  isNewRound
+  isNewRound,
+  isRevealed
 }: GameCardProps) => {
   const isFlipped = flippedCards.includes(id);
 
@@ -27,7 +29,7 @@ const GameCard = ({
       style={{ backgroundColor: isFlipped ? color : colorMap.faceDown }}
       // style={{ backgroundColor: color }}
       onClick={() => handleCardClick(id)}
-      disabled={isLoss || isWin || isNewRound}
+      disabled={isRevealed || isLoss || isWin || isNewRound}
     ></button>
   );
 };

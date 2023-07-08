@@ -1,27 +1,31 @@
 import { useState, useEffect } from "react";
 import { useGenerateCardData } from "../lib/useGenerateCardData";
-import GameCard from "./GameCard";
+import { useDispatch, useSelector } from "react-redux";
+import { addGameData } from "./gameDataSlice";
 
+import GameCard from "./GameCard";
 import "./GameBoard.css";
 
 const GameBoard = () => {
   // keeps track of id's of cards that have been flipped
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [cardsFound, setcardsFound] = useState<number>(0);
-  const [isNewRound, setNewRound] = useState<boolean>(true);
+  const [totalFound, setTotalFound] = useState<number>(0);
+  const [isNewRound, setIsNewRound] = useState<boolean>(true);
   const [alert, setAlert] = useState<string | null>(null);
   const [isWin, setIsWin] = useState<boolean>(false);
   const [isLoss, setIsLoss] = useState<boolean>(false);
   const [roundAmount, setRoundAmount] = useState<number>(5); // user setting
   const [roundCount, setRoundCount] = useState<number>(1);
-  const [roundData, setRoundData] = useState<
-    { roundNum: number; win: boolean; points: number; guesses: number }[]
-  >([]);
+  const dispatch = useDispatch();
+  // access from store
+  // const roundData = useSelector((state: any) => state.gameDataSlice.gameData);
+  // console.log(roundData);
 
   // SETTINGS temp harcode
-  const gridN = 6;
-  const paintMax = 0.1; // difficulty
-  const revealDelay = 475;
+  const gridN = 7; // TODO: make styling flexible with grid change
+  const paintMax = 0.15; // difficulty / .1
+  const revealDelay = 1475; // 475
 
   const { state, totalColorCards } = useGenerateCardData(
     gridN,
@@ -36,95 +40,107 @@ const GameBoard = () => {
     const cardIdList = cardData.map((card) => card.id);
 
     if (isLoss) {
-      setAlert("nice try no cig");
+      setAlert("you got brained");
       const lossTimeout = setTimeout(() => {
         setIsLoss(false);
+        setcardsFound(0);
         setAlert(null);
-        setNewRound(true);
+        setIsNewRound(true);
       }, 2000);
       return () => clearTimeout(lossTimeout);
     }
 
     if (isWin) {
       setAlert("Solid.");
+
       const winTimeout = setTimeout(() => {
+        setTotalFound((prev) => prev + cardsFound);
         setcardsFound(0); // makes isWin false
         setAlert(null);
-        setNewRound(true);
+        setIsNewRound(true);
       }, 2000);
       return () => clearTimeout(winTimeout);
     }
 
     if (isNewRound) {
       setAlert("Next Round");
+
       const roundReadyTimeout = setTimeout(() => {
         setAlert("Prepare Yourself. . .");
       }, 1500);
+
       setFlippedCards([]);
+
       const newRoundTimeout = setTimeout(() => {
         setAlert(null);
-        setNewRound(false);
-        setFlippedCards(cardIdList);
+        setIsNewRound(false);
+        // FACE UP NO CLICK
+        setFlippedCards(cardIdList); // turn cards face up
         if (flippedCards.length) setRoundCount((prev) => prev + 1);
       }, 3500);
+
       return () => {
         clearTimeout(roundReadyTimeout);
         clearTimeout(newRoundTimeout);
       };
     } else {
-      // (FLIP CARDS AFTER newRoundTimeout DELAY) set array of all id's of cards
-      setFlippedCards(cardIdList);
+      // FACE UP NO CLICK
+      setFlippedCards(cardIdList); // turn cards face up
+
       // handle card turnover for start of round
       const gridResetTimeout = setTimeout(() => {
         setAlert(null);
         setFlippedCards([]); // face down
+        // FACE DOWN CLICK OK
       }, revealDelay);
       return () => clearTimeout(gridResetTimeout);
     }
   }, [isNewRound, isLoss, isWin]);
 
-  // if wrong card clicked set round win: false
+  // update GameData on win or loss
   useEffect(() => {
     if (cardData.length !== 0 && cardsFound === totalColorCards) {
       setIsWin(true);
-      setRoundData((prev) => [
-        ...prev,
-        {
-          roundNum: roundData.length + 1,
+      dispatch(
+        addGameData({
+          roundNum: roundCount,
           win: true,
           points: cardsFound,
           guesses: flippedCards.length,
-        },
-      ]);
+        })
+      );
     } else {
       setIsWin(false);
     }
     if (isLoss) {
-      setRoundData((prev) => [
-        ...prev,
-        {
-          roundNum: roundData.length + 1,
+      dispatch(
+        addGameData({
+          roundNum: roundCount,
           win: false,
           points: cardsFound,
           guesses: flippedCards.length,
-        },
-      ]);
+        })
+      );
     }
   }, [cardsFound, isLoss]);
 
+  // turn clicked cards face up
   const handleCardClick = (id: number) => {
     if (!flippedCards.includes(id)) {
       setFlippedCards((prevFlippedCards) => [...prevFlippedCards, id]);
     }
     if (cardData[id].isColor) {
+      console.log("card found");
+      // if correct card, cardsFound++
       setcardsFound((prevCardsFound) => prevCardsFound + 1);
     } else {
+      // if wrong card, isLoss = true
       setIsLoss(true);
       console.log("nope");
     }
   };
-
-  console.log(roundData);
+  // console.log("cardsFound", cardsFound);
+  // console.log("totalColorCards", totalColorCards);
 
   return (
     <>
@@ -137,11 +153,6 @@ const GameBoard = () => {
         </span>
 
         <h1 className="game-alert">{alert || cardsFound}</h1>
-        <h3>
-          {isNewRound || flippedCards.length === cardData.length
-            ? 0
-            : flippedCards.length}
-        </h3>
       </div>
       <div
         className="game-board"
@@ -159,20 +170,26 @@ const GameBoard = () => {
             isLoss={isLoss}
             isWin={isWin}
             isNewRound={isNewRound}
+            isRevealed={flippedCards.length === gridN * gridN}
           />
         ))}
       </div>
       <div className="game-dashboard-bottom">
-        <span className="round-count">
-          <p>round</p>{" "}
-          <h2>
-            {roundCount} / {roundAmount}
-          </h2>
+        <span className="score-count">
+          <h3>
+            {totalFound +
+              (isNewRound || flippedCards.length === cardData.length
+                ? 0
+                : flippedCards.length)}
+          </h3>
+          <p>points</p>
         </span>
       </div>
       <br></br>
       <br></br>
-      <button className="new-game" onClick={() => setNewRound(true)}>new game</button>
+      <button className="new-game" onClick={() => setIsNewRound(true)}>
+        new game
+      </button>
     </>
   );
 };

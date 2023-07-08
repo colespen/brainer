@@ -1,6 +1,6 @@
 .game-board {
-  height: 42em;
-  width: 42em;
+  height: fit-content;
+  width: fit-content;
   display: grid;
   grid-gap: 6px; /* Gap between cards */
 }
@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   border: 2px solid #6769c4;
-  /* border: 1px solid #32a1d6; */
+  /* border: 2px solid #32a1d6; */
 }
 
 .game-dashboard-top {
@@ -21,12 +21,13 @@
 .game-alert {
   position: absolute;
   left: 6.42em;
-  top: 2.5em;
+  top: 1em;
   width: 50%;
 }
 .round-count {
   display: flex;
   align-items: center;
+  margin-bottom: 0.2em;
 }
 .round-count > h2 {
   margin: 0;
@@ -45,6 +46,29 @@
   justify-content: space-between;
 }
 
+.new-game:hover {
+  /* border-color: #32a1d6; */
+  border-color: #6769c4;
+}
+
+.score-count {
+  width: 5.5em;
+  margin-top: 0.5em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.score-count > h3 {
+  margin: 0 0.5em 0 0;
+  width: 100%;
+  text-align: right;
+}
+.score-count > p {
+  margin: 0;
+}
+
 .new-game {
-  /* border: 2px solid #6769c4; */
+  position: relative;
+  bottom: 2em;
 }
