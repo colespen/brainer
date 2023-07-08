@@ -6,7 +6,6 @@ export interface Card {
 
 export interface GameData {
   roundNum: number;
-  win: boolean;
   points: number;
   guesses: number;
 }

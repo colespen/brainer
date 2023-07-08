@@ -73,3 +73,7 @@
   position: relative;
   bottom: 2em;
 }
+
+.won {
+  padding-top: 0.25em;
+}

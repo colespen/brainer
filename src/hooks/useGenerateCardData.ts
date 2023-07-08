@@ -14,7 +14,7 @@ function useGenerateCardData(
   paintMax: number,
   isNewRound: boolean
 ): {
-  state: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
+  cardState: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
   totalColorCards: number;
 } {
   const [cardData, setCardData] = useState<Card[]>([]);
@@ -64,7 +64,7 @@ function useGenerateCardData(
 
   // console.log("cardData", cardData);
 
-  return { state: [cardData, setCardData], totalColorCards };
+  return { cardState: [cardData, setCardData], totalColorCards };
 }
 
 export { useGenerateCardData };
