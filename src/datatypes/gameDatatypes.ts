@@ -4,7 +4,7 @@ export interface Card {
   isColor?: boolean;
 }
 
-export interface GameData {
+export interface RoundData {
   roundNum: number;
   points: number;
   guesses: number;

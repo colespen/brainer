@@ -21,28 +21,16 @@ const gameBoardSlice = createSlice({
   name: "gameBoard",
   initialState,
   reducers: {
-    lossUpdated: (state, action: PayloadAction<{ totalFound: number }>) => {
+    resultsUpdated: (state, action: PayloadAction<{ totalFound: number }>) => {
       const { totalFound } = action.payload;
       state.gameBoard = {
         ...state.gameBoard,
         totalFound: (state.gameBoard.totalFound += totalFound),
         isLoss: false,
-        alert: null,
-        cardsFound: 0,
-        isNewRound: true,
-        winCount: (state.gameBoard.winCount += 1),
-      };
-    },
-    winUpdated: (state, action: PayloadAction<{ totalFound: number }>) => {
-      const { totalFound } = action.payload;
-      state.gameBoard = {
-        ...state.gameBoard,
-        totalFound: (state.gameBoard.totalFound += totalFound),
         isWin: false,
         alert: null,
         cardsFound: 0,
         isNewRound: true,
-        winCount: (state.gameBoard.winCount += 1),
       };
     },
     newRoundUpdated: (
@@ -70,11 +58,8 @@ const gameBoardSlice = createSlice({
     },
     boardStart: (state, action: PayloadAction<{ flippedCards: number[] }>) => {
       const { flippedCards } = action.payload;
-      state.gameBoard = {
-        ...state.gameBoard,
-        isRevealed: true,
-        flippedCards,
-      };
+      state.gameBoard.isRevealed = true;
+      state.gameBoard.flippedCards = flippedCards;
     },
     alertUpdated: (state, action: PayloadAction<string>) => {
       const alert = action.payload;
@@ -93,6 +78,7 @@ const gameBoardSlice = createSlice({
     winSet: (state, action: PayloadAction<boolean>) => {
       const isWin = action.payload;
       state.gameBoard.isWin = isWin;
+      state.gameBoard.winCount = state.gameBoard.winCount += 1;
     },
     lossSet: (state, action: PayloadAction<boolean>) => {
       const isLoss = action.payload;
@@ -106,8 +92,7 @@ const gameBoardSlice = createSlice({
 });
 
 export const {
-  lossUpdated,
-  winUpdated,
+  resultsUpdated,
   newRoundUpdated,
   boardFaceDown,
   boardStart,

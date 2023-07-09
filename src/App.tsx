@@ -1,9 +1,9 @@
-import GameBoard from "./components/GameBoard";
+import GameMain from "./components/GameMain";
 
 function App() {
   return (
     <>
-      <GameBoard />
+      <GameMain />
     </>
   );
 }

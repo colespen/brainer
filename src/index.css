@@ -16,9 +16,11 @@
 
 #root {
   max-width: 1280px;
-  margin-top: 10%;
+  /* margin-top: 0%; */
   padding: 2rem 2rem 0 2rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 a {
@@ -48,6 +50,7 @@ h1 {
 }
 
 button {
+  box-sizing: border-box;
   /* border-radius: 3px; */
   height: 107px;
   width: 107px;

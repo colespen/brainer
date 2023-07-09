@@ -23,10 +23,9 @@ function useGenerateCardData(
   useEffect(() => {
     // if not new round return
     // or if cardData return to avoid dupes
-    if (!isNewRound) return;
     const totalCards = gridN * gridN;
+    let colorCardsCount = 0;
 
-    // Generate card ids (instead of c-style loop use from())
     const newData: Card[] = Array.from({ length: totalCards }, (_, i) => {
       return {
         id: i,
@@ -34,35 +33,36 @@ function useGenerateCardData(
         isColor: false,
       };
     });
-    let colorCardsCount = 0;
 
-    // assign at least one colored card
-    let randomIndex = Math.floor(Math.random() * totalCards);
-    newData[randomIndex].color = colorMap.blue;
-    newData[randomIndex].isColor = true;
-    colorCardsCount++;
-
-    // assign random color to remaining cards within range
-    const maxColorCards = Math.floor(totalCards * paintMax);
-    // create new array of all indexes to later splice from
-    const availableIndexes = Array.from({ length: totalCards }, (_, i) => i);
-
-    // assign colors until max
-    while (colorCardsCount < maxColorCards) {
-      let randomIndex = Math.floor(Math.random() * availableIndexes.length);
-      // currentIndex is random deleted index retruned from splice
-      const currentIndex = availableIndexes.splice(randomIndex, 1)[0];
-
-      newData[currentIndex].color = colorMap.blue;
-      newData[currentIndex].isColor = true;
+    if (!isNewRound) {
+      setCardData(newData);
+    } else {
+      // assign at least one colored card
+      let randomIndex = Math.floor(Math.random() * totalCards);
+      newData[randomIndex].color = colorMap.blue;
+      newData[randomIndex].isColor = true;
       colorCardsCount++;
+
+      // assign random color to remaining cards within range
+      const maxColorCards = Math.floor(totalCards * paintMax);
+      // create new array of all indexes to later splice from
+      const availableIndexes = Array.from({ length: totalCards }, (_, i) => i);
+
+      // assign colors until max
+      while (colorCardsCount < maxColorCards) {
+        let randomIndex = Math.floor(Math.random() * availableIndexes.length);
+        // currentIndex is random deleted index retruned from splice
+        const currentIndex = availableIndexes.splice(randomIndex, 1)[0];
+
+        newData[currentIndex].color = colorMap.blue;
+        newData[currentIndex].isColor = true;
+        colorCardsCount++;
+      }
+
+      setCardData(newData);
+      setTotalColorCards(colorCardsCount);
     }
-
-    setCardData(newData);
-    setTotalColorCards(colorCardsCount);
-  }, [gridN, isNewRound]); // [..., blockFreq] ?
-
-  // console.log("cardData", cardData);
+  }, [gridN, isNewRound]);
 
   return { cardState: [cardData, setCardData], totalColorCards };
 }
