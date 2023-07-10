@@ -11,9 +11,6 @@ import {
   alertUpdated,
   cardsFaceUp,
   cardsFaceDown,
-  cardFlipped,
-  cardFound,
-  lossSet,
   winSet,
   newGameReset,
 } from "./gameBoardSlice";
@@ -78,7 +75,7 @@ const GameMain = () => {
       const newRoundTimeout = setTimeout(() => {
         //  reveal cards and isNewRound = false
         dispatch(newRoundUpdated({ flippedCards: cardIdList }));
-      }, 3750);
+      }, 3250);
 
       return () => {
         clearTimeout(roundReadyTimeout);
@@ -135,20 +132,6 @@ const GameMain = () => {
     return () => clearTimeout(newGameTimeout);
   }, [isNewGame]);
 
-  // turn clicked cards face up
-  const handleCardClick = (id: number) => {
-    if (!gameBoard.flippedCards.includes(id)) {
-      dispatch(cardFlipped(id));
-      if (cardData[id].isColor) {
-        // if correct card, cardsFound++
-        dispatch(cardFound());
-      } else {
-        // if wrong card, isLoss //   ***LOSS
-        dispatch(lossSet(true));
-      }
-    }
-  };
-
   const getInputBackgroundSize = () => {
     return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
   };
@@ -183,13 +166,11 @@ const GameMain = () => {
       </div>
       <GameBoard
         cardData={cardData}
+        gameBoard={gameBoard}
         gridN={Math.sqrt(cardData.length)}
-        flippedCards={gameBoard.flippedCards}
-        handleCardClick={handleCardClick}
         isLoss={isLoss}
         isWin={isWin}
         isNewRound={isNewRound}
-        isRevealed={gameBoard.isRevealed}
       />
       <div className="game-dashboard-bottom">
         <span className="round-count">

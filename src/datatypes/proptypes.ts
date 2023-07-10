@@ -1,18 +1,23 @@
-import { Card } from "./gameDatatypes";
+import { Card, GameBoardData } from "./gameDatatypes";
 
 export interface GameBoardProps {
   gridN: number;
   cardData: Card[];
-  flippedCards: number[];
-  handleCardClick: (id: number) => void;
   isLoss: boolean;
   isWin: boolean;
   isNewRound: boolean;
-  isRevealed: boolean;
+  gameBoard: GameBoardData;
+  // flippedCards: number[];
+  // handleCardClick: (id: number) => void;
+  // isRevealed: boolean;
 }
 
-export interface GameCardProps extends Omit<GameBoardProps, "gridN" | "cardData"> {
+export interface GameCardProps
+  extends Omit<GameBoardProps, "gridN" | "cardData" | "gameBoard"> {
   id: number;
   color: string;
   isColor: boolean;
+  isRevealed: boolean;
+  flippedCards: number[];
+  handleCardClick: (id: number) => void;
 }
