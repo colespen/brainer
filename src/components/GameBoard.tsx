@@ -6,7 +6,7 @@ function GameBoard({ gridN, cardData, ...rest }: GameBoardProps) {
     <div
       className="game-board"
       style={{
-        // gridTemplateRows: `repeat(${gridN}, 1fr)`,
+        gridTemplateRows: `repeat(${gridN}, 1fr)`,
         gridTemplateColumns: `repeat(${gridN}, 1fr)`,
       }}
     >

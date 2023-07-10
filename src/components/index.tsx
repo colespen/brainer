@@ -5,22 +5,26 @@ import { winAdded, lossAdded, RoundDataState } from "./roundDataSlice";
 import {
   resultsUpdated,
   newRoundUpdated,
-  boardFaceDown,
+  gameStartFaceDown,
   alertUpdated,
+  cardsFaceUp,
   cardsFaceDown,
-  cardsFlipped,
+  cardFlipped,
   cardFound,
   lossSet,
   winSet,
-  newRoundSet,
+  incrementRound,
+  newGameReset,
 } from "./gameBoardSlice";
 import { RootState } from "../store";
 
 import GameBoard from "./GameBoard";
-import "./GameMain.css";
+import "./styles.css";
 
 const GameMain = () => {
-  const [gridN, setGridN] = useState(3);
+  const [gridN, setGridN] = useState(4);
+  const [winMessage, setWinMessage] = useState("Solid."); // TODO: abstract 
+  const [isNewGame, setIsNewGame] = useState(false); 
   const dispatch = useDispatch();
   const { roundData, gameBoard } = useSelector((state: RootState) => {
     return {
@@ -28,11 +32,13 @@ const GameMain = () => {
       gameBoard: state.gameBoardSlice.gameBoard,
     };
   });
-  // console.log(roundData, gameBoard);
+  // TODO: roundData stats and highscores
+
   // useEffect(() => {
   //   const wins = roundData.find((round: RoundDataState) => round.win === true);
   //   console.log("wins:", wins);
   // }, [roundData]);
+  // console.log(roundData, gameBoard);
 
   // SETTINGS temp harcode
   const paintMax = 0.175; // difficulty / .1
@@ -45,25 +51,41 @@ const GameMain = () => {
   );
   const [cardData, setCardData] = cardState;
 
+  console.log(gameBoard.isNewRound);
 
   // handle board reset on win/loss and new rounds
   useEffect(() => {
     const cardIdList = cardData.map((card) => card.id);
 
     if (gameBoard.isLoss || gameBoard.isWin) {
-      dispatch(alertUpdated(gameBoard.isLoss ? "you got brained" : "Solid."));
+      dispatch(alertUpdated(gameBoard.isLoss ? "you got brained" : winMessage));
+      dispatch(cardsFaceUp({ flippedCards: cardIdList }));
+      dispatch(incrementRound());
       const lossTimeout = setTimeout(() => {
         dispatch(resultsUpdated({ totalFound: gameBoard.cardsFound }));
       }, 2000);
       return () => clearTimeout(lossTimeout);
     }
 
-    if (gameBoard.isNewRound) {
-      dispatch(alertUpdated("Next Round"));
+    if (
+      isNewGame ||
+      (gameBoard.isNewRound && gameBoard.roundCount <= gameBoard.roundAmount)
+    ) {
+      console.log("Is new round");
+      dispatch(
+        alertUpdated(
+          !roundData.length
+            ? "Begin!"
+            : gameBoard.roundCount !== gameBoard.roundAmount
+            ? "Next Round"
+            : "Final Round"
+        )
+      );
 
       const roundReadyTimeout = setTimeout(() => {
         dispatch(alertUpdated("prepare yourself . . ."));
       }, 1500);
+
       dispatch(cardsFaceDown());
 
       const newRoundTimeout = setTimeout(() => {
@@ -75,17 +97,22 @@ const GameMain = () => {
         clearTimeout(roundReadyTimeout);
         clearTimeout(newRoundTimeout);
       };
-    } else {
-      // turn cards face up
-      dispatch(newRoundUpdated({ flippedCards: cardIdList }));
+    } else if (gameBoard.roundCount <= gameBoard.roundAmount) {
+      console.log("each new round start");
+      // when each new round start reveal cards
+      dispatch(cardsFaceUp({ flippedCards: cardIdList }));
+      // dispatch(newRoundUpdated({ flippedCards: cardIdList }));
 
-      // handle card turnover for start of round
+      // then turn down after delay
       const boardResetTimeout = setTimeout(() => {
-        dispatch(boardFaceDown());
+        dispatch(gameStartFaceDown());
       }, revealDelay);
       return () => clearTimeout(boardResetTimeout);
+    } else {
+      dispatch(gameStartFaceDown());
+      dispatch(alertUpdated("The End!"));
     }
-  }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin]);
+  }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin, isNewGame]);
 
   // update GameData (rounds) on win or loss
   useEffect(() => {
@@ -110,10 +137,26 @@ const GameMain = () => {
     }
   }, [gameBoard.cardsFound, gameBoard.isLoss]);
 
+  useEffect(() => {
+    if (gameBoard.winCount === 1) setWinMessage("Solid.");
+    if (gameBoard.winCount === gameBoard.roundAmount - 2) setWinMessage("Yup :)))");
+    if (gameBoard.winCount === gameBoard.roundAmount - 1)
+      setWinMessage("Perfecto!");
+  }, [gameBoard.winCount]);
+
+  useEffect(() => {
+    if (!isNewGame) return;
+    dispatch(alertUpdated("Cool let's go again . . ."));
+    const newGameTimeout = setTimeout(() => {
+      setIsNewGame(false);
+    }, 2000);
+    return () => clearTimeout(newGameTimeout);
+  }, [isNewGame]);
+
   // turn clicked cards face up
   const handleCardClick = (id: number) => {
     if (!gameBoard.flippedCards.includes(id)) {
-      dispatch(cardsFlipped(id));
+      dispatch(cardFlipped(id));
       if (cardData[id].isColor) {
         console.log("card found");
         // if correct card, cardsFound++
@@ -126,12 +169,13 @@ const GameMain = () => {
     }
   };
 
-  const getInputBacgroundSize = () => {
+  const getInputBackgroundSize = () => {
     return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
   };
 
   return (
     <>
+      {/* TODO: abstract a control panel (modal) */}
       <input
         type="range"
         min={3}
@@ -139,12 +183,12 @@ const GameMain = () => {
         step={1}
         onChange={(e) => setGridN(Number(e.target.value))}
         value={gridN}
-        style={getInputBacgroundSize()}
+        style={getInputBackgroundSize()}
       />
       <div className="game-dashboard-top">
         <h1 className="game-alert">
           {gameBoard.alert ||
-            (gameBoard.cardsFound < totalColorCards
+            (gameBoard.cardsFound > 0 && gameBoard.cardsFound < totalColorCards
               ? gameBoard.cardsFound
               : gameBoard.alert)}
         </h1>
@@ -160,12 +204,13 @@ const GameMain = () => {
         isRevealed={gameBoard.isRevealed}
       />
       <div className="game-dashboard-bottom">
-        {/* <div className="dashboard-bottom-rounds">
-        </div> */}
         <span className="round-count">
           <p>round:</p>
           <h2>
-            {gameBoard.roundCount} / {gameBoard.roundAmount}
+            {gameBoard.roundCount > gameBoard.roundAmount
+              ? gameBoard.roundAmount
+              : gameBoard.roundCount}{" "}
+            / {gameBoard.roundAmount}
           </h2>
         </span>
         <span className="round-count won">
@@ -176,17 +221,14 @@ const GameMain = () => {
         </span>
         <span className="round-count score">
           <p>points:</p>
-          <h3>
-            {gameBoard.totalFound +
-              (gameBoard.isNewRound ||
-              gameBoard.flippedCards.length === cardData.length
-                ? 0
-                : gameBoard.cardsFound)}
-          </h3>
+          <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
         </span>
         <button
           className="new-game"
-          onClick={() => dispatch(newRoundSet(true))}
+          onClick={() => {
+            dispatch(newGameReset());
+            setIsNewGame(true);
+          }}
         >
           new game
         </button>

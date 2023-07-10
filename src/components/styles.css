@@ -66,12 +66,11 @@
 }
 
 .new-game {
-  /* position: relative; */
+  border: 2px solid #585aa9;
   bottom: 2em;
 }
 .new-game:hover {
-  /* border-color: #32a1d6; */
-  border-color: #6769c4;
+  border-color: #9294ff;
 }
 
 input[type="range"] {

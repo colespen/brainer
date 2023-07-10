@@ -11,7 +11,7 @@ const initialState: GameBoard = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 5,
+    roundAmount: 2,
     roundCount: 1,
     winCount: 0,
   },
@@ -38,17 +38,19 @@ const gameBoardSlice = createSlice({
       action: PayloadAction<{ flippedCards: number[] }>
     ) => {
       const { flippedCards } = action.payload;
-      const notFirstRound = state.gameBoard.flippedCards.length;
+      // const notFirstRound = state.gameBoard.flippedCards.length;
+      // let currRound = state.gameBoard.roundCount;
+      // let roundAmount = state.gameBoard.roundAmount;
       state.gameBoard = {
         ...state.gameBoard,
         alert: null,
         isRevealed: true,
         isNewRound: false,
         flippedCards,
-        roundCount: (state.gameBoard.roundCount += notFirstRound ? 1 : 0),
       };
     },
-    boardFaceDown: (state) => {
+
+    gameStartFaceDown: (state) => {
       state.gameBoard = {
         ...state.gameBoard,
         alert: null,
@@ -65,10 +67,14 @@ const gameBoardSlice = createSlice({
       const alert = action.payload;
       state.gameBoard.alert = alert;
     },
+    cardsFaceUp: (state, action: PayloadAction<{ flippedCards: number[] }>) => {
+      const { flippedCards } = action.payload;
+      state.gameBoard.flippedCards = flippedCards;
+    },
     cardsFaceDown: (state) => {
       state.gameBoard.flippedCards = [];
     },
-    cardsFlipped: (state, action: PayloadAction<number>) => {
+    cardFlipped: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       state.gameBoard.flippedCards = [...state.gameBoard.flippedCards, id];
     },
@@ -78,15 +84,23 @@ const gameBoardSlice = createSlice({
     winSet: (state, action: PayloadAction<boolean>) => {
       const isWin = action.payload;
       state.gameBoard.isWin = isWin;
-      state.gameBoard.winCount = state.gameBoard.winCount += 1;
+      state.gameBoard.winCount += 1;
     },
     lossSet: (state, action: PayloadAction<boolean>) => {
       const isLoss = action.payload;
       state.gameBoard.isLoss = isLoss;
     },
-    newRoundSet: (state, action: PayloadAction<boolean>) => {
-      const isNewRound = action.payload;
-      state.gameBoard.isNewRound = isNewRound;
+    incrementRound: (state) => {
+      state.gameBoard.roundCount += 1;
+    },
+    newGameReset: (state) => {
+      state.gameBoard = {
+        ...state.gameBoard,
+        flippedCards: [],
+        isNewRound: true,
+        roundCount: 1,
+        winCount: 0,
+      };
     },
   },
 });
@@ -94,15 +108,17 @@ const gameBoardSlice = createSlice({
 export const {
   resultsUpdated,
   newRoundUpdated,
-  boardFaceDown,
+  gameStartFaceDown,
   boardStart,
   alertUpdated,
+  cardsFaceUp,
   cardsFaceDown,
-  cardsFlipped,
+  cardFlipped,
   cardFound,
   winSet,
   lossSet,
-  newRoundSet,
+  newGameReset,
+  incrementRound,
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;

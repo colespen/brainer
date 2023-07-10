@@ -51,7 +51,6 @@ h1 {
 
 button {
   box-sizing: border-box;
-  /* border-radius: 3px; */
   height: 107px;
   width: 107px;
   border: 2px solid transparent;
@@ -61,7 +60,7 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: ease-out border-color 100ms;
 }
 button:hover {
   border-color: #9294ff;
