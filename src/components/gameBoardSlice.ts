@@ -11,7 +11,7 @@ const initialState: GameBoard = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 2,
+    roundAmount: 5,
     roundCount: 1,
     winCount: 0,
   },

@@ -23,8 +23,8 @@ import "./styles.css";
 
 const GameMain = () => {
   const [gridN, setGridN] = useState(4);
-  const [winMessage, setWinMessage] = useState("Solid."); // TODO: abstract 
-  const [isNewGame, setIsNewGame] = useState(false); 
+  const [winMessage, setWinMessage] = useState("Solid."); // TODO: abstract
+  const [isNewGame, setIsNewGame] = useState(false);
   const dispatch = useDispatch();
   const { roundData, gameBoard } = useSelector((state: RootState) => {
     return {
@@ -41,8 +41,8 @@ const GameMain = () => {
   // console.log(roundData, gameBoard);
 
   // SETTINGS temp harcode
-  const paintMax = 0.175; // difficulty / .1
-  const revealDelay = 475; // 475
+  const paintMax = 0.18; // difficulty / .1
+  const revealDelay = 425; // 475
 
   const { cardState, totalColorCards } = useGenerateCardData(
     gridN,
@@ -50,8 +50,6 @@ const GameMain = () => {
     gameBoard.isNewRound
   );
   const [cardData, setCardData] = cardState;
-
-  console.log(gameBoard.isNewRound);
 
   // handle board reset on win/loss and new rounds
   useEffect(() => {
@@ -71,16 +69,16 @@ const GameMain = () => {
       isNewGame ||
       (gameBoard.isNewRound && gameBoard.roundCount <= gameBoard.roundAmount)
     ) {
-      console.log("Is new round");
-      dispatch(
-        alertUpdated(
-          !roundData.length
-            ? "Begin!"
-            : gameBoard.roundCount !== gameBoard.roundAmount
-            ? "Next Round"
-            : "Final Round"
-        )
-      );
+      !isNewGame &&
+        dispatch(
+          alertUpdated(
+            !roundData.length
+              ? "Here we go!"
+              : gameBoard.roundCount !== gameBoard.roundAmount
+              ? `Round ${gameBoard.roundCount}`
+              : "Final Round"
+          )
+        );
 
       const roundReadyTimeout = setTimeout(() => {
         dispatch(alertUpdated("prepare yourself . . ."));
@@ -98,7 +96,6 @@ const GameMain = () => {
         clearTimeout(newRoundTimeout);
       };
     } else if (gameBoard.roundCount <= gameBoard.roundAmount) {
-      console.log("each new round start");
       // when each new round start reveal cards
       dispatch(cardsFaceUp({ flippedCards: cardIdList }));
       // dispatch(newRoundUpdated({ flippedCards: cardIdList }));
@@ -110,7 +107,7 @@ const GameMain = () => {
       return () => clearTimeout(boardResetTimeout);
     } else {
       dispatch(gameStartFaceDown());
-      dispatch(alertUpdated("The End!"));
+      dispatch(alertUpdated(gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over"));
     }
   }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin, isNewGame]);
 
@@ -139,7 +136,9 @@ const GameMain = () => {
 
   useEffect(() => {
     if (gameBoard.winCount === 1) setWinMessage("Solid.");
-    if (gameBoard.winCount === gameBoard.roundAmount - 2) setWinMessage("Yup :)))");
+    if (gameBoard.winCount === 2) setWinMessage("Wow.");
+    if (gameBoard.winCount === gameBoard.roundAmount - 2)
+      setWinMessage("Yup :)))");
     if (gameBoard.winCount === gameBoard.roundAmount - 1)
       setWinMessage("Perfecto!");
   }, [gameBoard.winCount]);
@@ -149,7 +148,7 @@ const GameMain = () => {
     dispatch(alertUpdated("Cool let's go again . . ."));
     const newGameTimeout = setTimeout(() => {
       setIsNewGame(false);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(newGameTimeout);
   }, [isNewGame]);
 

@@ -34,9 +34,6 @@ function useGenerateCardData(
     });
   };
 
-  // console.log("prevGridN", prevGridN);
-  // console.log("gridN", gridN);
-
   // update grid size
   useEffect(() => {
     newData = createInitialCardData();
