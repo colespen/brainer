@@ -1,0 +1,29 @@
+.new-game.true {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+.new-game.true:hover {
+  background-color: #000128;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    border-color: #555aa9;
+    box-shadow: 0 0 0 0 #ffffff00;
+  }
+
+  70% {
+    transform: scale(1);
+    border-color: #9294ff;
+    box-shadow: 2px 0 10px 5px #1317aa;
+  }
+
+  100% {
+    transform: scale(0.95);
+    border-color: #555aa9;
+    box-shadow: 0 0 0 0 #ffffff00;
+  }
+}

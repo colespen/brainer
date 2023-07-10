@@ -20,6 +20,7 @@ import { RootState } from "../store";
 
 import GameBoard from "./GameBoard";
 import "./styles.css";
+import "./NewGameBtn.css";
 
 const GameMain = () => {
   const [gridN, setGridN] = useState(4);
@@ -44,7 +45,7 @@ const GameMain = () => {
   const paintMax = 0.18; // difficulty / .1
   const revealDelay = 425; // 475
 
-  const { cardState, totalColorCards } = useGenerateCardData(
+  const { cardState } = useGenerateCardData(
     gridN,
     paintMax,
     gameBoard.isNewRound
@@ -107,13 +108,22 @@ const GameMain = () => {
       return () => clearTimeout(boardResetTimeout);
     } else {
       dispatch(gameStartFaceDown());
-      dispatch(alertUpdated(gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over"));
+      dispatch(
+        alertUpdated(
+          gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over"
+        )
+      );
     }
   }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin, isNewGame]);
 
   // update GameData (rounds) on win or loss
+
   useEffect(() => {
-    if (cardData.length !== 0 && gameBoard.cardsFound === totalColorCards) {
+    const totalColorCards = cardData.filter((card) => card.isColor);
+    if (
+      cardData.length !== 0 &&
+      gameBoard.cardsFound === totalColorCards.length
+    ) {
       dispatch(winSet(true)); //    ***WIN
       dispatch(
         winAdded({
@@ -187,7 +197,9 @@ const GameMain = () => {
       <div className="game-dashboard-top">
         <h1 className="game-alert">
           {gameBoard.alert ||
-            (gameBoard.cardsFound > 0 && gameBoard.cardsFound < totalColorCards
+            (gameBoard.cardsFound > 0 &&
+            gameBoard.cardsFound <
+              cardData.filter((card) => card.isColor).length
               ? gameBoard.cardsFound
               : gameBoard.alert)}
         </h1>
@@ -223,7 +235,7 @@ const GameMain = () => {
           <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
         </span>
         <button
-          className="new-game"
+          className={`new-game ` + (gameBoard.roundCount > gameBoard.roundAmount)}
           onClick={() => {
             dispatch(newGameReset());
             setIsNewGame(true);
