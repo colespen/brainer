@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { colorMap } from "../datatypes/colortypes";
 import { Card } from "../datatypes/gameDatatypes";
 
@@ -16,16 +16,15 @@ function useGenerateCardData(
   isNewGame: boolean
 ): {
   cardState: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
-  totalColorCards: number;
 } {
   const [cardData, setCardData] = useState<Card[]>([]);
-  const [totalColorCards, setTotalColorCards] = useState(0);
-  // const [prevGridN, setPrevGridN] = useState(gridN);
+  const totalCardRef = useRef<number>(16); // ref better here?
+  // const [totalCard, setTotalCards] = useState((gridN * gridN));
 
-  const totalCards = gridN * gridN;
-  let newData: Card[] = [];
+  // let totalCards = 0; // remove global?
+  // let newData: Card[] = []; // no global needed
 
-  const createInitialCardData = () => {
+  const createInitialCardData = (totalCards: number) => {
     return Array.from({ length: totalCards }, (_, i) => {
       return {
         id: i,
@@ -37,17 +36,19 @@ function useGenerateCardData(
 
   // update grid size
   useEffect(() => {
-    newData = createInitialCardData();
+    const totalCards = gridN * gridN;
+    totalCardRef.current = totalCards;
+    const newData = createInitialCardData(totalCards);
     setCardData(newData);
-    // setPrevGridN(gridN);
   }, [gridN]);
 
   // assign random colours
   useEffect(() => {
+    // totalCards = gridN * gridN;
+    const totalCards = totalCardRef.current;
     if (!isNewRound) return;
     let colorCardsCount = 0;
-
-    newData = createInitialCardData();
+    const newData = createInitialCardData(totalCards);
 
     // assign at least one colored card
     let randomIndex = Math.floor(Math.random() * totalCards);
@@ -70,12 +71,13 @@ function useGenerateCardData(
       newData[currentIndex].isColor = true;
       colorCardsCount++;
     }
-
-    setCardData(newData);
-    setTotalColorCards(colorCardsCount);
+    return () => {
+      setCardData(newData);
+      // setTotalColorCards(colorCardsCount);
+    };
   }, [isNewRound, isNewGame]);
 
-  return { cardState: [cardData, setCardData], totalColorCards };
+  return { cardState: [cardData, setCardData] };
 }
 
 export { useGenerateCardData };

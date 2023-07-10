@@ -2,6 +2,8 @@ import { GameBoardProps } from "../datatypes/proptypes";
 import GameCard from "./GameCard";
 
 function GameBoard({ gridN, cardData, ...rest }: GameBoardProps) {
+
+  console.log(cardData.filter(el => el.isColor))
   return (
     <div
       className="game-board"
@@ -11,7 +13,13 @@ function GameBoard({ gridN, cardData, ...rest }: GameBoardProps) {
       }}
     >
       {cardData.map((card) => (
-        <GameCard key={card.id} id={card.id} color={card.color} {...rest} />
+        <GameCard
+          key={card.id}
+          id={card.id}
+          color={card.color}
+          isColor={card.isColor}
+          {...rest}
+        />
       ))}
     </div>
   );

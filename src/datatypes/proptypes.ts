@@ -14,4 +14,5 @@ export interface GameBoardProps {
 export interface GameCardProps extends Omit<GameBoardProps, "gridN" | "cardData"> {
   id: number;
   color: string;
+  isColor: boolean;
 }

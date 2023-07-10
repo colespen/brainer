@@ -45,16 +45,15 @@ const gameBoardSlice = createSlice({
       state,
       action: PayloadAction<{ flippedCards: number[] }>
     ) => {
-      const { flippedCards } = action.payload;
+      // const { flippedCards } = action.payload;
       state.gameBoard = {
         ...state.gameBoard,
         alert: null,
         isRevealed: true,
         isNewRound: false,
-        flippedCards,
+        // flippedCards,
       };
     },
-
     gameStartFaceDown: (state) => {
       state.gameBoard = {
         ...state.gameBoard,

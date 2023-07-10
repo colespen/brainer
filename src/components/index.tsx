@@ -40,8 +40,8 @@ const GameMain = () => {
   // console.log(gameBoard, roundData);
   // TODO: roundData stats and highscores
   // SETTINGS temp harcode
-  const paintMax = 0.18; // difficulty / .1
-  const revealDelay = 425; // 475
+  const paintMax = 0.28; // difficulty / .1
+  const revealDelay = 675; // 475
 
   const { cardState } = useGenerateCardData(
     gridN,
@@ -76,9 +76,9 @@ const GameMain = () => {
       dispatch(cardsFaceDown());
 
       const newRoundTimeout = setTimeout(() => {
-        // turn cards face up
+        //  reveal cards and isNewRound = false
         dispatch(newRoundUpdated({ flippedCards: cardIdList }));
-      }, 3500);
+      }, 3750);
 
       return () => {
         clearTimeout(roundReadyTimeout);
@@ -86,26 +86,30 @@ const GameMain = () => {
       };
     } else if (gameBoard.roundCount <= roundAmount) {
       // when each new round start reveal cards
-      dispatch(cardsFaceUp({ flippedCards: cardIdList }));
+      const faceUpDelay = setTimeout(() => {
+        dispatch(cardsFaceUp({ flippedCards: cardIdList }));
+      }, 250);
 
       // then turn down after delay
       const boardResetTimeout = setTimeout(() => {
         dispatch(gameStartFaceDown());
       }, revealDelay);
-      return () => clearTimeout(boardResetTimeout);
+      return () => {
+        clearTimeout(boardResetTimeout);
+        clearTimeout(faceUpDelay);
+      };
     } else {
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
     }
   }, [isNewRound, isLoss, isWin, isNewGame]);
 
-  // update GameData (rounds) on win or loss
-
+  // update `GameData` (rounds) on win or loss
   useEffect(() => {
     const totalColorCards = cardData.filter((card) => card.isColor);
     if (
       cardData.length !== 0 &&
-      gameBoard.cardsFound === totalColorCards.length
+      gameBoard.cardsFound === totalColorCards.length // .length
     ) {
       dispatch(winSet(true)); //    ***WIN
       dispatch(winAdded(roundResultAdd(gameBoard)));
@@ -136,13 +140,11 @@ const GameMain = () => {
     if (!gameBoard.flippedCards.includes(id)) {
       dispatch(cardFlipped(id));
       if (cardData[id].isColor) {
-        console.log("card found");
         // if correct card, cardsFound++
         dispatch(cardFound());
       } else {
         // if wrong card, isLoss //   ***LOSS
         dispatch(lossSet(true));
-        console.log("nope");
       }
     }
   };
