@@ -10,18 +10,20 @@ export interface RoundData {
   guesses: number;
 }
 
+export interface GameBoardData {
+  isNewRound: boolean;
+  isRevealed: boolean;
+  isWin: boolean;
+  isLoss: boolean;
+  flippedCards: number[];
+  cardsFound: number;
+  totalFound: number;
+  alert: string | null;
+  roundAmount: number;
+  roundCount: number;
+  winCount: number;
+}
+
 export interface GameBoardState {
-  gameBoard: {
-    isNewRound: boolean;
-    isRevealed: boolean;
-    isWin: boolean;
-    isLoss: boolean;
-    flippedCards: number[];
-    cardsFound: number;
-    totalFound: number;
-    alert: string | null;
-    roundAmount: number;
-    roundCount: number;
-    winCount: number;
-  };
+  gameBoard: GameBoardData;
 }

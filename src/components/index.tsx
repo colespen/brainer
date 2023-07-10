@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useDispatch, useSelector } from "react-redux";
-import { winAdded, lossAdded } from "./roundDataSlice";
+import { winAdded, lossAdded, selectedRoundState } from "./roundDataSlice";
 import {
-  selectedState,
+  selectedGameState,
   resultsUpdated,
   incrementRound,
   newRoundUpdated,
@@ -17,6 +17,11 @@ import {
   winSet,
   newGameReset,
 } from "./gameBoardSlice";
+import {
+  alertEndUpdate,
+  alertRoundUpdate,
+  roundResultAdd,
+} from "../actionHelpers.ts/gameBoardActions";
 
 import GameBoard from "./GameBoard";
 import "./styles.css";
@@ -28,11 +33,12 @@ const GameMain = () => {
   const [isNewGame, setIsNewGame] = useState(false);
   const dispatch = useDispatch();
 
-  const { gameBoard, roundData } = useSelector(selectedState);
+  const { gameBoard } = useSelector(selectedGameState);
+  const { isNewRound, isLoss, isWin, roundCount, roundAmount, winCount } =
+    gameBoard;
+  const { roundData } = useSelector(selectedRoundState);
   // console.log(gameBoard, roundData);
-
   // TODO: roundData stats and highscores
-
   // SETTINGS temp harcode
   const paintMax = 0.18; // difficulty / .1
   const revealDelay = 425; // 475
@@ -40,7 +46,7 @@ const GameMain = () => {
   const { cardState } = useGenerateCardData(
     gridN,
     paintMax,
-    gameBoard.isNewRound,
+    isNewRound,
     isNewGame
   );
   const [cardData, setCardData] = cardState;
@@ -49,8 +55,8 @@ const GameMain = () => {
   useEffect(() => {
     const cardIdList = cardData.map((card) => card.id);
 
-    if (gameBoard.isLoss || gameBoard.isWin) {
-      dispatch(alertUpdated(gameBoard.isLoss ? "you got brained" : winMessage));
+    if (isLoss || isWin) {
+      dispatch(alertUpdated(isLoss ? "you got brained" : winMessage));
       dispatch(cardsFaceUp({ flippedCards: cardIdList }));
       dispatch(incrementRound());
       const lossTimeout = setTimeout(() => {
@@ -59,20 +65,9 @@ const GameMain = () => {
       return () => clearTimeout(lossTimeout);
     }
 
-    if (
-      isNewGame ||
-      (gameBoard.isNewRound && gameBoard.roundCount <= gameBoard.roundAmount)
-    ) {
+    if (isNewGame || (isNewRound && roundCount <= roundAmount)) {
       !isNewGame &&
-        dispatch(
-          alertUpdated(
-            !roundData.length
-              ? "Here we go!"
-              : gameBoard.roundCount !== gameBoard.roundAmount
-              ? `Round ${gameBoard.roundCount}`
-              : "Final Round"
-          )
-        );
+        dispatch(alertUpdated(alertRoundUpdate(roundData, gameBoard)));
 
       const roundReadyTimeout = setTimeout(() => {
         dispatch(alertUpdated("prepare yourself . . ."));
@@ -89,7 +84,7 @@ const GameMain = () => {
         clearTimeout(roundReadyTimeout);
         clearTimeout(newRoundTimeout);
       };
-    } else if (gameBoard.roundCount <= gameBoard.roundAmount) {
+    } else if (gameBoard.roundCount <= roundAmount) {
       // when each new round start reveal cards
       dispatch(cardsFaceUp({ flippedCards: cardIdList }));
 
@@ -100,13 +95,9 @@ const GameMain = () => {
       return () => clearTimeout(boardResetTimeout);
     } else {
       dispatch(gameStartFaceDown());
-      dispatch(
-        alertUpdated(
-          gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over"
-        )
-      );
+      dispatch(alertUpdated(alertEndUpdate(gameBoard)));
     }
-  }, [gameBoard.isNewRound, gameBoard.isLoss, gameBoard.isWin, isNewGame]);
+  }, [isNewRound, isLoss, isWin, isNewGame]);
 
   // update GameData (rounds) on win or loss
 
@@ -117,33 +108,19 @@ const GameMain = () => {
       gameBoard.cardsFound === totalColorCards.length
     ) {
       dispatch(winSet(true)); //    ***WIN
-      dispatch(
-        winAdded({
-          roundNum: gameBoard.roundCount,
-          points: gameBoard.cardsFound,
-          guesses: gameBoard.flippedCards.length,
-        })
-      );
+      dispatch(winAdded(roundResultAdd(gameBoard)));
     }
     if (gameBoard.isLoss) {
-      dispatch(
-        lossAdded({
-          roundNum: gameBoard.roundCount,
-          points: gameBoard.cardsFound,
-          guesses: gameBoard.flippedCards.length,
-        })
-      );
+      dispatch(lossAdded(roundResultAdd(gameBoard)));
     }
   }, [gameBoard.cardsFound, gameBoard.isLoss]);
 
   useEffect(() => {
-    if (gameBoard.winCount === 1) setWinMessage("Solid.");
-    if (gameBoard.winCount === 2) setWinMessage("Wow.");
-    if (gameBoard.winCount === gameBoard.roundAmount - 2)
-      setWinMessage("Yup :)))");
-    if (gameBoard.winCount === gameBoard.roundAmount - 1)
-      setWinMessage("Perfecto!");
-  }, [gameBoard.winCount]);
+    if (winCount === 1) setWinMessage("Solid.");
+    if (winCount === 2) setWinMessage("Wow.");
+    if (winCount === roundAmount - 2) setWinMessage("Yup :)))");
+    if (winCount === roundAmount - 1) setWinMessage("Perfecto!");
+  }, [winCount]);
 
   useEffect(() => {
     if (!isNewGame) return;
@@ -175,7 +152,7 @@ const GameMain = () => {
   };
 
   const handleNewGameClick = () => {
-    if (gameBoard.isRevealed || gameBoard.isLoss || gameBoard.isWin) return;
+    if (gameBoard.isRevealed || isLoss || isWin) return;
     dispatch(newGameReset());
     setIsNewGame(true);
   };
@@ -207,25 +184,23 @@ const GameMain = () => {
         gridN={Math.sqrt(cardData.length)}
         flippedCards={gameBoard.flippedCards}
         handleCardClick={handleCardClick}
-        isLoss={gameBoard.isLoss}
-        isWin={gameBoard.isWin}
-        isNewRound={gameBoard.isNewRound}
+        isLoss={isLoss}
+        isWin={isWin}
+        isNewRound={isNewRound}
         isRevealed={gameBoard.isRevealed}
       />
       <div className="game-dashboard-bottom">
         <span className="round-count">
           <p>round:</p>
           <h2>
-            {gameBoard.roundCount > gameBoard.roundAmount
-              ? gameBoard.roundAmount
-              : gameBoard.roundCount}{" "}
-            / {gameBoard.roundAmount}
+            {roundCount > roundAmount ? roundAmount : roundCount} /{" "}
+            {roundAmount}
           </h2>
         </span>
         <span className="round-count won">
           <p>won:</p>
           <h2>
-            {gameBoard.winCount} / {gameBoard.roundAmount}
+            {winCount} / {roundAmount}
           </h2>
         </span>
         <span className="round-count score">
@@ -233,9 +208,7 @@ const GameMain = () => {
           <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
         </span>
         <button
-          className={
-            `new-game ` + (gameBoard.roundCount > gameBoard.roundAmount)
-          }
+          className={`new-game ` + (roundCount > roundAmount)}
           onClick={handleNewGameClick}
         >
           new game

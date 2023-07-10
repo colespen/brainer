@@ -2,18 +2,6 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GameBoardState } from "../datatypes/gameDatatypes";
 import { RootState } from "../store";
 
-const gameBoardState = (state: RootState) => state.gameBoardSlice;
-const roundDataState = (state: RootState) => state.roundDataSlice;
-export const selectedState = createSelector(
-  [gameBoardState, roundDataState],
-  (a, b) => {
-    return {
-      gameBoard: a.gameBoard,
-      roundData: b.roundData,
-    };
-  }
-);
-
 const initialState: GameBoardState = {
   gameBoard: {
     flippedCards: [],
@@ -29,6 +17,13 @@ const initialState: GameBoardState = {
     winCount: 0,
   },
 };
+
+const gameBoardState = (state: RootState) => state.gameBoardSlice;
+export const selectedGameState = createSelector([gameBoardState], (state) => {
+  return {
+    gameBoard: state.gameBoard,
+  };
+});
 
 const gameBoardSlice = createSlice({
   name: "gameBoard",

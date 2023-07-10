@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 import { RoundData } from "../datatypes/gameDatatypes";
 
 export interface RoundDataState extends RoundData {
@@ -9,20 +10,17 @@ const initialState: { roundData: RoundDataState[] } = {
   roundData: [],
 };
 
+const roundDataState = (state: RootState) => state.roundDataSlice;
+export const selectedRoundState = createSelector([roundDataState], (state) => {
+  return {
+    roundData: state.roundData,
+  };
+});
+
 const roundDataSlice = createSlice({
   name: "roundData",
   initialState,
   reducers: {
-    // roundRecorded: (state, action: PayloadAction<RoundData>) => {
-    //   const { roundNum, points, guesses } = action.payload;
-    //   const win = action.type === "winAdded"
-    //   state.roundData.push({
-    //     roundNum,
-    //     points,
-    //     guesses,
-    //     win,
-    //   });
-    // },
     winAdded: (state, action: PayloadAction<RoundData>) => {
       const { roundNum, points, guesses } = action.payload;
       state.roundData.push({
