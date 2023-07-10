@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useDispatch, useSelector } from "react-redux";
-import { winAdded, lossAdded, RoundDataState } from "./roundDataSlice";
+import { winAdded, lossAdded } from "./roundDataSlice";
 import {
+  selectedState,
   resultsUpdated,
+  incrementRound,
   newRoundUpdated,
   gameStartFaceDown,
   alertUpdated,
@@ -13,10 +15,8 @@ import {
   cardFound,
   lossSet,
   winSet,
-  incrementRound,
   newGameReset,
 } from "./gameBoardSlice";
-import { RootState } from "../store";
 
 import GameBoard from "./GameBoard";
 import "./styles.css";
@@ -27,19 +27,11 @@ const GameMain = () => {
   const [winMessage, setWinMessage] = useState("Solid."); // TODO: abstract
   const [isNewGame, setIsNewGame] = useState(false);
   const dispatch = useDispatch();
-  const { roundData, gameBoard } = useSelector((state: RootState) => {
-    return {
-      roundData: state.roundDataSlice.roundData,
-      gameBoard: state.gameBoardSlice.gameBoard,
-    };
-  });
-  // TODO: roundData stats and highscores
 
-  // useEffect(() => {
-  //   const wins = roundData.find((round: RoundDataState) => round.win === true);
-  //   console.log("wins:", wins);
-  // }, [roundData]);
-  // console.log(roundData, gameBoard);
+  const { gameBoard, roundData } = useSelector(selectedState);
+  // console.log(gameBoard, roundData);
+
+  // TODO: roundData stats and highscores
 
   // SETTINGS temp harcode
   const paintMax = 0.18; // difficulty / .1
@@ -48,7 +40,8 @@ const GameMain = () => {
   const { cardState } = useGenerateCardData(
     gridN,
     paintMax,
-    gameBoard.isNewRound
+    gameBoard.isNewRound,
+    isNewGame
   );
   const [cardData, setCardData] = cardState;
 
@@ -99,7 +92,6 @@ const GameMain = () => {
     } else if (gameBoard.roundCount <= gameBoard.roundAmount) {
       // when each new round start reveal cards
       dispatch(cardsFaceUp({ flippedCards: cardIdList }));
-      // dispatch(newRoundUpdated({ flippedCards: cardIdList }));
 
       // then turn down after delay
       const boardResetTimeout = setTimeout(() => {
@@ -182,6 +174,12 @@ const GameMain = () => {
     return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
   };
 
+  const handleNewGameClick = () => {
+    if (gameBoard.isRevealed || gameBoard.isLoss || gameBoard.isWin) return;
+    dispatch(newGameReset());
+    setIsNewGame(true);
+  };
+
   return (
     <>
       {/* TODO: abstract a control panel (modal) */}
@@ -235,11 +233,10 @@ const GameMain = () => {
           <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
         </span>
         <button
-          className={`new-game ` + (gameBoard.roundCount > gameBoard.roundAmount)}
-          onClick={() => {
-            dispatch(newGameReset());
-            setIsNewGame(true);
-          }}
+          className={
+            `new-game ` + (gameBoard.roundCount > gameBoard.roundAmount)
+          }
+          onClick={handleNewGameClick}
         >
           new game
         </button>

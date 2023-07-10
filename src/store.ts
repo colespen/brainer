@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import roundDataReducer, { RoundDataState } from "./components/roundDataSlice";
 import gameBoardReducer from "./components/gameBoardSlice";
-import { GameBoard } from "./datatypes/gameDatatypes";
+import { GameBoardState } from "./datatypes/gameDatatypes";
 
 export interface RootState {
   roundDataSlice:  { roundData: RoundDataState[] };
-  gameBoardSlice: GameBoard;
+  gameBoardSlice: GameBoardState;
 }
 
 const store = configureStore({

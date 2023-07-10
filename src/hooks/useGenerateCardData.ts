@@ -12,7 +12,8 @@ import { Card } from "../datatypes/gameDatatypes";
 function useGenerateCardData(
   gridN: number,
   paintMax: number,
-  isNewRound: boolean
+  isNewRound: boolean,
+  isNewGame: boolean
 ): {
   cardState: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
   totalColorCards: number;
@@ -72,7 +73,7 @@ function useGenerateCardData(
 
     setCardData(newData);
     setTotalColorCards(colorCardsCount);
-  }, [isNewRound]);
+  }, [isNewRound, isNewGame]);
 
   return { cardState: [cardData, setCardData], totalColorCards };
 }

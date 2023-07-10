@@ -10,7 +10,7 @@ export interface RoundData {
   guesses: number;
 }
 
-export interface GameBoard {
+export interface GameBoardState {
   gameBoard: {
     isNewRound: boolean;
     isRevealed: boolean;
