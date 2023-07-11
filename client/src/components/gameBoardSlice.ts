@@ -12,7 +12,7 @@ const initialState: GameBoardState = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 5, // TODO: don't hardcode, shouwld be in settings
+    roundAmount: 10, // TODO: don't hardcode, shouwld be in settings
     roundCount: 1,
     winCount: 0,
   },
@@ -99,6 +99,7 @@ const gameBoardSlice = createSlice({
         isNewRound: true,
         roundCount: 1,
         winCount: 0,
+        totalFound: 0,
       };
     },
   },

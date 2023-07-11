@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
+import { useWinMessage } from "../hooks/useWinMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { winAdded, lossAdded, selectedRoundState } from "./roundDataSlice";
 import {
@@ -25,27 +26,23 @@ import "./styles.css";
 import "./NewGameBtn.css";
 
 const GameMain = () => {
-  const [gridN, setGridN] = useState(4);
-  const [winMessage, setWinMessage] = useState("Solid."); // TODO: abstract
+  const [gridN, setGridN] = useState(5);
   const [isNewGame, setIsNewGame] = useState(false);
   const dispatch = useDispatch();
-
   const { gameBoard } = useSelector(selectedGameState);
   const { isNewRound, isLoss, isWin, roundCount, roundAmount, winCount } =
     gameBoard;
   const { roundData } = useSelector(selectedRoundState);
-  // console.log(gameBoard, roundData);
+  console.log(gameBoard, roundData);
   // TODO: roundData stats and highscores
   // SETTINGS temp harcode
-  const paintMax = 0.24; // difficulty / .1
-  const revealDelay = 500; // 475
 
-  const { cardData } = useGenerateCardData(
+  const { cardData, revealDelay } = useGenerateCardData(
     gridN,
-    paintMax,
     isNewRound,
     isNewGame
   );
+  const { winMessage } = useWinMessage(winCount, roundAmount);
 
   // handle board reset on win/loss and new rounds
   useEffect(() => {
@@ -95,9 +92,9 @@ const GameMain = () => {
         clearTimeout(faceUpDelay);
       };
     } else {
-      console.log("game start face down");
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
+      // if wincount === roundAmount, add totalFound * 10 to highscore board in db.
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isNewRound, isLoss, isWin, isNewGame]);
@@ -117,13 +114,6 @@ const GameMain = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, gameBoard.cardsFound, gameBoard.isLoss]);
-
-  useEffect(() => {
-    if (winCount === 1) setWinMessage("Solid.");
-    if (winCount === 2) setWinMessage("Wow.");
-    if (winCount === roundAmount - 2) setWinMessage("Yup :)))");
-    if (winCount === roundAmount - 1) setWinMessage("Perfecto!");
-  }, [roundAmount, winCount]);
 
   useEffect(() => {
     if (!isNewGame) return;
@@ -190,7 +180,7 @@ const GameMain = () => {
         </span>
         <span className="round-count score">
           <p>points:</p>
-          <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
+          <h2>{(gameBoard.totalFound + gameBoard.cardsFound) * 10}</h2>
         </span>
         <button
           className={"new-game " + (roundCount > roundAmount ? "true" : "")}

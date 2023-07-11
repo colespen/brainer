@@ -54,13 +54,11 @@
 }
 .score > h3 {
   margin: 0;
-  width: 55%;
+  width: 90%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
-.score > h3 {
-  margin-top: 0.2em;
-}
+
 .won > p {
   margin-right: 1em;
 }
@@ -68,6 +66,7 @@
 .new-game {
   border: 2px solid #585aa9;
   bottom: 2em;
+  font-weight: 400;
 }
 .new-game:hover {
   border-color: #9294ff;

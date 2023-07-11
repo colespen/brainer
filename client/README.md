@@ -12,14 +12,29 @@
 
 ### _COMING SOON_
 
+
+## In client:
 ### run locally:
 `npm install`
+
 `npm run dev`
 
-### eslint
+### eslint:
 `npm run lint`
 
-### run tests:
+### tests:
+`npm run test`
+
+### build for production:
+`npm run build`
+
+## In server:
+### run locally:
+`npm install`
+
+`npm run dev`
+
+### tests:
 `npm run test`
 
 ### build for production:

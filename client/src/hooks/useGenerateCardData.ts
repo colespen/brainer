@@ -11,16 +11,13 @@ import { Card } from "../datatypes/gameDatatypes";
  *  */
 function useGenerateCardData(
   gridN: number,
-  paintMax: number,
   isNewRound: boolean,
   isNewGame: boolean
-): { cardData: Card[] } {
+): { cardData: Card[]; revealDelay: number } {
   const [cardData, setCardData] = useState<Card[]>([]);
+  const [paintMultiplier, setPaintMultiplier] = useState<number>(0.07); // paintMax 0.11 start
+  const [revealDelay, setRevealDelay] = useState<number>(685); // 650 -> 500
   const totalCardRef = useRef<number>(16); // ref better here?
-  // const [totalCard, setTotalCards] = useState((gridN * gridN));
-
-  // let totalCards = 0; // remove global?
-  // let newData: Card[] = []; // no global needed
 
   const createInitialCardData = (totalCards: number) => {
     return Array.from({ length: totalCards }, (_, i) => {
@@ -31,6 +28,18 @@ function useGenerateCardData(
       };
     });
   };
+  // console.log("paintMultiplier: ", paintMultiplier);
+  // console.log("revealDelay: ", revealDelay);
+
+  useEffect(() => {
+    if (!isNewRound) return;
+    if (isNewGame) {
+      setPaintMultiplier(0.07);
+      setRevealDelay(685);
+    }
+    setPaintMultiplier((prev) => Number((prev + 0.035).toFixed(2)));
+    setRevealDelay((prev) => prev - 30);
+  }, [isNewRound, isNewGame]);
 
   // update grid size
   useEffect(() => {
@@ -55,7 +64,7 @@ function useGenerateCardData(
     colorCardsCount++;
 
     // assign random color to remaining cards within range
-    const maxColorCards = Math.floor(totalCards * paintMax);
+    const maxColorCards = Math.floor(totalCards * paintMultiplier);
     // create new array of all indexes to later splice from
     const availableIndexes = Array.from({ length: totalCards }, (_, i) => i);
 
@@ -73,9 +82,9 @@ function useGenerateCardData(
       setCardData(newData);
       // setTotalColorCards(colorCardsCount);
     };
-  }, [isNewRound, isNewGame, paintMax, gridN]);
+  }, [isNewRound, isNewGame, paintMultiplier, gridN]);
 
-  return { cardData };
+  return { cardData, revealDelay };
 }
 
 export { useGenerateCardData };

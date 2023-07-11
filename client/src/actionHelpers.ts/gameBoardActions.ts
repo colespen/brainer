@@ -22,7 +22,8 @@ export const alertEndUpdate = (gameBoard: GameBoardData) => {
 export const roundResultAdd = (gameBoard: GameBoardData) => {
   return {
     roundNum: gameBoard.roundCount,
-    points: gameBoard.cardsFound,
+    points: gameBoard.cardsFound * 10,
     guesses: gameBoard.flippedCards.length,
   };
 };
+
