@@ -20,7 +20,6 @@ function GameBoard({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     }
   };
 
-  console.log(cardData.filter(el => el.isColor))
   return (
     <div
       className="game-board"

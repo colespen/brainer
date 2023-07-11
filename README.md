@@ -4,8 +4,26 @@
 
 #### . . .and also just for fun
 
-### _Work In Progress_ &nbsp;&nbsp; ->-> &nbsp;&nbsp; _COMING SOON_
 
-- to practice with React state manamenent - redux and custom hook
+- React + TypeScript scaffolded with Vite
+- Redux
+- Jest
+- React Testing Library 
+
+### _COMING SOON_
+
+### run locally:
+`npm install`
+`npm run dev`
+
+### eslint
+`npm run lint`
+
+### run tests:
+`npm run test`
+
+### build for production:
+`npm run build`
+
 
 ![main board gameplay sample](/docs/board1.png)

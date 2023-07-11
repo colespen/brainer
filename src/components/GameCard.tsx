@@ -16,13 +16,12 @@ const GameCard = ({
   const isFlipped = flippedCards.includes(id);
   const [isClicked, setIsClicked] = useState(false);
 
-  console.log(isNewRound);
   useEffect(() => {
     setIsClicked(false);
   }, [isNewRound]);
 
   const notFound = !isClicked && isColor;
-  const winColor = isWin && isColor ? "#00b0ff": color
+  const winColor = isWin && isColor ? "#00b0ff" : color;
   const cardColor = isLoss && notFound ? colorMap.notFound : winColor;
 
   return (

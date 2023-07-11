@@ -37,8 +37,8 @@ const GameMain = () => {
   // console.log(gameBoard, roundData);
   // TODO: roundData stats and highscores
   // SETTINGS temp harcode
-  const paintMax = 0.28; // difficulty / .1
-  const revealDelay = 675; // 475
+  const paintMax = 0.24; // difficulty / .1
+  const revealDelay = 500; // 475
 
   const { cardData } = useGenerateCardData(
     gridN,
@@ -81,7 +81,7 @@ const GameMain = () => {
         clearTimeout(newRoundTimeout);
       };
     } else if (gameBoard.roundCount <= roundAmount) {
-      // when each new round start reveal cards
+      // Round Starts: Reveal Cards
       const faceUpDelay = setTimeout(() => {
         dispatch(cardsFaceUp({ flippedCards: cardIdList }));
       }, 250);
@@ -95,6 +95,7 @@ const GameMain = () => {
         clearTimeout(faceUpDelay);
       };
     } else {
+      console.log("game start face down");
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
     }

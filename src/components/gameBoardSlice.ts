@@ -12,7 +12,7 @@ const initialState: GameBoardState = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 5,
+    roundAmount: 5, // TODO: don't hardcode, shouwld be in settings
     roundCount: 1,
     winCount: 0,
   },

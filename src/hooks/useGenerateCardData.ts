@@ -73,7 +73,7 @@ function useGenerateCardData(
       setCardData(newData);
       // setTotalColorCards(colorCardsCount);
     };
-  }, [isNewRound, isNewGame, paintMax]);
+  }, [isNewRound, isNewGame, paintMax, gridN]);
 
   return { cardData };
 }
