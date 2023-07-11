@@ -6,21 +6,21 @@ import GameCard from "./GameCard";
 function GameBoard({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const dispatch = useDispatch();
 
-    // turn clicked cards face up
-    const handleCardClick = (id: number) => {
-      if (!gameBoard.flippedCards.includes(id)) {
-        dispatch(cardFlipped(id));
-        if (cardData[id].isColor) {
-          // if correct card, cardsFound++
-          dispatch(cardFound());
-        } else {
-          // if wrong card, isLoss //   ***LOSS
-          dispatch(lossSet(true));
-        }
+  // turn clicked cards face up
+  const handleCardClick = (id: number) => {
+    if (!gameBoard.flippedCards.includes(id)) {
+      dispatch(cardFlipped(id));
+      if (cardData[id].isColor) {
+        // if correct card, cardsFound++
+        dispatch(cardFound());
+      } else {
+        // if wrong card, isLoss //   ***LOSS
+        dispatch(lossSet(true));
       }
-    };
+    }
+  };
 
-  // console.log(cardData.filter(el => el.isColor))
+  console.log(cardData.filter(el => el.isColor))
   return (
     <div
       className="game-board"

@@ -4,5 +4,5 @@ export const colorMap = {
   faceDown: "#000128",
   none: "#262948",
   blue: "#0006ea",
-  notFound: "#a500ff",
+  notFound: "#d5007d",
 };

@@ -14,9 +14,7 @@ function useGenerateCardData(
   paintMax: number,
   isNewRound: boolean,
   isNewGame: boolean
-): {
-  cardState: [Card[], React.Dispatch<React.SetStateAction<Card[]>>];
-} {
+): { cardData: Card[] } {
   const [cardData, setCardData] = useState<Card[]>([]);
   const totalCardRef = useRef<number>(16); // ref better here?
   // const [totalCard, setTotalCards] = useState((gridN * gridN));
@@ -63,7 +61,7 @@ function useGenerateCardData(
 
     // assign colors until max
     while (colorCardsCount < maxColorCards) {
-      let randomIndex = Math.floor(Math.random() * availableIndexes.length);
+      randomIndex = Math.floor(Math.random() * availableIndexes.length);
       // currentIndex is random deleted index retruned from splice
       const currentIndex = availableIndexes.splice(randomIndex, 1)[0];
 
@@ -75,9 +73,9 @@ function useGenerateCardData(
       setCardData(newData);
       // setTotalColorCards(colorCardsCount);
     };
-  }, [isNewRound, isNewGame]);
+  }, [isNewRound, isNewGame, paintMax]);
 
-  return { cardState: [cardData, setCardData] };
+  return { cardData };
 }
 
 export { useGenerateCardData };

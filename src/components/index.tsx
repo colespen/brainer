@@ -40,17 +40,16 @@ const GameMain = () => {
   const paintMax = 0.28; // difficulty / .1
   const revealDelay = 675; // 475
 
-  const { cardState } = useGenerateCardData(
+  const { cardData } = useGenerateCardData(
     gridN,
     paintMax,
     isNewRound,
     isNewGame
   );
-  const [cardData, setCardData] = cardState;
 
   // handle board reset on win/loss and new rounds
   useEffect(() => {
-    const cardIdList = cardData.map((card) => card.id);
+    const cardIdList: number[] = cardData.map((card) => card.id);
 
     if (isLoss || isWin) {
       dispatch(alertUpdated(isLoss ? "you got brained" : winMessage));
@@ -74,7 +73,7 @@ const GameMain = () => {
 
       const newRoundTimeout = setTimeout(() => {
         //  reveal cards and isNewRound = false
-        dispatch(newRoundUpdated({ flippedCards: cardIdList }));
+        dispatch(newRoundUpdated());
       }, 3250);
 
       return () => {
@@ -99,7 +98,8 @@ const GameMain = () => {
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
     }
-  }, [isNewRound, isLoss, isWin, isNewGame]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, isNewRound, isLoss, isWin, isNewGame]);
 
   // update `GameData` (rounds) on win or loss
   useEffect(() => {
@@ -114,14 +114,15 @@ const GameMain = () => {
     if (gameBoard.isLoss) {
       dispatch(lossAdded(roundResultAdd(gameBoard)));
     }
-  }, [gameBoard.cardsFound, gameBoard.isLoss]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, gameBoard.cardsFound, gameBoard.isLoss]);
 
   useEffect(() => {
     if (winCount === 1) setWinMessage("Solid.");
     if (winCount === 2) setWinMessage("Wow.");
     if (winCount === roundAmount - 2) setWinMessage("Yup :)))");
     if (winCount === roundAmount - 1) setWinMessage("Perfecto!");
-  }, [winCount]);
+  }, [roundAmount, winCount]);
 
   useEffect(() => {
     if (!isNewGame) return;
@@ -130,7 +131,7 @@ const GameMain = () => {
       setIsNewGame(false);
     }, 1000);
     return () => clearTimeout(newGameTimeout);
-  }, [isNewGame]);
+  }, [dispatch, isNewGame]);
 
   const getInputBackgroundSize = () => {
     return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
@@ -191,7 +192,7 @@ const GameMain = () => {
           <h3>{gameBoard.totalFound + gameBoard.cardsFound}</h3>
         </span>
         <button
-          className={`new-game ` + (roundCount > roundAmount)}
+          className={"new-game " + (roundCount > roundAmount ? "true" : "")}
           onClick={handleNewGameClick}
         >
           new game
