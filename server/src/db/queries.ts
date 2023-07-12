@@ -4,7 +4,7 @@ export async function getHighscores() {
   try {
     const client = await pool.connect();
     const highscores = await client.query(`
-        SELECT user_name, total_points
+        SELECT user_name, total_points, created_at
         FROM game
         ORDER BY total_points DESC
       `);

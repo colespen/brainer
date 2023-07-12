@@ -29,10 +29,10 @@ app.use("/api", routes);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 
-  // DROP TABLES - DEVELOPMENT ONLY
-  //   dropTables().catch((error) => {
-  //     console.error('Error:', error);
-  //     });
+//   //   DROP TABLES - DEVELOPMENT ONLY
+//   dropTables().catch((error) => {
+//     console.error("Error:", error);
+//   });
 
   createTables().catch((error) => {
     console.error("Error:", error);

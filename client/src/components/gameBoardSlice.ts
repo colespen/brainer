@@ -12,9 +12,10 @@ const initialState: GameBoardState = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 10, // TODO: don't hardcode, shouwld be in settings
+    roundAmount: 1, // TODO: don't hardcode, shouwld be in settings
     roundCount: 1,
     winCount: 0,
+    isNewGame: false,
   },
 };
 
@@ -102,6 +103,10 @@ const gameBoardSlice = createSlice({
         totalFound: 0,
       };
     },
+    newGameSet: (state, action: PayloadAction<boolean>) => {
+      const isNewGame = action.payload;
+      state.gameBoard.isNewGame = isNewGame;
+    },
   },
 });
 
@@ -119,6 +124,7 @@ export const {
   lossSet,
   newGameReset,
   incrementRound,
+  newGameSet
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;

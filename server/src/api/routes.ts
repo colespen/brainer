@@ -14,7 +14,7 @@ router.get("/highscores", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/game", async (req: Request, res: Response) => {
+router.post("/gameresults", async (req: Request, res: Response) => {
   const { user_name, total_points } = req.body;
   if (!user_name || !total_points) {
     res

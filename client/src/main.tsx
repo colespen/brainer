@@ -4,10 +4,10 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./store.ts";
 import {
-  BrowserRouter,
   createBrowserRouter,
-  Route,
   RouterProvider,
+  BrowserRouter,
+  Route,
 } from "react-router-dom";
 import "./index.css";
 import ErrorPage from "./errorPage.tsx";

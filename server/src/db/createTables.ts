@@ -19,7 +19,8 @@ export async function createTables() {
       CREATE TABLE IF NOT EXISTS game (
         game_id SERIAL PRIMARY KEY,
         user_name VARCHAR(255) NOT NULL,
-        total_points INTEGER
+        total_points INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
 

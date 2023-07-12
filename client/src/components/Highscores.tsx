@@ -1,28 +1,19 @@
-import { useEffect, useState } from "react";
+import { useFetchHighscores } from "../hooks/useFetchHighscores";
+import { formatDate } from "../lib/formatDate";
+import { handleNewGame } from "../handlers/handleNewGame";
+import { useDispatch, useSelector } from "react-redux";
+import { newGameReset, newGameSet, selectedGameState } from "./gameBoardSlice";
 import { Link } from "react-router-dom";
-
 import "./Highscores.css";
 
-interface Highscore {
-  user_name: string;
-  total_points: number;
-}
-
 const Highscores = () => {
-  const [highscores, setHighscores] = useState<Highscore[]>([]);
+  const { highscores } = useFetchHighscores();
+  const dispatch = useDispatch();
+  const { gameBoard } = useSelector(selectedGameState);
 
-  useEffect(() => {
-    fetch("http://localhost:8001/api/highscores")
-      .then((response) => response.json())
-      .then((data: Highscore[]) => {
-        setHighscores(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching highscores:", error);
-      });
-  }, []);
-
-  console.log("highscores:", highscores);
+  const handleNewGameClick = () => {
+    handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
+  };
 
   return (
     <div className="highscores-main">
@@ -32,15 +23,19 @@ const Highscores = () => {
           <table>
             <thead>
               <tr>
-                <th>User Name</th>
-                <th>Total Points</th>
+                <th>Name</th>
+                <th>Total</th>
+                <th>Date</th>
               </tr>
             </thead>
             <tbody>
               {highscores.map((score, index) => (
                 <tr key={index}>
-                  <td>{score.user_name}</td>
+                  <td>
+                    {index + 1} {score.user_name}
+                  </td>
                   <td>{score.total_points}</td>
+                  <td>{formatDate(score.created_at)}</td>
                 </tr>
               ))}
             </tbody>
@@ -50,7 +45,9 @@ const Highscores = () => {
         )}
       </div>
       <Link to="../game">
-        <button className="game-link">play again</button>
+        <button className="game-link" onClick={handleNewGameClick}>
+          play again
+        </button>
       </Link>
     </div>
   );

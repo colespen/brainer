@@ -22,6 +22,7 @@ export interface GameBoardData {
   roundAmount: number;
   roundCount: number;
   winCount: number;
+  isNewGame: boolean;
 }
 
 export interface GameBoardState {

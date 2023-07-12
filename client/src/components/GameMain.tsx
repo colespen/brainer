@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useWinMessage } from "../hooks/useWinMessage";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import {
   cardsFaceDown,
   winSet,
   newGameReset,
+  newGameSet,
 } from "./gameBoardSlice";
 import {
   alertEndUpdate,
@@ -25,14 +26,24 @@ import {
 import GameBoard from "./GameBoard";
 import "./styles.css";
 import "./NewGameBtn.css";
+import { postGameResults } from "../services/postGameResults";
+import { handleNewGame } from "../handlers/handleNewGame";
 
 const GameMain = () => {
   const [gridN, setGridN] = useState(5);
-  const [isNewGame, setIsNewGame] = useState(false);
+  // const [isNewGame, setIsNewGame] = useState(false);
+  const resultsSavedRef = useRef(false);
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
-  const { isNewRound, isLoss, isWin, roundCount, roundAmount, winCount } =
-    gameBoard;
+  const {
+    isNewGame,
+    isNewRound,
+    isLoss,
+    isWin,
+    roundCount,
+    roundAmount,
+    winCount,
+  } = gameBoard;
   const { roundData } = useSelector(selectedRoundState);
   // console.log(gameBoard, roundData);
   // TODO: roundData stats and highscores
@@ -78,7 +89,7 @@ const GameMain = () => {
         clearTimeout(roundReadyTimeout);
         clearTimeout(newRoundTimeout);
       };
-    } else if (gameBoard.roundCount <= roundAmount) {
+    } else if (roundCount <= roundAmount) {
       // Round Starts: Reveal Cards
       const faceUpDelay = setTimeout(() => {
         dispatch(cardsFaceUp({ flippedCards: cardIdList }));
@@ -95,7 +106,6 @@ const GameMain = () => {
     } else {
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
-      // if wincount === roundAmount, add totalFound * 10 to highscore board in db.
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isNewRound, isLoss, isWin, isNewGame]);
@@ -120,19 +130,30 @@ const GameMain = () => {
     if (!isNewGame) return;
     dispatch(alertUpdated("Cool let's go again . . ."));
     const newGameTimeout = setTimeout(() => {
-      setIsNewGame(false);
+      dispatch(newGameSet(false));
     }, 1000);
     return () => clearTimeout(newGameTimeout);
   }, [dispatch, isNewGame]);
+
+  useEffect(() => {
+    if (roundCount <= roundAmount) return;
+    try {
+      // TODO FIX TYPE W/ AWAIT // AND NAME STATE!!! :)))
+      console.log("SAVING RESULTS");
+      void postGameResults("smell", gameBoard.totalFound);
+      // dispatch(newGameReset());
+      resultsSavedRef.current = true;
+    } catch (err) {
+      console.log(err);
+    }
+  }, [gameBoard.totalFound, roundAmount, roundCount]);
 
   const getInputBackgroundSize = () => {
     return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
   };
 
   const handleNewGameClick = () => {
-    if (gameBoard.isRevealed || isLoss || isWin) return;
-    dispatch(newGameReset());
-    setIsNewGame(true);
+    handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
   };
 
   return (
@@ -184,7 +205,12 @@ const GameMain = () => {
           <h2>{(gameBoard.totalFound + gameBoard.cardsFound) * 10}</h2>
         </span>
         <Link to="../highscores">
-          <button className="dashboard-item highscores">high scores</button>
+          <button
+            className="dashboard-item highscores"
+            onClick={() => dispatch(newGameReset())}
+          >
+            high scores
+          </button>
         </Link>
         <button
           className={"new-game " + (roundCount > roundAmount ? "true" : "")}
