@@ -1,6 +1,6 @@
 import express from "express";
 import routes from "./api/routes";
-import { createTables, dropTables } from "./db/createTables";
+import { createTables } from "./db/createTables";
 import cors from "cors";
 
 const app = express();
@@ -28,11 +28,6 @@ app.use("/api", routes);
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-
-    // //   DROP TABLES - DEVELOPMENT ONLY
-    // dropTables().catch((error) => {
-    //   console.error("Error:", error);
-    // });
 
   createTables().catch((error) => {
     console.error("Error:", error);

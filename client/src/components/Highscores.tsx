@@ -20,7 +20,7 @@ const Highscores = () => {
       <div className="highscores-container">
         <h1>Highscores</h1>
         {highscores.length > 0 ? (
-          <table>
+          <table className="highscores-table">
             <thead>
               <tr>
                 <th>Name</th>

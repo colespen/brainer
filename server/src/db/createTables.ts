@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import fs from "fs";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,39 +14,17 @@ export const pool = new Pool({
 
 export async function createTables() {
   const client = await pool.connect();
-
   try {
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS game (
-        game_id SERIAL PRIMARY KEY,
-        user_name VARCHAR(255) NOT NULL,
-        total_points INTEGER,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    console.log("Tables created successfully.");
+    const seedQuery = fs.readFileSync(`${__dirname}/seed.sql`, {
+      encoding: "utf8",
+    });
+    pool.query(seedQuery, (err, res) => {
+      console.log(err, res);
+      console.log("Seeding Completed!");
+      // pool.end();
+    });
   } catch (error) {
-    console.error("Error creating tables:", error);
-  } finally {
-    client.release();
-  }
-}
-
-export async function dropTables() {
-  const client = await pool.connect();
-  try {
-    await client.query(`
-        DROP TABLE IF EXISTS highscore
-      `);
-
-    await client.query(`
-        DROP TABLE IF EXISTS game
-      `);
-
-    console.log("Tables dropped successfully.");
-  } catch (error) {
-    console.error("Error dropping tables:", error);
+    console.error("Error creating / seeding tables:", error);
   } finally {
     client.release();
   }
