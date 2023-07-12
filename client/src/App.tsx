@@ -1,4 +1,4 @@
-import GameMain from "./components";
+import GameMain from "./components/GameMain";
 
 function App() {
   return (

@@ -35,7 +35,7 @@
   position: absolute;
   bottom: 4.5rem;
 }
-.round-count {
+.dashboard-item {
   box-sizing: border-box;
   width: 107px;
   height: 107px;
@@ -46,10 +46,10 @@
   justify-content: center;
 }
 
-.round-count > h2 {
+.dashboard-item > h2 {
   margin: 0;
 }
-.round-count > p {
+.dashboard-item > p {
   margin: 0;
 }
 .score > h3 {
@@ -63,6 +63,12 @@
   margin-right: 1em;
 }
 
+.highscores {
+  font-weight: 400;
+}
+.highscores:hover {
+  background-color: #000128;
+}
 .new-game {
   border: 2px solid #585aa9;
   bottom: 2em;
@@ -70,6 +76,7 @@
 }
 .new-game:hover {
   border-color: #9294ff;
+  background-color: #000128;
 }
 
 input[type="range"] {

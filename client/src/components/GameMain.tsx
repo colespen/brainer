@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useWinMessage } from "../hooks/useWinMessage";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { winAdded, lossAdded, selectedRoundState } from "./roundDataSlice";
 import {
   selectedGameState,
@@ -33,7 +34,7 @@ const GameMain = () => {
   const { isNewRound, isLoss, isWin, roundCount, roundAmount, winCount } =
     gameBoard;
   const { roundData } = useSelector(selectedRoundState);
-  console.log(gameBoard, roundData);
+  // console.log(gameBoard, roundData);
   // TODO: roundData stats and highscores
   // SETTINGS temp harcode
 
@@ -165,23 +166,26 @@ const GameMain = () => {
         isNewRound={isNewRound}
       />
       <div className="game-dashboard-bottom">
-        <span className="round-count">
+        <span className="dashboard-item">
           <p>round:</p>
           <h2>
             {roundCount > roundAmount ? roundAmount : roundCount} /{" "}
             {roundAmount}
           </h2>
         </span>
-        <span className="round-count won">
+        <span className="dashboard-item won">
           <p>won:</p>
           <h2>
             {winCount} / {roundAmount}
           </h2>
         </span>
-        <span className="round-count score">
+        <span className="dashboard-item score">
           <p>points:</p>
           <h2>{(gameBoard.totalFound + gameBoard.cardsFound) * 10}</h2>
         </span>
+        <Link to="../highscores">
+          <button className="dashboard-item highscores">high scores</button>
+        </Link>
         <button
           className={"new-game " + (roundCount > roundAmount ? "true" : "")}
           onClick={handleNewGameClick}

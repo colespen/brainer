@@ -7,6 +7,7 @@ router.get("/highscores", async (req: Request, res: Response) => {
   try {
     const highscores = await getHighscores();
     res.json(highscores);
+    console.log("highscores:", highscores)
   } catch (error) {
     console.error("Error fetching highscores:", error);
     res.status(500).json({ message: "Internal Server Error" });

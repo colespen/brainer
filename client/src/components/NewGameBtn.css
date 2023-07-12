@@ -4,9 +4,9 @@
   animation: pulse 2s infinite;
 }
 
-.new-game.true:hover {
+/* .new-game.true:hover {
   background-color: #000128;
-}
+} */
 
 @keyframes pulse {
   0% {
@@ -18,7 +18,7 @@
   70% {
     transform: scale(1);
     border-color: #9294ff;
-    box-shadow: 2px 0 10px 5px #1317aa;
+    box-shadow: 0 0 10px 5px #1317aa;
   }
 
   100% {
