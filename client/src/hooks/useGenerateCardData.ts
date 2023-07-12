@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { colorMap } from "../datatypes/colortypes";
-import { Card } from "../datatypes/gameDatatypes";
+import { CardData } from "../datatypes/gameDatatypes";
 
 /**
  * @param gridN grid size
@@ -13,8 +13,8 @@ function useGenerateCardData(
   gridN: number,
   isNewRound: boolean,
   isNewGame: boolean
-): { cardData: Card[]; revealDelay: number } {
-  const [cardData, setCardData] = useState<Card[]>([]);
+): { cardData: CardData[]; revealDelay: number } {
+  const [cardData, setCardData] = useState<CardData[]>([]);
   const [paintMultiplier, setPaintMultiplier] = useState<number>(0.07); // paintMax 0.11 start
   const [revealDelay, setRevealDelay] = useState<number>(685); // 650 -> 500
   const totalCardRef = useRef<number>(16); // ref better here?

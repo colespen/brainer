@@ -19,6 +19,8 @@ export const useFetchHighscores = () => {
       .catch((error) => {
         console.error("Error fetching highscores:", error);
       });
+
+    // try catch async version of this has typescript linting errors ...?
   }, []);
 
   return { highscores };

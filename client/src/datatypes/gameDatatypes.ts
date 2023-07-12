@@ -1,4 +1,4 @@
-export interface Card {
+export interface CardData {
   id: number;
   color: string;
   isColor: boolean;
@@ -23,6 +23,7 @@ export interface GameBoardData {
   roundCount: number;
   winCount: number;
   isNewGame: boolean;
+  userName: string;
 }
 
 export interface GameBoardState {

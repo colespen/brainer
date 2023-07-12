@@ -31,6 +31,7 @@ export async function createTables() {
     client.release();
   }
 }
+
 export async function dropTables() {
   const client = await pool.connect();
   try {

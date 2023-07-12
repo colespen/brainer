@@ -7,15 +7,16 @@ const initialState: GameBoardState = {
     flippedCards: [],
     cardsFound: 0,
     totalFound: 0,
+    isNewGame: false,
     isNewRound: true,
     isRevealed: false,
+    userName: "",
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 1, // TODO: don't hardcode, shouwld be in settings
+    roundAmount: 2, // TODO: don't hardcode, shouwld be in settings
     roundCount: 1,
     winCount: 0,
-    isNewGame: false,
   },
 };
 
@@ -107,6 +108,10 @@ const gameBoardSlice = createSlice({
       const isNewGame = action.payload;
       state.gameBoard.isNewGame = isNewGame;
     },
+    userNameSet: (state, action: PayloadAction<string>) => {
+      const userName = action.payload;
+      state.gameBoard.userName = userName;
+    }
   },
 });
 
@@ -124,7 +129,8 @@ export const {
   lossSet,
   newGameReset,
   incrementRound,
-  newGameSet
+  newGameSet,
+  userNameSet
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;

@@ -21,7 +21,7 @@ const GameCard = ({
   }, [isNewRound]);
 
   const notFound = !isClicked && isColor;
-  const winColor = isWin && isColor ? "#00b0ff" : color;
+  const winColor = isWin && isColor ? colorMap.win : color;
   const cardColor = isLoss && notFound ? colorMap.notFound : winColor;
 
   return (

@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-// interface Highscore {
-//   user_name: string;
-//   total_points: number;
-// }
+// convert to useCallback
 
 export const postGameResults = async (
   userName: string,
