@@ -1,15 +1,13 @@
-import { Card, GameBoardData } from "./gameDatatypes";
+import { KeyboardEventHandler, MouseEventHandler } from "react";
+import { CardData, GameBoardData } from "./gameDatatypes";
 
 export interface GameBoardProps {
   gridN: number;
-  cardData: Card[];
+  cardData: CardData[];
   isLoss: boolean;
   isWin: boolean;
   isNewRound: boolean;
   gameBoard: GameBoardData;
-  // flippedCards: number[];
-  // handleCardClick: (id: number) => void;
-  // isRevealed: boolean;
 }
 
 export interface GameCardProps
@@ -20,4 +18,15 @@ export interface GameCardProps
   isRevealed: boolean;
   flippedCards: number[];
   handleCardClick: (id: number) => void;
+}
+
+
+export interface DashboardTopProps {
+  gameBoard: GameBoardData;
+  cardData: CardData[];
+  nameInputFocus: (inputElement: HTMLInputElement) => void;
+  userNameChange: string;
+  listenForEnter: KeyboardEventHandler<HTMLInputElement>;
+  setUserNameChange: (userNameChange: string) => void;
+  handleNameClick: MouseEventHandler<HTMLButtonElement>;
 }

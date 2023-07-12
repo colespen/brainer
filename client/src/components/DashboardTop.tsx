@@ -1,15 +1,4 @@
-import { GameBoardData, CardData } from "../datatypes/gameDatatypes";
-import { KeyboardEventHandler, MouseEventHandler } from "react";
-
-interface DashboardTopProps {
-  gameBoard: GameBoardData;
-  cardData: CardData[];
-  nameInputFocus: (inputElement: HTMLInputElement) => void;
-  userNameChange: string;
-  listenForEnter: KeyboardEventHandler<HTMLInputElement>;
-  setUserNameChange: (e: any) => void;
-  handleNameClick: MouseEventHandler<HTMLButtonElement>;
-}
+import { DashboardTopProps } from "../datatypes/proptypes";
 
 const DashboardTop = ({
   gameBoard,
@@ -33,10 +22,7 @@ const DashboardTop = ({
             onKeyDown={listenForEnter}
             onChange={(e) => setUserNameChange(e.target.value.toUpperCase())}
           />
-          <button
-            className="dashboard-item name-btn"
-            onClick={handleNameClick}
-          >
+          <button className="dashboard-item name-btn" onClick={handleNameClick}>
             GO
           </button>
         </div>
