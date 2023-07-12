@@ -3,15 +3,17 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  width: 90%;
+  width: 80%;
 }
 
 .highscores-container {
+  color: #e1e1ff;
   display: flex;
   align-items: center;
   flex-direction: column;
   height: 100%;
   width: 100%;
+  transition: opacity 100ms ease;
 }
 
 .highscores-container > h1 {
@@ -21,6 +23,21 @@
 .highscores-table {
   font-size: 3rem;
   width: 100%;
+}
+
+.name-col {
+  text-align: left;
+  width: 40;
+}
+
+.total-col {
+  /* text-align: left; */
+  width: 25%;
+}
+
+.date-col {
+  /* text-align: left; */
+  width: 35%;
 }
 
 .game-link {

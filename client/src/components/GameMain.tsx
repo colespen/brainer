@@ -146,8 +146,6 @@ const GameMain = () => {
     return () => clearTimeout(newGameTimeout);
   }, [dispatch, isNewGame]);
 
-  console.log("gameBoard.totalFound:", gameBoard.totalFound);
-
   useEffect(() => {
     if (roundCount <= roundAmount) return;
     const totalFound = (gameBoard.totalFound + gameBoard.cardsFound) * 10;

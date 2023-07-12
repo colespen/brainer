@@ -9,6 +9,12 @@ const DashboardTop = ({
   setUserNameChange,
   handleNameClick,
 }: DashboardTopProps) => {
+  const handleSetUserNameChange = (e: string) => {
+    if (e.length > 9) return;
+    const upperCase = e.toUpperCase();
+    setUserNameChange(upperCase);
+  };
+
   return (
     <div className="game-dashboard-top">
       {!gameBoard.userName ? (
@@ -20,7 +26,7 @@ const DashboardTop = ({
             placeholder="your name"
             value={userNameChange}
             onKeyDown={listenForEnter}
-            onChange={(e) => setUserNameChange(e.target.value.toUpperCase())}
+            onChange={(e) => handleSetUserNameChange(e.target.value)}
           />
           <button className="dashboard-item name-btn" onClick={handleNameClick}>
             GO

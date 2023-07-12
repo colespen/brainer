@@ -5,22 +5,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { newGameReset, newGameSet, selectedGameState } from "./gameBoardSlice";
 import { Link } from "react-router-dom";
 import "./Highscores.css";
+import { useEffect, useState } from "react";
 
 const Highscores = () => {
   const { highscores } = useFetchHighscores();
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
+  const [opacity, setOpacity] = useState({ opacity: 0 });
 
   const handleNewGameClick = () => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
   };
 
+  useEffect(() => {
+    const opacityTimer = setTimeout(() => {
+    setOpacity({ opacity: 1 });
+    }, 60);
+    return () => clearTimeout(opacityTimer);
+
+  }, []);
+
   return (
     <div className="highscores-main">
-      <div className="highscores-container">
+      <div className="highscores-container" style={opacity}>
         <h1>Highscores</h1>
         {highscores.length > 0 ? (
-          <table className="highscores-table">
+          <table className="highscores-table" >
             <thead>
               <tr>
                 <th>Name</th>
@@ -29,16 +39,18 @@ const Highscores = () => {
               </tr>
             </thead>
             <tbody>
-              {highscores.map((score, index) => (
-                index < 10 &&
-                <tr key={index}>
-                  <td>
-                    {index + 1} {score.user_name}
-                  </td>
-                  <td>{score.total_points}</td>
-                  <td>{formatDate(score.created_at)}</td>
-                </tr>
-              ))}
+              {highscores.map(
+                (score, index) =>
+                  index < 10 && (
+                    <tr key={index}>
+                      <td className="name-col">
+                        {index + 1} {score.user_name}
+                      </td>
+                      <td className="total-col">{score.total_points}</td>
+                      <td className="date-col">{formatDate(score.created_at)}</td>
+                    </tr>
+                  )
+              )}
             </tbody>
           </table>
         ) : (

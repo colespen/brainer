@@ -35,11 +35,6 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <BrowserRouter>
-        <Route path="/" element={<GameMain />} />
-        <Route path="game" element={<GameMain />} />
-        <Route path="highscores" element={<Highscores />} />
-      </BrowserRouter> */}
       <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
