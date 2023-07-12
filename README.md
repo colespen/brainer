@@ -4,41 +4,61 @@
 
 #### . . .and also just for fun
 
-
 - React + TypeScript scaffolded with Vite
 - Redux
 - Jest
-- React Testing Library 
+- React Testing Library
 
 ### _COMING SOON_
 
-
 ## In client:
-### run locally:
-`npm install`
 
-`npm run dev`
+### run locally:
+
+```bash
+npm install
+
+npm run dev
+```
 
 ### eslint:
-`npm run lint`
+
+```bash
+npm run lint
+```
 
 ### tests:
-`npm run test`
+
+```bash
+npm run test
+```
 
 ### build for production:
-`npm run build`
+
+```bash
+npm run build
+```
 
 ## In server:
-### run locally:
-`npm install`
 
-`npm run dev`
+### run locally:
+
+```bash
+npm install
+
+npm run dev
+```
 
 ### tests:
-`npm run test`
+
+```bash
+npm run test
+```
 
 ### build for production:
-`npm run build`
 
+```bash
+npm run build
+```
 
 ![main board gameplay sample](/client/docs/board1.png)
