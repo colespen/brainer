@@ -41,4 +41,4 @@
 `npm run build`
 
 
-![main board gameplay sample](/docs/board1.png)
+![main board gameplay sample](/client/docs/board1.png)
