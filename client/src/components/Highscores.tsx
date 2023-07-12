@@ -30,6 +30,7 @@ const Highscores = () => {
             </thead>
             <tbody>
               {highscores.map((score, index) => (
+                index < 10 &&
                 <tr key={index}>
                   <td>
                     {index + 1} {score.user_name}

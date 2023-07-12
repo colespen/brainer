@@ -7,6 +7,7 @@ export const postGameResults = async (
 ) => {
   if (!userName || !totalPoints) return;
   try {
+    console.log("totalPoints:", totalPoints);
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/api/gameresults`,
       {
@@ -22,6 +23,7 @@ export const postGameResults = async (
     );
 
     if (response.status === 201) {
+      console.log("POSTED GAME RESULTS");
       return response.json();
     } else {
       throw new Error("Error creating highscore");

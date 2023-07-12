@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+  width: 90%;
 }
 
 .highscores-container {
@@ -10,10 +11,16 @@
   align-items: center;
   flex-direction: column;
   height: 100%;
+  width: 100%;
+}
+
+.highscores-container > h1 {
+  font-size: 5.2em;
 }
 
 .highscores-table {
-  font-size: 30px;
+  font-size: 3rem;
+  width: 100%;
 }
 
 .game-link {

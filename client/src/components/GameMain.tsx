@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useWinMessage } from "../hooks/useWinMessage";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,9 +24,6 @@ import {
   roundResultAdd,
 } from "../actionHelpers.ts/gameBoardActions";
 
-import GameBoard from "./GameBoard";
-import "./styles.css";
-import "./NewGameBtn.css";
 import { postGameResults } from "../services/postGameResults";
 import { handleNewGame } from "../handlers/handleNewGame";
 import {
@@ -35,7 +32,10 @@ import {
   listenForEnter,
   nameInputFocus,
 } from "../handlers/eventHandlers";
+import GameBoard from "./GameBoard";
 import DashboardTop from "./DashboardTop";
+import "./styles.css";
+import "./NewGameBtn.css";
 
 const GameMain = () => {
   const [gridN, setGridN] = useState<number>(5);
@@ -120,6 +120,7 @@ const GameMain = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName, dispatch, isNewRound, isLoss, isWin, isNewGame]);
 
+  // console.log("gameBoard.cardsFound:", gameBoard.cardsFound);
   // update `GameData` (rounds) on win or loss
   useEffect(() => {
     const totalColorCards = cardData.filter((card) => card.isColor);
@@ -145,15 +146,19 @@ const GameMain = () => {
     return () => clearTimeout(newGameTimeout);
   }, [dispatch, isNewGame]);
 
+  console.log("gameBoard.totalFound:", gameBoard.totalFound);
+
   useEffect(() => {
     if (roundCount <= roundAmount) return;
+    const totalFound = (gameBoard.totalFound + gameBoard.cardsFound) * 10;
     try {
-      // TODO FIX TYPE W/ AWAIT 
-      void postGameResults(userName, gameBoard.totalFound);
+      // TODO FIX TYPE W/ AWAIT
+      void postGameResults(userName, totalFound);
     } catch (err) {
       console.log(err);
     }
-  }, [gameBoard.totalFound, userName, roundAmount, roundCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName, roundAmount, roundCount]);
 
   const handleNewGameClick = () => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
@@ -214,7 +219,7 @@ const GameMain = () => {
           <button
             className="dashboard-item highscores"
             onClick={() => dispatch(newGameReset())}
-            disabled={userName !=="" && (roundCount <= roundAmount)}
+            disabled={userName !== "" && roundCount <= roundAmount}
           >
             high scores
           </button>
