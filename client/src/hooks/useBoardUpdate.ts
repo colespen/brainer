@@ -46,8 +46,6 @@ const useBoardUpdate = (
       const cardIdList: number[] = cardData.map((card) => card.id);
 
       if (isLoss || isWin) {
-        console.log("isLoss/isWin")
-        // dispatch(alertUpdated(isLoss ? "you got brained" : winMessage));
         dispatch(alertUpdated(alertWinMessage(isLoss, winCount, roundAmount)));
         dispatch(cardsFaceUp({ flippedCards: cardIdList }));
         dispatch(incrementRound());
@@ -58,7 +56,6 @@ const useBoardUpdate = (
       }
 
       if (isNewGame || (isNewRound && roundCount <= roundAmount)) {
-        console.log("isNewGame/isNewRound")
         !isNewGame &&
           dispatch(alertUpdated(alertRoundUpdate(roundData, gameBoard)));
 
@@ -78,7 +75,6 @@ const useBoardUpdate = (
           clearTimeout(newRoundTimeout);
         };
       } else if (roundCount <= roundAmount) {
-        console.log("roundCount <= roundAmount")
         // Round Starts: Reveal Cards
         const faceUpDelay = setTimeout(() => {
           dispatch(cardsFaceUp({ flippedCards: cardIdList }));
@@ -93,7 +89,6 @@ const useBoardUpdate = (
           clearTimeout(faceUpDelay);
         };
       } else {
-        console.log("else")
         dispatch(gameStartFaceDown());
         dispatch(alertUpdated(alertEndUpdate(gameBoard)));
       }
