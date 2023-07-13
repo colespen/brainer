@@ -33,6 +33,7 @@ const Highscores = () => {
           <table className="highscores-table" >
             <thead>
               <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Total</th>
                 <th>Date</th>
@@ -43,8 +44,9 @@ const Highscores = () => {
                 (score, index) =>
                   index < 10 && (
                     <tr key={index}>
+                      <th scope="row" className="standing-col">{index +1}</th>
                       <td className="name-col">
-                        {index + 1} {score.user_name}
+                        {score.user_name}
                       </td>
                       <td className="total-col">{score.total_points}</td>
                       <td className="date-col">{formatDate(score.created_at)}</td>

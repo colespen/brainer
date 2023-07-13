@@ -17,6 +17,7 @@
 }
 
 .highscores-container > h1 {
+  color: #f7f7ff;
   font-size: 5.2em;
 }
 
@@ -25,19 +26,35 @@
   width: 100%;
 }
 
+.highscores-table thead {
+  color: #f50090;
+}
+.highscores-table th {
+  text-align: left;
+}
+
+.highscores-table tbody {
+  color: #00e9ff;
+}
+
+.standing-col {
+  text-align: left;
+  width: 10%;
+}
+
 .name-col {
   text-align: left;
-  width: 40;
+  width: 35%;
 }
 
 .total-col {
-  /* text-align: left; */
-  width: 25%;
+  text-align: left;
+  width: 22%;
 }
 
 .date-col {
-  /* text-align: left; */
-  width: 35%;
+  text-align: left;
+  width: 30%;
 }
 
 .game-link {
