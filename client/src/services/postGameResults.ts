@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-// convert to useCallback
 
 export const postGameResults = async (
   userName: string,

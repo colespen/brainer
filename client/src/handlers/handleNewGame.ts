@@ -7,8 +7,14 @@ export const handleNewGame = (
   resetCB: () => AnyAction,
   newGameCB: (isNewGame: boolean) => AnyAction
 ) => {
-  if (!gameBoard.userName || gameBoard.isRevealed || gameBoard.isLoss || gameBoard.isWin) return;
-  console.log("NEW GAME")
+  if (
+    !gameBoard.userName ||
+    gameBoard.isRevealed ||
+    gameBoard.isLoss ||
+    gameBoard.isWin
+  ) {
+    return;
+  }
   dispatch(resetCB());
   dispatch(newGameCB(true));
 };

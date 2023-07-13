@@ -11,6 +11,7 @@ export interface RoundData {
 }
 
 export interface GameBoardData {
+  gridN: number;
   isNewRound: boolean;
   isRevealed: boolean;
   isWin: boolean;

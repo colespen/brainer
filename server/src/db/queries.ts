@@ -6,7 +6,7 @@ export async function getHighscores() {
     const highscores = await client.query(`
         SELECT user_name, total_points, created_at
         FROM game
-        ORDER BY total_points ASC
+        ORDER BY total_points DESC
       `);
     client.release();
     return highscores.rows;

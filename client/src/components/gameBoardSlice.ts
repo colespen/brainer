@@ -4,6 +4,7 @@ import { RootState } from "../store";
 
 const initialState: GameBoardState = {
   gameBoard: {
+    gridN: 4,
     flippedCards: [],
     cardsFound: 0,
     totalFound: 0,
@@ -14,7 +15,7 @@ const initialState: GameBoardState = {
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 2, // TODO: don't hardcode, shouwld be in settings
+    roundAmount: 5, // TODO: don't hardcode, shouwld be in settings
     roundCount: 1,
     winCount: 0,
   },
@@ -111,7 +112,11 @@ const gameBoardSlice = createSlice({
     userNameSet: (state, action: PayloadAction<string>) => {
       const userName = action.payload;
       state.gameBoard.userName = userName;
-    }
+    },
+    gridNSet: (state, action: PayloadAction<number>) => {
+      const gridN = action.payload;
+      state.gameBoard.gridN = gridN;
+    },
   },
 });
 
@@ -130,7 +135,8 @@ export const {
   newGameReset,
   incrementRound,
   newGameSet,
-  userNameSet
+  userNameSet,
+  gridNSet,
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;

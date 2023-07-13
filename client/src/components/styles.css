@@ -1,8 +1,18 @@
+.gameboard-main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d6ecff;
+}
+
 .game-board {
   height: fit-content;
   width: fit-content;
   display: grid;
-  grid-gap: 6px; /* Gap between cards */
+  grid-gap: 6px;
+  z-index: 10;
 }
 
 .board-card {
@@ -10,13 +20,9 @@
   align-items: center;
   justify-content: center;
   border: 2px solid #585aa9;
-  /* border: 2px solid #6769c4; */
-  /* border: 2px solid #32a1d6; */
 }
 
 .game-dashboard-top {
-  /* display: flex;
-  justify-content: space-between; */
   position: fixed;
   left: 0%;
   top: 5%;
@@ -106,9 +112,18 @@
   background-color: #000128;
 }
 
-input[type="range"] {
-  background-size: 37.5% 100%;
+.grid-slider {
   position: absolute;
   top: 2em;
-  right: 2em;
+  right: 1.5em;
+}
+.grid-slider label {
+  position: absolute;
+  top: -0.1em;
+  right: 8.75em;
+  color: #d1e6ff;
+}
+
+input[type="range"] {
+  background-size: 37.5% 100%;
 }

@@ -1,7 +1,7 @@
 import { GameBoardData } from "../datatypes/gameDatatypes";
 import { RoundDataState } from "../components/roundDataSlice";
 
-export const alertRoundUpdate = (
+const alertRoundUpdate = (
   roundData: RoundDataState[],
   gameBoard: GameBoardData
 ) => {
@@ -15,11 +15,33 @@ export const alertRoundUpdate = (
   }
 };
 
-export const alertEndUpdate = (gameBoard: GameBoardData) => {
+function alertWinMessage(
+  isLoss: boolean,
+  winCount: number,
+  roundAmount: number
+) {
+  let message = "";
+  if (isLoss) {
+    message = "you got brained";
+  } else {
+    if (winCount === 1) message = "No Brainer";
+    else if (winCount === 2) message = "Wow.";
+    else if (winCount === roundAmount - 1) message = "Yup :)))";
+    else if (winCount === roundAmount) message = "Perfecto!";
+    else if (winCount % 2 === 0) {
+      message = "Solid.";
+    } else {
+      message = "Correct";
+    }
+  }
+  return message;
+}
+
+const alertEndUpdate = (gameBoard: GameBoardData) => {
   return gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over";
 };
 
-export const roundResultAdd = (gameBoard: GameBoardData) => {
+const roundResultAdd = (gameBoard: GameBoardData) => {
   return {
     roundNum: gameBoard.roundCount,
     points: gameBoard.cardsFound * 10,
@@ -27,3 +49,4 @@ export const roundResultAdd = (gameBoard: GameBoardData) => {
   };
 };
 
+export { alertRoundUpdate, alertEndUpdate, roundResultAdd, alertWinMessage };
