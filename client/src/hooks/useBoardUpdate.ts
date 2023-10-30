@@ -39,7 +39,7 @@ const useBoardUpdate = (
     isNewRound,
     isNewGame
   );
-  return (
+
     // handle board reset on win/loss and new rounds
     useEffect(() => {
       if (!userName) return;
@@ -95,7 +95,7 @@ const useBoardUpdate = (
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userName, dispatch, isNewRound, isLoss, isWin, isNewGame])
-  );
+  
 };
 
 export { useBoardUpdate };
