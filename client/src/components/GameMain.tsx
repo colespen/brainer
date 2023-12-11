@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import "./styles.css";
+import "./NewGameBtn.css";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useBoardUpdate } from "../hooks/useBoardUpdate";
-import { winAdded, lossAdded, selectedRoundState } from "./roundDataSlice";
-import {
-  selectedGameState,
-  alertUpdated,
-  winSet,
-  newGameSet,
-  userNameSet,
-} from "./gameBoardSlice";
-import { roundResultAdd } from "../actionHelpers.ts/gameBoardActions";
-import { postGameResults } from "../services/postGameResults";
+import { selectedRoundState } from "./roundDataSlice";
+import { selectedGameState, userNameSet } from "./gameBoardSlice";
+
+import useUpdateOnWinOrLoss from "../hooks/useUpdateOnWinOrLoss";
+import useNewGameDelayAlert from "../hooks/useNewGameDelayAlert";
+import usePostGameResult from "../hooks/usePostGameResult";
+
 import {
   handleNameClick,
   listenForEnter,
@@ -21,87 +20,37 @@ import {
 import Settings from "./Settings";
 import GameBoard from "./GameBoard";
 import DashboardTop from "./DashboardTop";
-import DashboardBottom from "./DashboardBottom";
-
-import "./styles.css";
-import "./NewGameBtn.css";
+import DashboardSide from "./DashboardSide";
 
 const GameMain = () => {
-  // const [gridN, setGridN] = useState<number>(5);
-  const [userNameChange, setUserNameChange] = useState<string>("");
+  const [userNameState, setUserNameState] = useState<string>("");
   const dispatch = useDispatch();
   const { roundData } = useSelector(selectedRoundState);
   const { gameBoard } = useSelector(selectedGameState);
-  const {
-    gridN,
-    isNewGame,
-    isNewRound,
-    isLoss,
-    isWin,
-    roundCount,
-    roundAmount,
-    userName,
-  } = gameBoard;
-  // console.log(gameBoard, roundData);
-  // TODO: roundData stats and highscores
-  // SETTINGS temp harcode
+  const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
+
+  // TODO: roundData stats
   const { cardData } = useGenerateCardData(gridN, isNewRound, isNewGame);
 
   useBoardUpdate(gameBoard, roundData);
-
-  // update `GameData` (rounds) on win or loss
-  useEffect(() => {
-    const totalColorCards = cardData.filter((card) => card.isColor);
-    if (
-      cardData.length !== 0 &&
-      gameBoard.cardsFound === totalColorCards.length // .length
-    ) {
-      dispatch(winSet(true)); //    ***WIN
-      dispatch(winAdded(roundResultAdd(gameBoard)));
-    }
-    if (gameBoard.isLoss) {
-      dispatch(lossAdded(roundResultAdd(gameBoard)));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, gameBoard.cardsFound, gameBoard.isLoss]);
-
-  // new game boolean flip and alert
-  useEffect(() => {
-    if (!isNewGame) return;
-    dispatch(alertUpdated("Cool let's go again . . ."));
-    const newGameTimeout = setTimeout(() => {
-      dispatch(newGameSet(false));
-    }, 1000);
-    return () => clearTimeout(newGameTimeout);
-  }, [dispatch, isNewGame]);
-
-  // post game results
-  useEffect(() => {
-    if (roundCount <= roundAmount) return;
-    const totalFound = (gameBoard.totalFound + gameBoard.cardsFound) * 10;
-    try {
-      // TODO FIX TYPE W/ AWAIT
-      void postGameResults(userName, totalFound);
-    } catch (err) {
-      console.log(err);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName, roundAmount, roundCount]);
+  useUpdateOnWinOrLoss();
+  useNewGameDelayAlert();
+  usePostGameResult();
 
   return (
     <div className="gameboard-main">
-      <Settings />
+      <Settings resetUserName={() => setUserNameState("")} />
       <DashboardTop
         gameBoard={gameBoard}
         cardData={cardData}
         nameInputFocus={nameInputFocus}
-        userNameChange={userNameChange}
+        userNameChange={userNameState}
         listenForEnter={(e) =>
-          listenForEnter(e, userNameChange, dispatch, userNameSet)
+          listenForEnter(e, userNameState, dispatch, userNameSet)
         }
-        setUserNameChange={setUserNameChange}
+        setUserNameChange={setUserNameState}
         handleNameClick={() =>
-          handleNameClick(userNameChange, dispatch, userNameSet)
+          handleNameClick(userNameState, dispatch, userNameSet)
         }
       />
       <GameBoard
@@ -112,7 +61,7 @@ const GameMain = () => {
         isWin={isWin}
         isNewRound={isNewRound}
       />
-      <DashboardBottom gameBoard={gameBoard} />
+      <DashboardSide gameBoard={gameBoard} />
     </div>
   );
 };

@@ -1,9 +1,5 @@
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
-const getInputBackgroundSize = (gridN: number) => {
-  return { backgroundSize: `${(gridN * 100) / 8}% 100%` };
-};
-
 const listenForEnter = (
   e: React.KeyboardEvent<HTMLInputElement>,
   userNameChange: string,
@@ -31,9 +27,4 @@ const nameInputFocus = (inputElement: HTMLInputElement) => {
   }
 };
 
-export {
-  getInputBackgroundSize,
-  listenForEnter,
-  handleNameClick,
-  nameInputFocus,
-};
+export { listenForEnter, handleNameClick, nameInputFocus };

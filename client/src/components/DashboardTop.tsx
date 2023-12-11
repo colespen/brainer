@@ -28,7 +28,7 @@ const DashboardTop = ({
             onKeyDown={listenForEnter}
             onChange={(e) => handleSetUserNameChange(e.target.value)}
           />
-          <button className="dashboard-item name-btn" onClick={handleNameClick}>
+          <button className="btn dashboard-item name-btn" onClick={handleNameClick}>
             GO
           </button>
         </div>

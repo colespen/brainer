@@ -27,7 +27,7 @@ const GameCard = ({
   return (
     <button
       className={
-        "board-card" +
+        "btn board-card" +
         (isFlipped ? " flipped" : "") +
         (notFound ? " not-found" : "")
       }

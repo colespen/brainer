@@ -1,5 +1,5 @@
 import express from "express";
-import routes from "./api/routes";
+import router from "./api/routes";
 import { createTables } from "./db/createTables";
 import cors from "cors";
 
@@ -23,13 +23,14 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // Routes
-app.use("/api", routes);
+app.use("/api", router);
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 
-  createTables().catch((error) => {
-    console.error("Error:", error);
-  });
+  // uncomment below to reset for dev
+  // createTables().catch((error) => {
+  //   console.error("Error:", error);
+  // });
 });

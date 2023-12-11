@@ -6,8 +6,8 @@ import store from "./store.ts";
 import {
   createBrowserRouter,
   RouterProvider,
-  BrowserRouter,
-  Route,
+  // BrowserRouter,
+  // Route,
 } from "react-router-dom";
 import "./index.css";
 import ErrorPage from "./errorPage.tsx";

@@ -2,7 +2,7 @@
   font-family: videophreak;
   src: url(./assets/fonts/videophreak.ttf);
 }
-.highscores-container{
+.highscores-container {
   font-family: videophreak;
 }
 
@@ -58,7 +58,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+.btn {
   box-sizing: border-box;
   height: 107px;
   width: 107px;
@@ -71,7 +71,7 @@ button {
   cursor: pointer;
   transition: ease-out border-color 100ms;
 }
-button:hover {
+.btn:hover {
   border-color: #9294ff;
 }
 /* button:focus,

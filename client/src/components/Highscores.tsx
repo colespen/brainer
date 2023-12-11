@@ -56,11 +56,11 @@ const Highscores = () => {
             </tbody>
           </table>
         ) : (
-          <p></p>
+          <p>NO GAMES RECORDED</p>
         )}
       </div>
       <Link to="../game">
-        <button className="game-link" onClick={handleNewGameClick}>
+        <button className="btn game-link new-game true" onClick={handleNewGameClick}>
           play again
         </button>
       </Link>

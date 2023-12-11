@@ -4,7 +4,7 @@ import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
 import { newGameReset, newGameSet } from "./gameBoardSlice";
 
-const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
+const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
   const {
     roundCount,
     roundAmount,
@@ -12,6 +12,8 @@ const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
     totalFound,
     cardsFound,
     userName,
+    isLoss,
+    isWin,
   } = gameBoard;
   const dispatch = useDispatch();
 
@@ -19,12 +21,20 @@ const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
   };
 
+  const endOfGame = roundCount > roundAmount;
+
   return (
-    <div className="game-dashboard-bottom">
+    <div
+      // className="game-dashboard-side"
+      className={
+        "game-dashboard-side" +
+        (!userName || endOfGame || isLoss || isWin ? " solid" : "")
+      }
+    >
       <span className="dashboard-item">
         <p>round:</p>
         <h2>
-          {roundCount > roundAmount ? roundAmount : roundCount} / {roundAmount}
+          {endOfGame ? roundAmount : roundCount} / {roundAmount}
         </h2>
       </span>
       <span className="dashboard-item won">
@@ -39,7 +49,7 @@ const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
       </span>
       <Link to="../highscores">
         <button
-          className="dashboard-item highscores"
+          className="btn dashboard-item highscores"
           onClick={() => dispatch(newGameReset())}
           disabled={userName !== "" && roundCount <= roundAmount}
         >
@@ -47,7 +57,7 @@ const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
         </button>
       </Link>
       <button
-        className={"new-game " + (roundCount > roundAmount ? "true" : "")}
+        className={"btn new-game" + (endOfGame ? " true" : "")}
         onClick={handleNewGameClick}
       >
         new game
@@ -56,4 +66,4 @@ const DashboardBottom = ({ gameBoard }: { gameBoard: GameBoardData }) => {
   );
 };
 
-export default DashboardBottom;
+export default DashboardSide;

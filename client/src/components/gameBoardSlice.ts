@@ -8,14 +8,14 @@ const initialState: GameBoardState = {
     flippedCards: [],
     cardsFound: 0,
     totalFound: 0,
-    isNewGame: false,
+    isNewGame: true,
     isNewRound: true,
     isRevealed: false,
     userName: "",
     alert: null,
     isWin: false,
     isLoss: false,
-    roundAmount: 5, // TODO: don't hardcode, shouwld be in settings
+    roundAmount: 5,
     roundCount: 1,
     winCount: 0,
   },
@@ -112,10 +112,21 @@ const gameBoardSlice = createSlice({
     userNameSet: (state, action: PayloadAction<string>) => {
       const userName = action.payload;
       state.gameBoard.userName = userName;
+      state.gameBoard.roundCount = 1;
     },
     gridNSet: (state, action: PayloadAction<number>) => {
       const gridN = action.payload;
       state.gameBoard.gridN = gridN;
+    },
+    roundsSet: (state, action: PayloadAction<number>) => {
+      const roundAmount = action.payload;
+      state.gameBoard.roundCount = Infinity;
+      state.gameBoard.roundAmount = roundAmount;
+    },
+    hardReset: (state) => {
+      state.gameBoard = {
+        ...initialState.gameBoard,
+      };
     },
   },
 });
@@ -137,6 +148,8 @@ export const {
   newGameSet,
   userNameSet,
   gridNSet,
+  roundsSet,
+  hardReset,
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;
