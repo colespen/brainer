@@ -21,7 +21,7 @@ router.post("/gameresults", async (req: Request, res: Response) => {
   if (!user_name || !total_points) {
     res
       .status(400)
-      .json({ message: "User name and total points are required" });
+      .json({ message: "user_name and total points are required" });
     return;
   }
 
