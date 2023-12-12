@@ -7,7 +7,7 @@ const app = express();
 const port = 8001;
 const corsOptions = {
   // origin: "",
-  origin: process.env.HOST_DEV, // for dev
+  origin: process.env.HOST_CLIENT, // for dev
   optionsSuccessStatus: 200,
 };
 ////   (cors w no config accepts all origins/headers)

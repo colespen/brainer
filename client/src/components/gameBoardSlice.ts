@@ -4,7 +4,7 @@ import { RootState } from "../store";
 
 const initialState: GameBoardState = {
   gameBoard: {
-    gridN: 4,
+    gridN: 5,
     flippedCards: [],
     cardsFound: 0,
     totalFound: 0,
