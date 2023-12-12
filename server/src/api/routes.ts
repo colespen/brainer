@@ -17,6 +17,7 @@ router.get("/highscores", async (req: Request, res: Response) => {
 router.post("/gameresults", async (req: Request, res: Response) => {
   const { user_name, total_points } = req.body;
   console.log("req.body:", req.body);
+
   if (!user_name || !total_points) {
     res
       .status(400)
