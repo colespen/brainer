@@ -1,12 +1,12 @@
-DROP TABLE IF EXISTS game;
-
-CREATE TABLE game(
+CREATE TABLE IF NOT EXISTS game(
   game_id SERIAL PRIMARY KEY,
   user_name VARCHAR(255) NOT NULL,
   total_points INTEGER,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- use below for dev
+-- DROP TABLE IF EXISTS game;
 -- INSERT INTO
 --   game (user_name, total_points)
 -- VALUES

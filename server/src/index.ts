@@ -7,7 +7,7 @@ const app = express();
 const port = 8001;
 const corsOptions = {
   // origin: "",
-  origin: "http://localhost:5173", // for dev
+  origin: process.env.HOST_DEV, // for dev
   optionsSuccessStatus: 200,
 };
 ////   (cors w no config accepts all origins/headers)
@@ -26,11 +26,13 @@ app.use(express.json());
 app.use("/api", router);
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
 
-  // uncomment below to reset for dev
-  // createTables().catch((error) => {
-  //   console.error("Error:", error);
-  // });
+  try {
+    await createTables();
+    console.log("Tables created or verified successfully");
+  } catch (error) {
+    console.error("Error setting up database tables:", error);
+  }
 });

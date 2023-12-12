@@ -7,11 +7,8 @@ export async function createTables() {
     const seedQuery = fs.readFileSync(`${__dirname}/seed.sql`, {
       encoding: "utf8",
     });
-    pool.query(seedQuery, (err, res) => {
-      console.log(err, res);
-      console.log("Seeding Completed!");
-      // pool.end();
-    });
+    const res = await client.query(seedQuery);
+    console.log("Table Created: \n", res);
   } catch (error) {
     console.error("Error creating / seeding tables:", error);
   } finally {
