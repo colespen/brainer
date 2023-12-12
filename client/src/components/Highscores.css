@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  min-height: 100%;
   width: 85%;
 }
 
@@ -11,13 +11,13 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   transition: opacity 100ms ease;
 }
 
 .highscores-container > h1 {
-  color: #f7f7ff;
+  color: #fff300;
   font-size: 5.2em;
 }
 

@@ -28,8 +28,6 @@ function useGenerateCardData(
       };
     });
   };
-  // console.log("paintMultiplier: ", paintMultiplier);
-  // console.log("revealDelay: ", revealDelay);
 
   useEffect(() => {
     if (!isNewRound) return;

@@ -17,14 +17,16 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
 
   return (
     <div className="settings-container">
-      {<button
-        className="settings-btn"
-        onClick={() => {
-          setShowSettings(!showSettings);
-        }}
-      >
-        <img height="22px" alt="reset button" src="/settings-icon.png" />
-      </button>}
+      {
+        <button
+          className={"settings-btn cog" + (showSettings ? " opaque" : "")}
+          onClick={() => {
+            setShowSettings(!showSettings);
+          }}
+        >
+          <img height="22px" alt="reset button" src="/settings-icon.png" />
+        </button>
+      }
       {showSettings && (
         <>
           <div className="slider rounds-slider">

@@ -69,7 +69,7 @@
   display: flex;
   grid-gap: 6px;
   position: absolute;
-  top: 2rem;
+  top: 1.5rem;
   left: 2rem;
   flex-direction: column;
 }
@@ -106,6 +106,12 @@
 }
 .highscores:hover {
   background-color: #000128;
+}
+.highscores.end {
+  border-color: #9294ff;
+}
+.highscores.end:hover {
+  border-color: #585aa9;
 }
 .new-game {
   border: 2px solid #585aa9;
@@ -149,8 +155,12 @@ input[type="range"] {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-.settings-butn:active {
+.settings-btn:active {
   background-color: #242aff;
+}
+
+.settings-btn.cog.opaque {
+  opacity: 0.45;
 }
 
 .game-reset:hover::after {

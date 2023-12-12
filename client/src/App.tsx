@@ -1,11 +1,7 @@
 import GameMain from "./components/GameMain";
 
 function App() {
-  return (
-    <>
-      <GameMain />
-    </>
-  );
+  return <GameMain />;
 }
 
 export default App;
