@@ -1,4 +1,4 @@
-import { pool } from "./createTables";
+import { pool } from "./connectPool";
 
 export async function getHighscores() {
   try {
@@ -24,7 +24,6 @@ export async function createHighscore(user_name: string, total_points: number) {
         VALUES ($1, $2)
       `;
     await client.query(query, [user_name, total_points]);
-
     client.release();
   } catch (error) {
     console.error("Error creating highscore:", error);

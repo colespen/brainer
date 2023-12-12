@@ -59,11 +59,11 @@ const Highscores = () => {
           <p>NO GAMES RECORDED</p>
         )}
       </div>
-      {/* <Link to="../game">
+      <Link to="../game">
         <button className="btn game-link new-game true" onClick={handleNewGameClick}>
           play again
         </button>
-      </Link> */}
+      </Link>
     </div>
   );
 };

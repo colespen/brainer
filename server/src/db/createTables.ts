@@ -1,16 +1,5 @@
-import { Pool } from "pg";
 import fs from "fs";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-export const pool = new Pool({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-});
+import { pool } from "./connectPool";
 
 export async function createTables() {
   const client = await pool.connect();
