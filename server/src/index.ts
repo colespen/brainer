@@ -4,7 +4,7 @@ import { createTables } from "./db/createTables";
 import cors from "cors";
 
 const app = express();
-const port = 8001;
+const port = process.env.PORT || 8001;
 const corsOptions = {
   // origin: "",
   origin: process.env.HOST_CLIENT, // for dev
