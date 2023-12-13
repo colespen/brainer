@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-// import App from "./App.tsx";
 import { Provider } from "react-redux";
 import store from "./store.ts";
 import {
@@ -21,12 +20,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/game", // TODO: landing page
+    path: "/game", 
     element: <GameMain />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/highscores", // TODO: landing page
+    path: "/highscores", 
     element: <Highscores />,
     errorElement: <ErrorPage />,
   },

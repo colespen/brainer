@@ -6,8 +6,7 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT || 8001;
 const corsOptions = {
-  // origin: "",
-  origin: process.env.HOST_CLIENT, // for dev
+  origin: process.env.HOST_CLIENT,
   optionsSuccessStatus: 200,
 };
 ////   (cors w no config accepts all origins/headers)

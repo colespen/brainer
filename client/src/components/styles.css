@@ -148,7 +148,7 @@ input[type="range"] {
   position: relative;
   height: 32px;
   width: 32px;
-  padding: 5px;
+  padding: 5px 0px 5px 5px;
   background: none;
   border: none;
   border-radius: 50%;
@@ -158,9 +158,12 @@ input[type="range"] {
 .settings-btn:active {
   background-color: #242aff;
 }
-
 .settings-btn.cog.opaque {
   opacity: 0.45;
+}
+.settings-btn.reset {
+  height: 30px;
+  width: 30px;
 }
 
 .game-reset:hover::after {

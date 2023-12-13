@@ -58,13 +58,13 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
             data-tooltip="WARNING: this will reset all data"
           >
             <button
-              className="settings-btn"
+              className="settings-btn reset"
               onClick={() => {
                 dispatch(hardReset());
                 resetUserName();
               }}
             >
-              <img height="22px" alt="reset button" src="/reset-icon.png" />
+              <img height="20px" alt="reset button" src="/reset-icon.png" />
             </button>
           </div>
         </>
