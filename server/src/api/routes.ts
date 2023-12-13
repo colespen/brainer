@@ -6,8 +6,6 @@ const router = express.Router();
 router.get("/highscores", async (req: Request, res: Response) => {
   try {
     const highscores = await getHighscores();
-    // console.log("HIGHSCORES:", highscores)
-    // res.send("GET HIGHSCORES ENDPOINT")
     res.json(highscores);
   } catch (error) {
     console.error("Error fetching highscores:", error);

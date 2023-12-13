@@ -1,9 +1,9 @@
 @font-face {
   font-family: videophreak;
-  src: url(./assets/fonts/videophreak.ttf);
+  src: url(./assets/fonts/videophreak.ttf) format("truetype");
 }
 .highscores-container {
-  font-family: videophreak;
+  font-family: videophreak, system-ui, sans-serif;
 }
 
 :root {
