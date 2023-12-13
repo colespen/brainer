@@ -11,7 +11,7 @@ export const useFetchHighscores = () => {
   const [highscores, setHighscores] = useState<Highscore[]>([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/api/highscores`)
+    fetch(`${import.meta.env.VITE_PROD_SERVER_URL}/api/highscores`)
       .then((response) => response.json())
       .then((data: Highscore[]) => {
         setHighscores(data);
@@ -19,8 +19,6 @@ export const useFetchHighscores = () => {
       .catch((error) => {
         console.error("Error fetching highscores:", error);
       });
-
-    // try catch async version of this has typescript linting errors ...?
   }, []);
 
   return { highscores };

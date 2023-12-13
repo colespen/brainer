@@ -8,7 +8,7 @@ export const postGameResults = async (
   try {
     console.log("totalPoints:", totalPoints);
     const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/api/gameresults`,
+      `${import.meta.env.VITE_PROD_SERVER_URL}/api/gameresults`,
       {
         method: "POST",
         headers: {
