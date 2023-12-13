@@ -7,7 +7,7 @@
     "prod": "node build/index.js",
     "start": "npm run build && node build/index.js",
     "dev": "npx nodemon",
-    "build": "rm -rf ./build && tsc && cp src/db/seed.sql build/db/seed.sql",
+    "build": "npm install && rm -rf ./build && tsc && cp src/db/seed.sql build/db/seed.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
