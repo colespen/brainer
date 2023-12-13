@@ -9,7 +9,8 @@
 - Jest
 - React Testing Library
 
-### _COMING SOON_
+### _NOW LIVE_
+### https://brainer-client.vercel.app/
 
 ## In client:
 

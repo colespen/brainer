@@ -1,14 +1,16 @@
+import "./Highscores.css";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchHighscores } from "../hooks/useFetchHighscores";
 import { formatDate } from "../lib/formatDate";
 import { handleNewGame } from "../handlers/handleNewGame";
-import { useDispatch, useSelector } from "react-redux";
 import { newGameReset, newGameSet, selectedGameState } from "./gameBoardSlice";
-import { Link } from "react-router-dom";
-import "./Highscores.css";
-import { useEffect, useState } from "react";
 
 const Highscores = () => {
-  const { highscores } = useFetchHighscores();
+  const { highscores = [], loading, error } = useFetchHighscores();
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
   const [opacity, setOpacity] = useState({ opacity: 0 });
@@ -28,18 +30,19 @@ const Highscores = () => {
     <div className="highscores-root" style={opacity}>
       <div className="highscores-container">
         <h1>Highscores</h1>
-        {highscores.length > 0 ? (
-          <table className="highscores-table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Total</th>
-                <th id="date-th">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {highscores
+
+        <table className="highscores-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Total</th>
+              <th id="date-th">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!loading && !error ? (
+              highscores
                 .map((score, index) => (
                   <tr key={index}>
                     <th scope="row" className="standing-col">
@@ -50,12 +53,36 @@ const Highscores = () => {
                     <td className="date-col">{formatDate(score.created_at)}</td>
                   </tr>
                 ))
-                .slice(0, 100)}
-            </tbody>
-          </table>
-        ) : (
-          <p>NO GAMES RECORDED</p>
-        )}
+                .slice(0, 100)
+            ) : (
+              <>
+                <tr>
+                  <th scope="row" className="standing-col"></th>
+                  <td className="name-col"></td>
+                  <td className="total-col"></td>
+                  <td className="date-col"></td>
+                </tr>
+              </>
+            )}
+          </tbody>
+        </table>
+
+        <div className="loading-container">
+          {loading ? (
+            <Skeleton
+              style={{ marginTop: 28 }}
+              count={10}
+              width={1020}
+              height={50}
+              baseColor="#202020"
+              highlightColor="#444"
+            />
+          ) : error ? (
+            <p className="error">ERROR LOADING RECORDS: {error.message}</p>
+          ) : highscores.length === 0 ? (
+            <p>NO GAME RECORDS FOUND</p>
+          ) : null}
+        </div>
       </div>
       <Link to="../game" className="game-link">
         <button className="btn new-game true" onClick={handleNewGameClick}>

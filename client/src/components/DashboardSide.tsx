@@ -22,6 +22,7 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
   };
 
   const endOfGame = roundCount > roundAmount;
+  const disabledHighscore = userName !== "" && roundCount <= roundAmount;
 
   return (
     <div
@@ -48,9 +49,12 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
       </span>
       <Link to="../highscores">
         <button
-          className={"btn dashboard-item highscores" + (endOfGame ? " end" : "")}
+          className={
+            "btn dashboard-item highscores" +
+            (endOfGame ? " end" : disabledHighscore ? " disabled" : "")
+          }
           onClick={() => dispatch(newGameReset())}
-          disabled={userName !== "" && roundCount <= roundAmount}
+          disabled={disabledHighscore}
         >
           high scores
         </button>

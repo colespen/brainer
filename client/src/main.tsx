@@ -1,3 +1,4 @@
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -7,25 +8,31 @@ import {
   RouterProvider,
   // BrowserRouter,
   // Route,
+  redirect,
 } from "react-router-dom";
-import "./index.css";
 import ErrorPage from "./errorPage.tsx";
 import GameMain from "./components/GameMain.tsx";
 import Highscores from "./components/Highscores.tsx";
 
 const router = createBrowserRouter([
+  // {
+  //   path: "/", // TODO: landing page
+  //   element: <GameMain />,
+  //   errorElement: <ErrorPage />,
+  // },
   {
-    path: "/", // TODO: landing page
+    path: "/", // temp redirect
+    element: <React.Fragment />,
+    loader: () => redirect("/game"),
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/game",
     element: <GameMain />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/game", 
-    element: <GameMain />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/highscores", 
+    path: "/highscores",
     element: <Highscores />,
     errorElement: <ErrorPage />,
   },

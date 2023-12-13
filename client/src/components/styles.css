@@ -113,6 +113,13 @@
 .highscores.end:hover {
   border-color: #585aa9;
 }
+.highscores.disabled {
+  user-select: none;
+  cursor: default;
+  border-color: #585aa9;
+  background-color: #1a1a1a;
+}
+
 .new-game {
   border: 2px solid #585aa9;
   bottom: 2em;
