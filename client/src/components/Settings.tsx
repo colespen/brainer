@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   gridNSet,
@@ -5,7 +6,6 @@ import {
   hardReset,
   selectedGameState,
 } from "./gameBoardSlice";
-import { useState } from "react";
 
 const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
   const [showSettings, setShowSettings] = useState(false);
@@ -17,58 +17,65 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
 
   return (
     <div className="settings-container">
-      {
-        <button
-          className={"settings-btn cog" + (showSettings ? " opaque" : "")}
-          onClick={() => {
-            setShowSettings(!showSettings);
-          }}
+      <button
+        className={"settings-btn cog" + (showSettings ? " opaque" : "")}
+        onClick={() => {
+          setShowSettings(!showSettings);
+        }}
+      >
+        <img
+          loading="eager"
+          height="22px"
+          alt="reset button"
+          src="/settings-icon.png"
+        />
+      </button>
+
+      <div className={"settings" + (!showSettings ? " opaque" : "")}>
+        <div className="slider rounds-slider">
+          <label>rounds</label>
+          <input
+            type="range"
+            min={1}
+            max={25}
+            step={1}
+            onChange={(e) => dispatch(roundsSet(Number(e.target.value)))}
+            value={roundAmount}
+            disabled={!!userName && !endOfGame}
+          />
+        </div>
+        <div className="slider grid-slider">
+          <label>grid</label>
+          <input
+            type="range"
+            min={3}
+            max={8}
+            step={1}
+            onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
+            value={gridN}
+            disabled={!!userName && !endOfGame}
+          />
+        </div>
+        <div
+          className="game-reset"
+          data-tooltip="WARNING: this will reset all data"
         >
-          <img height="22px" alt="reset button" src="/settings-icon.png" />
-        </button>
-      }
-      {showSettings && (
-        <>
-          <div className="slider rounds-slider">
-            <label>rounds</label>
-            <input
-              type="range"
-              min={1}
-              max={25}
-              step={1}
-              onChange={(e) => dispatch(roundsSet(Number(e.target.value)))}
-              value={roundAmount}
-              disabled={!!userName && !endOfGame}
-            />
-          </div>
-          <div className="slider grid-slider">
-            <label>grid</label>
-            <input
-              type="range"
-              min={3}
-              max={8}
-              step={1}
-              onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
-              value={gridN}
-              disabled={!!userName && !endOfGame}
-            />
-          </div>
-          <div
-            className="game-reset"
-            data-tooltip="WARNING: this will reset all data"
+          <button
+            className="settings-btn reset"
+            onClick={() => {
+              dispatch(hardReset());
+              resetUserName();
+            }}
           >
-            <button
-              className="settings-btn reset"
-              onClick={() => {
-                dispatch(hardReset());
-                resetUserName();
-              }}
-            >
-              <img height="20px" alt="reset button" src="/reset-icon.png" />
-            </button>
-          </div>
-        </>
-      )}
+            <img
+              loading="eager"
+              height="20px"
+              alt="reset button"
+              src="/reset-icon.png"
+            />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
