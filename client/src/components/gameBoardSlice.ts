@@ -11,6 +11,7 @@ const initialState: GameBoardState = {
     isNewGame: true,
     isNewRound: true,
     isRevealed: false,
+    isGameEnd: false,
     userName: "",
     alert: null,
     isWin: false,
@@ -65,7 +66,7 @@ const gameBoardSlice = createSlice({
       state.gameBoard.isRevealed = true;
       state.gameBoard.flippedCards = flippedCards;
     },
-    alertUpdated: (state, action: PayloadAction<string>) => {
+    alertUpdated: (state, action: PayloadAction<string | null>) => {
       const alert = action.payload;
       state.gameBoard.alert = alert;
     },
@@ -108,6 +109,7 @@ const gameBoardSlice = createSlice({
     newGameSet: (state, action: PayloadAction<boolean>) => {
       const isNewGame = action.payload;
       state.gameBoard.isNewGame = isNewGame;
+      state.gameBoard.isGameEnd = false;
     },
     userNameSet: (state, action: PayloadAction<string>) => {
       const userName = action.payload;
@@ -120,8 +122,11 @@ const gameBoardSlice = createSlice({
     },
     roundsSet: (state, action: PayloadAction<number>) => {
       const roundAmount = action.payload;
-      state.gameBoard.roundCount = Infinity;
+      state.gameBoard.roundCount = 1;
       state.gameBoard.roundAmount = roundAmount;
+    },
+    gameEndSet: (state) => {
+      state.gameBoard.isGameEnd = true;
     },
     hardReset: (state) => {
       state.gameBoard = {
@@ -149,6 +154,7 @@ export const {
   userNameSet,
   gridNSet,
   roundsSet,
+  gameEndSet,
   hardReset,
 } = gameBoardSlice.actions;
 

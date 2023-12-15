@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { GameBoardData } from "../datatypes/gameDatatypes";
 import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
-import { newGameReset, newGameSet } from "./gameBoardSlice";
+import { alertUpdated, newGameReset, newGameSet } from "./gameBoardSlice";
 
 const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
   const {
@@ -11,9 +11,12 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
     winCount,
     totalFound,
     cardsFound,
+    isNewGame,
+    isGameEnd,
     userName,
     isLoss,
     isWin,
+    alert,
   } = gameBoard;
   const dispatch = useDispatch();
 
@@ -21,14 +24,15 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
   };
 
-  const endOfGame = roundCount > roundAmount;
-  const disabledHighscore = userName !== "" && roundCount <= roundAmount;
+  const endOfGame = roundCount > roundAmount && !isNewGame;
+  const disabledHighscore =
+    userName !== "" && alert !== "Game Over" && alert !== "Winner!";
 
   return (
     <div
       className={
         "game-dashboard-side" +
-        (!userName || endOfGame || isLoss || isWin ? " solid" : "")
+        (!userName || isGameEnd || isLoss || isWin ? " solid" : "")
       }
     >
       <span className="dashboard-item">
@@ -51,9 +55,9 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
         <button
           className={
             "btn dashboard-item highscores" +
-            (endOfGame ? " end" : disabledHighscore ? " disabled" : "")
+            (disabledHighscore ? " disabled" : endOfGame ? " end" : "")
           }
-          onClick={() => dispatch(newGameReset())}
+          onClick={() => dispatch(alertUpdated(null))}
           disabled={disabledHighscore}
         >
           high scores

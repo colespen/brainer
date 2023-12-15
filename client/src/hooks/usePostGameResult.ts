@@ -5,12 +5,12 @@ import { selectedGameState } from "../components/gameBoardSlice";
 
 const usePostGameResult = () => {
   const { gameBoard } = useSelector(selectedGameState);
-  const { roundCount, roundAmount, userName, totalFound, cardsFound } =
+  const { roundCount, roundAmount, userName, totalFound, cardsFound, isGameEnd } =
     gameBoard;
 
   // post game results
   useEffect(() => {
-    if (roundCount <= roundAmount) {
+    if (roundCount <= roundAmount || isGameEnd) {
       return;
     }
     const totalFoundCalculated = (totalFound + cardsFound) * 10;

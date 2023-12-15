@@ -1,5 +1,5 @@
 import "./Settings.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   gridNSet,
@@ -9,12 +9,16 @@ import {
 } from "./gameBoardSlice";
 
 const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(true);
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
-  const { gridN, userName, roundCount, roundAmount } = gameBoard;
+  const { gridN, userName, roundAmount, isNewGame, isGameEnd } = gameBoard;
 
-  const endOfGame = roundCount > roundAmount;
+  useEffect(() => {
+    if (!isNewGame) {
+      setShowSettings(false);
+    }
+  }, [isNewGame]);
 
   return (
     <div className="settings-container">
@@ -42,7 +46,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
             step={1}
             onChange={(e) => dispatch(roundsSet(Number(e.target.value)))}
             value={roundAmount}
-            disabled={!!userName && !endOfGame}
+            disabled={!!userName && !isGameEnd}
           />
         </div>
         <div className="slider grid-slider">
@@ -54,7 +58,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
             step={1}
             onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
             value={gridN}
-            disabled={!!userName && !endOfGame}
+            disabled={!!userName && !isGameEnd}
           />
         </div>
         <div

@@ -1,23 +1,14 @@
 import "./Highscores.css";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchHighscores } from "../hooks/useFetchHighscores";
 import { formatDate } from "../lib/formatDate";
-import { handleNewGame } from "../handlers/handleNewGame";
-import { newGameReset, newGameSet, selectedGameState } from "./gameBoardSlice";
 
 const Highscores = () => {
   const { highscores = [], loading, error } = useFetchHighscores();
-  const dispatch = useDispatch();
-  const { gameBoard } = useSelector(selectedGameState);
   const [opacity, setOpacity] = useState({ opacity: 0 });
-
-  const handleNewGameClick = () => {
-    handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
-  };
 
   useEffect(() => {
     const opacityTimer = setTimeout(() => {
@@ -75,7 +66,7 @@ const Highscores = () => {
               width={1020}
               height={50}
               baseColor="#1a1d27"
-              highlightColor="#5061ff"
+              highlightColor="#3549ff"
             />
           ) : error ? (
             <p className="error">ERROR LOADING RECORDS: {error.message}</p>
@@ -85,9 +76,7 @@ const Highscores = () => {
         </div>
       </div>
       <Link to="../game" className="game-link">
-        <button className="btn new-game true" onClick={handleNewGameClick}>
-          play again
-        </button>
+        <button className="btn new-game true">play again</button>
       </Link>
     </div>
   );

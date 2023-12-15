@@ -9,17 +9,22 @@ import {
 const useNewGameDelayAlert = () => {
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
-  const { isNewGame } = gameBoard;
+  const { isNewGame, userName } = gameBoard;
 
   // new game boolean flip and alert
   useEffect(() => {
-    if (!isNewGame) return;
+    if (!isNewGame || (isNewGame && !userName)) {
+      return;
+    }
+
     dispatch(alertUpdated("Cool let's go again . . ."));
+
     const newGameTimeout = setTimeout(() => {
       dispatch(newGameSet(false));
     }, 1000);
+
     return () => clearTimeout(newGameTimeout);
-  }, [dispatch, isNewGame]);
+  }, [dispatch, isNewGame, userName]);
 };
 
 export default useNewGameDelayAlert;

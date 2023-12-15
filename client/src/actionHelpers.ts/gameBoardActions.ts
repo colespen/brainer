@@ -25,7 +25,7 @@ function alertWinMessage(
     message = "you got brained";
   } else {
     if (winCount === 1) message = "No Brainer";
-    else if (winCount === 2) message = "Wow.";
+    else if (winCount === 2) message = "Wow";
     else if (winCount === roundAmount - 1) message = "Yup :)))";
     else if (winCount === roundAmount) message = "Perfecto!";
     else if (winCount % 2 === 0) {

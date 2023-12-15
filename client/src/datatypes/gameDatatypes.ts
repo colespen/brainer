@@ -16,6 +16,7 @@ export interface GameBoardData {
   isRevealed: boolean;
   isWin: boolean;
   isLoss: boolean;
+  isGameEnd: boolean;
   flippedCards: number[];
   cardsFound: number;
   totalFound: number;

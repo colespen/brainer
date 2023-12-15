@@ -7,6 +7,7 @@ import {
   incrementRound,
   newRoundUpdated,
   resultsUpdated,
+  gameEndSet,
 } from "../components/gameBoardSlice";
 import {
   alertWinMessage,
@@ -91,6 +92,8 @@ const useBoardUpdate = (
     } else {
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
+      console.log("GAME END SET");
+      dispatch(gameEndSet());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

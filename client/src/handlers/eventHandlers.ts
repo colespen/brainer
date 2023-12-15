@@ -1,4 +1,5 @@
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import { newGameSet } from "../components/gameBoardSlice";
 
 const listenForEnter = (
   e: React.KeyboardEvent<HTMLInputElement>,
@@ -7,6 +8,7 @@ const listenForEnter = (
   userNameSet: (userName: string) => AnyAction
 ) => {
   if (e.key === "Enter" && userNameChange) {
+    dispatch(newGameSet(false));
     dispatch(userNameSet(userNameChange));
   }
 };
@@ -17,6 +19,7 @@ const handleNameClick = (
   userNameSet: (userName: string) => AnyAction
 ) => {
   if (userNameChange) {
+    dispatch(newGameSet(false));
     dispatch(userNameSet(userNameChange));
   }
 };
