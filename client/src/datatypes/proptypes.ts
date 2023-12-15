@@ -25,7 +25,7 @@ export interface DashboardTopProps {
   gameBoard: GameBoardData;
   cardData: CardData[];
   nameInputFocus: (inputElement: HTMLInputElement) => void;
-  userNameChange: string;
+  userName: string;
   listenForEnter: KeyboardEventHandler<HTMLInputElement>;
   setUserNameChange: (userNameChange: string) => void;
   handleNameClick: MouseEventHandler<HTMLButtonElement>;

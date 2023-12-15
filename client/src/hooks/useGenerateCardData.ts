@@ -4,8 +4,8 @@ import { CardData } from "../datatypes/gameDatatypes";
 
 /**
  * @param gridN grid size
- * @param paintMax max number of colored cards
  * @param isNewRound boolean to trigger new round
+ * @param isNewGame boolean true when new game set
  * @returns cardData state and totalColorCards
  * @description generates card data for game and randomly assigns colors to cards
  *  */

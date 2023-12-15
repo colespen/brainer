@@ -10,16 +10,15 @@ const usePostGameResult = () => {
 
   // post game results
   useEffect(() => {
-    if (roundCount <= roundAmount) return;
-    const totalFoundCalculated = (totalFound + cardsFound) * 10;
-    try {
-      // TODO FIX TYPE W/ AWAIT
-      void postGameResults(userName, totalFoundCalculated);
-    } catch (err) {
-      console.log(err);
+    if (roundCount <= roundAmount) {
+      return;
     }
+    const totalFoundCalculated = (totalFound + cardsFound) * 10;
+    postGameResults(userName, totalFoundCalculated).catch((error: Error) => {
+      console.error("could not post game results:", error);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName, roundAmount, roundCount]);
+  }, [roundAmount, roundCount]);
 };
 
 export default usePostGameResult;

@@ -74,13 +74,13 @@ const Highscores = () => {
               count={10}
               width={1020}
               height={50}
-              baseColor="#202020"
-              highlightColor="#444"
+              baseColor="#1a1d27"
+              highlightColor="#5061ff"
             />
           ) : error ? (
             <p className="error">ERROR LOADING RECORDS: {error.message}</p>
           ) : highscores.length === 0 ? (
-            <p>NO GAME RECORDS FOUND</p>
+            <p>NO GAMES RECORDED</p>
           ) : null}
         </div>
       </div>

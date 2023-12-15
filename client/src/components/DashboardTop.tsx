@@ -4,7 +4,7 @@ const DashboardTop = ({
   gameBoard,
   cardData,
   nameInputFocus,
-  userNameChange,
+  userName,
   listenForEnter,
   setUserNameChange,
   handleNameClick,
@@ -24,7 +24,7 @@ const DashboardTop = ({
             className="title-item name-input"
             type="text"
             placeholder="your name"
-            value={userNameChange}
+            value={userName}
             onKeyDown={listenForEnter}
             onChange={(e) => handleSetUserNameChange(e.target.value)}
           />

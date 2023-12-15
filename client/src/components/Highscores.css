@@ -15,13 +15,13 @@
   flex-direction: column;
   min-height: 100%;
   width: 80%;
-  color: #e1e1ff;
 }
 
 .highscores-container > h1 {
   margin-top: 1.5rem;
-  color: #fff300;
   font-size: 4.5em;
+  color: #00fff7;
+  text-shadow: #5bfffaa3 -1px 0px 12px;
 }
 
 .highscores-table {
@@ -30,14 +30,16 @@
 }
 
 .highscores-table thead {
-  color: #f50090;
+  color: #f300f5;
+  text-shadow: #fd00ffa1 -1px 0px 12px;
 }
 .highscores-table th {
   text-align: left;
 }
 
 .highscores-table tbody {
-  color: #00e9ff;
+  color: #3549ff;
+  text-shadow: #0019ffcf -2px 0px 15px;
 }
 
 .standing-col {
@@ -72,7 +74,3 @@
 .game-link button {
   background-color: #1a1a1af2;
 }
-
-/* .loading-container {
-  margin-top: 5rem;
-} */

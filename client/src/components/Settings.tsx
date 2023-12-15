@@ -59,7 +59,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
         </div>
         <div
           className="game-reset"
-          data-tooltip="WARNING: this will reset all data"
+          data-tooltip="WARNING: this will reset current state"
         >
           <button
             className="settings-btn reset"

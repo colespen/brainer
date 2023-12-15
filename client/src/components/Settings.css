@@ -51,6 +51,7 @@
     opacity: 0.45;
   }
   .settings-btn.reset {
+    margin-top: 0.3rem;
     height: 26px;
     width: 26px;
   }
@@ -58,7 +59,7 @@
   .game-reset:hover::after {
     content: attr(data-tooltip);
     position: absolute;
-    transform: translateX(-120%) translateY(10%);
+    transform: translateX(-109%) translateY(-90%);
     background-color: #3b3b3b;
     padding: 5px 10px;
     border-radius: 4px;

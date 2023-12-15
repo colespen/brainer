@@ -23,8 +23,8 @@ import DashboardTop from "./DashboardTop";
 import DashboardSide from "./DashboardSide";
 
 const GameMain = () => {
-  const [userNameState, setUserNameState] = useState<string>("");
   const dispatch = useDispatch();
+  const [userNameState, setUserNameState] = useState<string>("");
   const { roundData } = useSelector(selectedRoundState);
   const { gameBoard } = useSelector(selectedGameState);
   const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
@@ -44,7 +44,7 @@ const GameMain = () => {
         gameBoard={gameBoard}
         cardData={cardData}
         nameInputFocus={nameInputFocus}
-        userNameChange={userNameState}
+        userName={userNameState}
         listenForEnter={(e) =>
           listenForEnter(e, userNameState, dispatch, userNameSet)
         }

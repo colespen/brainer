@@ -12,7 +12,7 @@
 ### _NOW LIVE_
 ### https://brainer-client.vercel.app/
 
-## In client:
+## In /client:
 
 ### run locally:
 
@@ -40,7 +40,7 @@ npm run test
 npm run build
 ```
 
-## In server:
+## In /server:
 
 ### run locally:
 
