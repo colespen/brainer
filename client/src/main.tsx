@@ -6,8 +6,6 @@ import store from "./store.ts";
 import {
   createBrowserRouter,
   RouterProvider,
-  // BrowserRouter,
-  // Route,
   redirect,
 } from "react-router-dom";
 import ErrorPage from "./errorPage.tsx";
@@ -38,10 +36,15 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>
-);
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </React.StrictMode>
+  );
+} else {
+  console.error("Root element not found");
+}

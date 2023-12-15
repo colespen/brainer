@@ -67,6 +67,7 @@
 .game-link {
   position: sticky;
   bottom: 2rem;
+  z-index: 10;
 }
 .game-link button {
   background-color: #1a1a1af2;

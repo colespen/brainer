@@ -1,3 +1,4 @@
+import "./Settings.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,8 +26,8 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
       >
         <img
           loading="eager"
-          height="22px"
-          alt="reset button"
+          height="22.5px"
+          alt="settings button"
           src="/settings-icon.png"
         />
       </button>
@@ -69,7 +70,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
           >
             <img
               loading="eager"
-              height="20px"
+              height="18px"
               alt="reset button"
               src="/reset-icon.png"
             />
