@@ -19,6 +19,7 @@ const initialState: GameBoardState = {
     roundAmount: 5,
     roundCount: 1,
     winCount: 0,
+    showSettings: true,
   },
 };
 
@@ -78,20 +79,20 @@ const gameBoardSlice = createSlice({
       state.gameBoard.flippedCards = [];
     },
     cardFlipped: (state, action: PayloadAction<number>) => {
-      const id = action.payload;
-      state.gameBoard.flippedCards = [...state.gameBoard.flippedCards, id];
+      state.gameBoard.flippedCards = [
+        ...state.gameBoard.flippedCards,
+        action.payload,
+      ];
     },
     cardFound: (state) => {
       state.gameBoard.cardsFound += 1;
     },
     winSet: (state, action: PayloadAction<boolean>) => {
-      const isWin = action.payload;
-      state.gameBoard.isWin = isWin;
+      state.gameBoard.isWin = action.payload;
       state.gameBoard.winCount += 1;
     },
     lossSet: (state, action: PayloadAction<boolean>) => {
-      const isLoss = action.payload;
-      state.gameBoard.isLoss = isLoss;
+      state.gameBoard.isLoss = action.payload;
     },
     incrementRound: (state) => {
       state.gameBoard.roundCount += 1;
@@ -107,23 +108,19 @@ const gameBoardSlice = createSlice({
       };
     },
     newGameSet: (state, action: PayloadAction<boolean>) => {
-      const isNewGame = action.payload;
-      state.gameBoard.isNewGame = isNewGame;
+      state.gameBoard.isNewGame = action.payload;
       state.gameBoard.isGameEnd = false;
     },
     userNameSet: (state, action: PayloadAction<string>) => {
-      const userName = action.payload;
-      state.gameBoard.userName = userName;
+      state.gameBoard.userName = action.payload;
       state.gameBoard.roundCount = 1;
     },
     gridNSet: (state, action: PayloadAction<number>) => {
-      const gridN = action.payload;
-      state.gameBoard.gridN = gridN;
+      state.gameBoard.gridN = action.payload;
     },
     roundsSet: (state, action: PayloadAction<number>) => {
-      const roundAmount = action.payload;
       state.gameBoard.roundCount = 1;
-      state.gameBoard.roundAmount = roundAmount;
+      state.gameBoard.roundAmount = action.payload;
     },
     gameEndSet: (state) => {
       state.gameBoard.isGameEnd = true;
@@ -132,6 +129,10 @@ const gameBoardSlice = createSlice({
       state.gameBoard = {
         ...initialState.gameBoard,
       };
+    },
+    showSettingsSet: (state, action: PayloadAction<boolean>) => {
+      const showSettings = action.payload;
+      state.gameBoard.showSettings = showSettings;
     },
   },
 });
@@ -156,6 +157,7 @@ export const {
   roundsSet,
   gameEndSet,
   hardReset,
+  showSettingsSet,
 } = gameBoardSlice.actions;
 
 export default gameBoardSlice.reducer;

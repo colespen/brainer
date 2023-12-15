@@ -26,6 +26,7 @@ export interface GameBoardData {
   winCount: number;
   isNewGame: boolean;
   userName: string;
+  showSettings: boolean;
 }
 
 export interface GameBoardState {

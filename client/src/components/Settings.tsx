@@ -1,22 +1,25 @@
 import "./Settings.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   gridNSet,
   roundsSet,
   hardReset,
+  showSettingsSet,
   selectedGameState,
 } from "./gameBoardSlice";
 
 const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
-  const [showSettings, setShowSettings] = useState(true);
   const dispatch = useDispatch();
   const { gameBoard } = useSelector(selectedGameState);
-  const { gridN, userName, roundAmount, isNewGame, isGameEnd } = gameBoard;
+  const { gridN, userName, roundAmount, isNewGame, isGameEnd, showSettings } =
+    gameBoard;
+
+  console.log("showSettings:", showSettings);
 
   useEffect(() => {
     if (!isNewGame) {
-      setShowSettings(false);
+      dispatch(showSettingsSet(false));
     }
   }, [isNewGame]);
 
@@ -25,7 +28,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
       <button
         className={"settings-btn cog" + (showSettings ? " opaque" : "")}
         onClick={() => {
-          setShowSettings(!showSettings);
+          dispatch(showSettingsSet(!showSettings));
         }}
       >
         <img
