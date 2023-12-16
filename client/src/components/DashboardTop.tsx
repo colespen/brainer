@@ -10,6 +10,7 @@ const DashboardTop = ({
   handleNameClick,
 }: DashboardTopProps) => {
   const handleSetUserNameChange = (e: string) => {
+    
     if (e.length > 9) return;
     const upperCase = e.toUpperCase();
     setUserNameChange(upperCase);
