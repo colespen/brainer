@@ -8,6 +8,7 @@ const alertRoundUpdate = (
   if (!roundData.length) {
     return "Here we go!";
   }
+
   if (gameBoard.roundCount !== gameBoard.roundAmount) {
     return `Round ${gameBoard.roundCount}`;
   } else {
@@ -15,11 +16,11 @@ const alertRoundUpdate = (
   }
 };
 
-function alertWinMessage(
+const alertWinMessage = (
   isLoss: boolean,
   winCount: number,
   roundAmount: number
-) {
+) => {
   let message = "";
   if (isLoss) {
     message = "you got brained";
@@ -35,7 +36,7 @@ function alertWinMessage(
     }
   }
   return message;
-}
+};
 
 const alertEndUpdate = (gameBoard: GameBoardData) => {
   return gameBoard.winCount === gameBoard.roundAmount ? "Winner!" : "Game Over";

@@ -43,7 +43,9 @@ const useBoardUpdate = (
 
   // handle board reset on win/loss and new rounds
   useEffect(() => {
-    if (!userName) return;
+    if (!userName) {
+      return;
+    }
     const cardIdList: number[] = cardData.map((card) => card.id);
 
     if (isLoss || isWin) {
@@ -79,12 +81,13 @@ const useBoardUpdate = (
       // Round Starts: Reveal Cards
       const faceUpDelay = setTimeout(() => {
         dispatch(cardsFaceUp({ flippedCards: cardIdList }));
-      }, 250);
+      }, Math.max(Math.min(250, revealDelay - 100), 0));
 
       // then turn down after delay
       const boardResetTimeout = setTimeout(() => {
         dispatch(gameStartFaceDown());
       }, revealDelay);
+
       return () => {
         clearTimeout(boardResetTimeout);
         clearTimeout(faceUpDelay);
@@ -92,7 +95,6 @@ const useBoardUpdate = (
     } else {
       dispatch(gameStartFaceDown());
       dispatch(alertUpdated(alertEndUpdate(gameBoard)));
-      console.log("GAME END SET");
       dispatch(gameEndSet());
     }
 

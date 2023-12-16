@@ -1,10 +1,22 @@
+import { CSSProperties } from "react";
 import { Link } from "react-router-dom";
+import SquareLoader from "react-spinners/SquareLoader";
 import { GameBoardData } from "../datatypes/gameDatatypes";
 import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
 import { alertUpdated, newGameReset, newGameSet } from "./gameBoardSlice";
 
-const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
+const loaderOverride: CSSProperties = {
+  position: "absolute",
+};
+
+const DashboardSide = ({
+  gameBoard,
+  loadingScore,
+}: {
+  gameBoard: GameBoardData;
+  loadingScore: boolean;
+}) => {
   const {
     roundCount,
     roundAmount,
@@ -26,7 +38,8 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
 
   const endOfGame = roundCount > roundAmount && !isNewGame;
   const disabledHighscore =
-    userName !== "" && alert !== "Game Over" && alert !== "Winner!";
+    (userName !== "" && alert !== "Game Over" && alert !== "Winner!") ||
+    loadingScore;
 
   return (
     <div
@@ -55,16 +68,26 @@ const DashboardSide = ({ gameBoard }: { gameBoard: GameBoardData }) => {
         <button
           className={
             "btn dashboard-item highscores" +
-            (disabledHighscore ? " disabled" : endOfGame ? " end" : "")
+            (disabledHighscore ? " disabled" : "") +
+            (endOfGame ? " end" : "")
           }
           onClick={() => dispatch(alertUpdated(null))}
           disabled={disabledHighscore}
         >
-          high scores
+          <p style={{ zIndex: 1 }}>high scores</p>
+          {loadingScore && (
+            <SquareLoader
+              size={105}
+              color="#585aa961"
+              cssOverride={loaderOverride}
+            />
+          )}
         </button>
       </Link>
       <button
-        className={"btn new-game" + (endOfGame ? " true" : "")}
+        className={
+          "btn new-game" + (endOfGame ? " true" : isNewGame ? " disabled" : "")
+        }
         onClick={handleNewGameClick}
       >
         new game

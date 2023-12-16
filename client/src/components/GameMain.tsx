@@ -29,13 +29,13 @@ const GameMain = () => {
   const { gameBoard } = useSelector(selectedGameState);
   const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
 
-  // TODO: roundData stats
+  // TODO: display roundData stats
   const { cardData } = useGenerateCardData(gridN, isNewRound, isNewGame);
 
   useBoardUpdate(gameBoard, roundData);
   useUpdateOnWinOrLoss();
   useNewGameDelayAlert();
-  usePostGameResult();
+  const { loading } = usePostGameResult();
 
   return (
     <div className="gameboard-main">
@@ -61,7 +61,7 @@ const GameMain = () => {
         isWin={isWin}
         isNewRound={isNewRound}
       />
-      <DashboardSide gameBoard={gameBoard} />
+      <DashboardSide gameBoard={gameBoard} loadingScore={loading} />
     </div>
   );
 };

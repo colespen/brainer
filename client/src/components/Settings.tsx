@@ -15,13 +15,13 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
   const { gridN, userName, roundAmount, isNewGame, isGameEnd, showSettings } =
     gameBoard;
 
-  console.log("showSettings:", showSettings);
+  const disabledInput = !!userName && !isGameEnd;
 
   useEffect(() => {
     if (!isNewGame) {
       dispatch(showSettingsSet(false));
     }
-  }, [isNewGame]);
+  }, [dispatch, isNewGame]);
 
   return (
     <div className="settings-container">
@@ -41,7 +41,9 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
 
       <div className={"settings" + (!showSettings ? " opaque" : "")}>
         <div className="slider rounds-slider">
-          <label>rounds</label>
+          <label id={disabledInput ? "disabled-lable" : ""}>
+            rounds
+          </label>
           <input
             type="range"
             min={1}
@@ -49,11 +51,11 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
             step={1}
             onChange={(e) => dispatch(roundsSet(Number(e.target.value)))}
             value={roundAmount}
-            disabled={!!userName && !isGameEnd}
+            disabled={disabledInput}
           />
         </div>
         <div className="slider grid-slider">
-          <label>grid</label>
+          <label id={disabledInput ? "disabled-lable" : ""}>grid</label>
           <input
             type="range"
             min={3}
@@ -61,7 +63,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
             step={1}
             onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
             value={gridN}
-            disabled={!!userName && !isGameEnd}
+            disabled={disabledInput}
           />
         </div>
         <div

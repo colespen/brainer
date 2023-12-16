@@ -34,13 +34,12 @@ const GameCard = ({
       style={{
         backgroundColor: isFlipped ? cardColor : colorMap.faceDown,
       }}
-      // style={{ backgroundColor: color }}
       onClick={() => {
         handleCardClick(id);
         setIsClicked(true);
       }}
       disabled={isRevealed || isLoss || isWin || isNewRound}
-    ></button>
+    />
   );
 };
 
