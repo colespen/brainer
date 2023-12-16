@@ -147,6 +147,7 @@
   border: 2px solid #585aa9;
   bottom: 2em;
   font-weight: 400;
+  color: #d6ecff;
   opacity: 1;
   transition: opacity 100ms ease;
 }
