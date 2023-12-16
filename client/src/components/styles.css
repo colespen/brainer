@@ -208,6 +208,10 @@
   .name-btn {
     font-size: 16px;
   }
+
+  .game-board {
+    margin-top: 230px;
+  }
   .new-game {
     width: 60px;
     height: 60px;
@@ -224,12 +228,8 @@
 
 @media (max-width: 480px) {
   .game-dashboard-top {
-    top: 1rem;
-    position: fixed;
     left: 0;
-    top: 1.5rem;
-    width: 100%;
-    z-index: 20;
+    top: 1rem;
   }
   .name-input {
     font-size: 16px;

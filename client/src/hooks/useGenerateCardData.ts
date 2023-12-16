@@ -16,7 +16,7 @@ function useGenerateCardData(
 ): { cardData: CardData[]; revealDelay: number } {
   const [cardData, setCardData] = useState<CardData[]>([]);
   const [paintMultiplier, setPaintMultiplier] = useState<number>(0.1);
-  const [revealDelay, setRevealDelay] = useState<number>(710);
+  const [revealDelay, setRevealDelay] = useState<number>(700);
   const totalCardRef = useRef<number>(16);
 
   const createInitialCardData = (totalCards: number) => {
@@ -35,7 +35,7 @@ function useGenerateCardData(
     }
     if (isNewGame) {
       setPaintMultiplier(0.1);
-      setRevealDelay(710);
+      setRevealDelay(700);
     } else {
       setPaintMultiplier((prev) => Number((prev + 0.035).toFixed(2)));
       setRevealDelay((prev) => Math.max(prev - 30, 200)); // min revealDelay = 200ms

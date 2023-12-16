@@ -19,7 +19,7 @@ const initialState: GameBoardState = {
     roundAmount: 5,
     roundCount: 1,
     winCount: 0,
-    showSettings: true,
+    showSettings: false,
   },
 };
 
