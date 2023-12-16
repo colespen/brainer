@@ -15,8 +15,8 @@ function useGenerateCardData(
   isNewGame: boolean
 ): { cardData: CardData[]; revealDelay: number } {
   const [cardData, setCardData] = useState<CardData[]>([]);
-  const [paintMultiplier, setPaintMultiplier] = useState<number>(0.12);
-  const [revealDelay, setRevealDelay] = useState<number>(720);
+  const [paintMultiplier, setPaintMultiplier] = useState<number>(0.1);
+  const [revealDelay, setRevealDelay] = useState<number>(710);
   const totalCardRef = useRef<number>(16);
 
   const createInitialCardData = (totalCards: number) => {
@@ -34,8 +34,8 @@ function useGenerateCardData(
       return;
     }
     if (isNewGame) {
-      setPaintMultiplier(0.12);
-      setRevealDelay(720);
+      setPaintMultiplier(0.1);
+      setRevealDelay(710);
     } else {
       setPaintMultiplier((prev) => Number((prev + 0.035).toFixed(2)));
       setRevealDelay((prev) => Math.max(prev - 30, 200)); // min revealDelay = 200ms
@@ -75,7 +75,7 @@ function useGenerateCardData(
 
     const maxColorCards = Math.min(
       Math.floor(totalCards * paintMultiplier),
-      Math.floor(totalCards * 0.65) // restrict no more than 70% of total cards
+      Math.floor(totalCards * 0.5) // restrict no more than 50% of total cards
     );
 
     // assign colors until max

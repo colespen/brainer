@@ -47,7 +47,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
           <input
             type="range"
             min={1}
-            max={25}
+            max={10}
             step={1}
             onChange={(e) => dispatch(roundsSet(Number(e.target.value)))}
             value={roundAmount}
@@ -58,7 +58,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
           <label id={disabledInput ? "disabled-lable" : ""}>grid</label>
           <input
             type="range"
-            min={3}
+            min={4}
             max={8}
             step={1}
             onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
@@ -68,7 +68,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
         </div>
         <div
           className="game-reset"
-          data-tooltip="WARNING: this will reset current state"
+          data-tooltip="WARNING: this resets current state"
         >
           <button
             className="settings-btn reset"
