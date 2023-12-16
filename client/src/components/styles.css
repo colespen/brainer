@@ -48,6 +48,7 @@
   margin-right: 6px;
   width: 11em;
   border: 2px solid #585aa9;
+  background-color: #161821;
 }
 .name-input:hover {
   border-color: #9294ff;
