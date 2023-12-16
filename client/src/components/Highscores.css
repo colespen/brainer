@@ -39,7 +39,7 @@
 
 .highscores-table tbody {
   color: #3549ff;
-  text-shadow: #0019ffcf -2px 0px 15px;
+  text-shadow: #0019ff -2px 0px 15px;
 }
 
 .standing-col {
@@ -73,6 +73,21 @@
 }
 .game-link button {
   background-color: #1a1a1ade;
+}
+
+.highscore-highlight {
+  animation: highlight-fade 5s ease;
+}
+
+@keyframes highlight-fade {
+  0% {
+    color: #00ff6a;
+    text-shadow: #00e15dcf -2px 0px 15px;
+  }
+  100% {
+    color: #3549ff;
+    text-shadow: #0019ff -2px 0px 15px;
+  }
 }
 
 @media (max-width: 990px) {

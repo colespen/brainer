@@ -11,9 +11,9 @@
   cursor: pointer;
   transition: ease-out border-color 100ms;
 }
-.btn:hover {
+/* .btn:hover {
   border-color: #9294ff;
-}
+} */
 
 .gameboard-main {
   height: 100%;
@@ -210,7 +210,7 @@
   }
 
   .game-board {
-    margin-top: 230px;
+    margin-top: 200px;
   }
   .new-game {
     width: 60px;
@@ -260,5 +260,11 @@
   .btn {
     height: 45px;
     width: 45px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    border-color: #9294ff;
   }
 }

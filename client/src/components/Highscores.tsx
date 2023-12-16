@@ -6,12 +6,19 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchHighscores } from "../hooks/useFetchHighscores";
 import { formatDate } from "../lib/formatDate";
 import useCheckViewport from "../hooks/useCheckViewport";
+import { Highscore } from "../services/fetchHighscores";
 
 const Highscores = () => {
   const { highscores = [], loading, error } = useFetchHighscores();
   const [opacity, setOpacity] = useState({ opacity: 0 });
+  const [latestUserId, setLatestUserId] = useState<string | null>(null);
 
   const { isLarge, isSmall } = useCheckViewport(1050, 400);
+
+  const isMostRecent = (score: Highscore) => {
+    const identifier = `${score.user_name}-${score.created_at}`;
+    return identifier === latestUserId;
+  };
 
   useEffect(() => {
     const opacityTimer = setTimeout(() => {
@@ -19,6 +26,20 @@ const Highscores = () => {
     }, 60);
     return () => clearTimeout(opacityTimer);
   }, []);
+
+  useEffect(() => {
+    if (highscores.length > 0) {
+      const latestScore = highscores.reduce((latest, current) => {
+        return new Date(current.created_at) > new Date(latest.created_at)
+          ? current
+          : latest;
+      }, highscores[0]);
+
+      const identifier = `${latestScore.user_name}-${latestScore.created_at}`;
+      sessionStorage.setItem("recentHighscore", identifier);
+      setLatestUserId(identifier);
+    }
+  }, [highscores]);
 
   return (
     <div className="highscores-root" style={opacity}>
@@ -38,7 +59,10 @@ const Highscores = () => {
             {!loading && !error ? (
               highscores
                 .map((score, index) => (
-                  <tr key={index}>
+                  <tr
+                    key={index}
+                    className={isMostRecent(score) ? "highscore-highlight" : ""}
+                  >
                     <th scope="row" className="standing-col">
                       {index + 1}
                     </th>
@@ -65,11 +89,11 @@ const Highscores = () => {
           {loading ? (
             <Skeleton
               style={{
-                marginTop: isLarge ? 28 : 15,
+                margin: isLarge ? "14px 0" : "15px 0",
               }}
               count={10}
               width={isLarge ? 1020 : isSmall ? 400 : 350}
-              height={isLarge ? 50 : isSmall ? 25 : 20}
+              height={isLarge ? 45 : isSmall ? 25 : 20}
               baseColor="#1a1d27"
               highlightColor="#3549ff"
             />
@@ -81,7 +105,9 @@ const Highscores = () => {
         </div>
       </div>
       <Link to="../game" className="game-link">
-        <button className="btn new-game true" id="new-game-highscore">play again</button>
+        <button className="btn new-game true" id="new-game-highscore">
+          play again
+        </button>
       </Link>
     </div>
   );
