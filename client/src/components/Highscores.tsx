@@ -62,14 +62,14 @@ const Highscores = () => {
         </table>
 
         <div className="loading-container">
-          {loading ? (
+          {!loading ? (
             <Skeleton
               style={{
-                marginTop: isLarge ? 28 : isSmall ? 25 : 15,
+                marginTop: isLarge ? 28 : 15,
               }}
               count={10}
               width={isLarge ? 1020 : isSmall ? 400 : 350}
-              height={isLarge ? 50 : isSmall ? 30 : 20}
+              height={isLarge ? 50 : isSmall ? 25 : 20}
               baseColor="#1a1d27"
               highlightColor="#3549ff"
             />
