@@ -49,19 +49,19 @@ const DashboardSide = ({
       }
     >
       <span className="dashboard-item">
-        <p>round:</p>
+        <p>round</p>
         <h2>
           {endOfGame ? roundAmount : roundCount} / {roundAmount}
         </h2>
       </span>
       <span className="dashboard-item won">
-        <p>won:</p>
+        <p>won</p>
         <h2>
           {winCount} / {roundAmount}
         </h2>
       </span>
       <span className="dashboard-item score">
-        <p>points:</p>
+        <p>points</p>
         <h2>{(totalFound + cardsFound) * 10}</h2>
       </span>
       <Link to="../highscores">

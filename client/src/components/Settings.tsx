@@ -8,6 +8,7 @@ import {
   showSettingsSet,
   selectedGameState,
 } from "./gameBoardSlice";
+import useCheckViewport from "../hooks/useCheckViewport";
 
 const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
   const dispatch = useDispatch();
@@ -15,18 +16,21 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
   const { gridN, userName, roundAmount, isNewGame, isGameEnd, showSettings } =
     gameBoard;
 
+  const { isLarge, isSmall } = useCheckViewport();
+
   const disabledInput = !!userName && !isGameEnd;
 
   useEffect(() => {
     if (!isNewGame) {
       dispatch(showSettingsSet(false));
     }
-  }, [dispatch, isNewGame]);
+    dispatch(showSettingsSet(isLarge));
+  }, [dispatch, isLarge, isNewGame]);
 
   return (
     <div className="settings-container">
       <button
-        className={"settings-btn cog" + (showSettings ? " opaque" : "")}
+        className={"settings-btn cog" + (showSettings ? " transparent" : "")}
         onClick={() => {
           dispatch(showSettingsSet(!showSettings));
         }}
@@ -39,11 +43,9 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
         />
       </button>
 
-      <div className={"settings" + (!showSettings ? " opaque" : "")}>
+      <div className={"settings" + (!showSettings ? " transparent" : "")}>
         <div className="slider rounds-slider">
-          <label id={disabledInput ? "disabled-lable" : ""}>
-            rounds
-          </label>
+          <label id={disabledInput ? "disabled-lable" : ""}>rounds</label>
           <input
             type="range"
             min={1}
@@ -59,7 +61,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
           <input
             type="range"
             min={4}
-            max={8}
+            max={isSmall ? 8 : 7} // max 7 for < 400px
             step={1}
             onChange={(e) => dispatch(gridNSet(Number(e.target.value)))}
             value={gridN}

@@ -5,10 +5,13 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useFetchHighscores } from "../hooks/useFetchHighscores";
 import { formatDate } from "../lib/formatDate";
+import useCheckViewport from "../hooks/useCheckViewport";
 
 const Highscores = () => {
   const { highscores = [], loading, error } = useFetchHighscores();
   const [opacity, setOpacity] = useState({ opacity: 0 });
+
+  const { isLarge, isSmall } = useCheckViewport(1050, 400);
 
   useEffect(() => {
     const opacityTimer = setTimeout(() => {
@@ -61,10 +64,12 @@ const Highscores = () => {
         <div className="loading-container">
           {loading ? (
             <Skeleton
-              style={{ marginTop: 28 }}
+              style={{
+                marginTop: isLarge ? 28 : isSmall ? 25 : 15,
+              }}
               count={10}
-              width={1020}
-              height={50}
+              width={isLarge ? 1020 : isSmall ? 400 : 350}
+              height={isLarge ? 50 : isSmall ? 30 : 20}
               baseColor="#1a1d27"
               highlightColor="#3549ff"
             />
