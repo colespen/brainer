@@ -45,7 +45,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
 
       <div className={"settings" + (!showSettings ? " transparent" : "")}>
         <div className="slider rounds-slider">
-          <label id={disabledInput ? "disabled-lable" : ""}>rounds</label>
+          <label>rounds</label>
           <input
             type="range"
             min={1}
@@ -57,7 +57,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
           />
         </div>
         <div className="slider grid-slider">
-          <label id={disabledInput ? "disabled-lable" : ""}>grid</label>
+          <label>grid</label>
           <input
             type="range"
             min={4}

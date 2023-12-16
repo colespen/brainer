@@ -65,9 +65,6 @@ input[type="range"] {
 .slider label {
   opacity: 0.85 !important;
 }
-#disabled-label {
-  opacity: 0.6 !important;
-}
 
 .game-reset:hover::after {
   content: attr(data-tooltip);

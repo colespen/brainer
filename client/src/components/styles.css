@@ -196,6 +196,9 @@
     height: 60px;
     color: #d6ecff;
   }
+  .title-item {
+    font-size: 26px;
+  }
   .dashboard-item {
     width: 60px;
     height: 60px;

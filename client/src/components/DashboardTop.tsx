@@ -10,7 +10,6 @@ const DashboardTop = ({
   handleNameClick,
 }: DashboardTopProps) => {
   const handleSetUserNameChange = (e: string) => {
-    
     if (e.length > 9) return;
     const upperCase = e.toUpperCase();
     setUserNameChange(upperCase);
@@ -29,7 +28,10 @@ const DashboardTop = ({
             onKeyDown={listenForEnter}
             onChange={(e) => handleSetUserNameChange(e.target.value)}
           />
-          <button className="btn dashboard-item name-btn" onClick={handleNameClick}>
+          <button
+            className="btn dashboard-item name-btn"
+            onClick={handleNameClick}
+          >
             GO
           </button>
         </div>
