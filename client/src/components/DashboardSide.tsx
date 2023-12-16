@@ -5,6 +5,7 @@ import { GameBoardData } from "../datatypes/gameDatatypes";
 import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
 import { alertUpdated, newGameReset, newGameSet } from "./gameBoardSlice";
+import useCheckViewport from "../hooks/useCheckViewport";
 
 const loaderOverride: CSSProperties = {
   position: "absolute",
@@ -31,6 +32,8 @@ const DashboardSide = ({
     alert,
   } = gameBoard;
   const dispatch = useDispatch();
+
+  const { isLarge, isSmall } = useCheckViewport(990, 480);
 
   const handleNewGameClick = () => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);
@@ -77,7 +80,7 @@ const DashboardSide = ({
           <p style={{ zIndex: 1 }}>high scores</p>
           {loadingScore && (
             <SquareLoader
-              size={105}
+              size={isLarge ? 105 : isSmall ? 60 : 45}
               color="#585aa961"
               cssOverride={loaderOverride}
             />
