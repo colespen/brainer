@@ -110,10 +110,10 @@
     font-size: 1.2rem;
   }
   .game-link {
-    .new-game {
-      font-size: 14px;
-      width: 65px;
-      height: 65px;
-    }
+  }
+  #new-game-highscore {
+    font-size: 14px;
+    width: 65px;
+    height: 65px;
   }
 }

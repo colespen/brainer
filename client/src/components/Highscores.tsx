@@ -81,7 +81,7 @@ const Highscores = () => {
         </div>
       </div>
       <Link to="../game" className="game-link">
-        <button className="btn new-game true">play again</button>
+        <button className="btn new-game true" id="new-game-highscore">play again</button>
       </Link>
     </div>
   );
