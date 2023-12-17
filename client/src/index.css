@@ -42,14 +42,13 @@ a:hover {
 
 body {
   margin: 0;
+  min-width: 320px;
+  height: 100vh;
   display: flex;
   place-items: center;
   justify-content: center;
   align-items: center;
-  min-width: 320px;
-  min-height: 100vh;
   background-color: #161821;
-  min-height: 100vh;
 }
 
 h1 {
