@@ -97,12 +97,11 @@ input[type="range"] {
   }
 }
 @media (max-width: 725px) {
+  .settings-container {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
   .settings {
     top: 2.1rem;
-  }
-}
-@media (max-width: 480px) {
-  .settings {
-    /* top: 4.5rem; */
   }
 }

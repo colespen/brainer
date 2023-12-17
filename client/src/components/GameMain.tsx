@@ -1,6 +1,6 @@
 import "./styles.css";
 import "./NewGameBtn.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useBoardUpdate } from "../hooks/useBoardUpdate";
@@ -36,6 +36,11 @@ const GameMain = () => {
   useUpdateOnWinOrLoss();
   useNewGameDelayAlert();
   const { loading } = usePostGameResult();
+
+  // temp hack - fix vh issue
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="gameboard-main">
