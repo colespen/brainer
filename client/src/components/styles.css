@@ -11,9 +11,6 @@
   cursor: pointer;
   transition: ease-out border-color 100ms;
 }
-/* .btn:hover {
-  border-color: #9294ff;
-} */
 
 .gameboard-main {
   height: 100%;
@@ -43,14 +40,16 @@
 .game-dashboard-top {
   position: fixed;
   left: 0;
-  top: 1.5rem;
+  top: 7.5rem;
   width: 100%;
   z-index: 20;
 }
 
 .title-item {
-  margin-top: 0;
   width: 100%;
+}
+.game-alert {
+  margin-top: 6px;
 }
 
 .name-container {
@@ -241,7 +240,7 @@
   }
   .game-dashboard-top {
     left: 0;
-    top: 1rem;
+    /* top: 1rem; */
   }
   .name-input {
     font-size: 16px;

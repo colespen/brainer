@@ -23,6 +23,7 @@ const usePostGameResult = () => {
     setLoading(true);
     const totalFoundCalculated = (totalFound + cardsFound) * 10;
     postGameResults(userName, totalFoundCalculated)
+      .then(() => sessionStorage.setItem("highscoreAdded", "true"))
       .catch((error: Error) => {
         console.error("could not post game results:", error);
       })

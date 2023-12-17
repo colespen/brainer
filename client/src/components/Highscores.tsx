@@ -13,12 +13,20 @@ const Highscores = () => {
   const [opacity, setOpacity] = useState({ opacity: 0 });
   const [latestUserId, setLatestUserId] = useState<string | null>(null);
 
-  const { isLarge, isSmall } = useCheckViewport();
+  const { isLarge, isSmall } = useCheckViewport(1070, 480);
 
   const isMostRecent = (score: Highscore) => {
     const identifier = `${score.user_name}-${score.created_at}`;
-    return identifier === latestUserId;
+    return (
+      identifier === latestUserId &&
+      sessionStorage.getItem("highscoreAdded") === "true"
+    );
   };
+
+  console.log(
+    "sessionStorage.getItem highscoreAdded",
+    sessionStorage.getItem("highscoreAdded") === "true"
+  );
 
   useEffect(() => {
     const opacityTimer = setTimeout(() => {
@@ -36,8 +44,16 @@ const Highscores = () => {
       }, highscores[0]);
 
       const identifier = `${latestScore.user_name}-${latestScore.created_at}`;
-      sessionStorage.setItem("recentHighscore", identifier);
+
       setLatestUserId(identifier);
+
+      if (sessionStorage.getItem("highscoreAdded") === "true") {
+        // if highscore is viewed, remove from session storage
+        const removeFlagDelay = setTimeout(() => {
+          sessionStorage.removeItem("highscoreAdded");
+        }, 1000);
+        return () => clearTimeout(removeFlagDelay);
+      }
     }
   }, [highscores]);
 
@@ -89,10 +105,10 @@ const Highscores = () => {
           {loading ? (
             <Skeleton
               style={{
-                margin: isLarge ? "14px 0" : "15px 0",
+                margin: isLarge ? "14px 0" : isSmall ? "12px 0" : "8px 0",
               }}
               count={10}
-              width={isLarge ? 1020 : isSmall ? 400 : 350}
+              width={isLarge ? 1020 : isSmall ? 450 : 350}
               height={isLarge ? 45 : isSmall ? 25 : 20}
               baseColor="#1a1d27"
               highlightColor="#3549ff"
