@@ -66,6 +66,10 @@ input[type="range"] {
   opacity: 0.85 !important;
 }
 
+.slider.input-disabled {
+  opacity: 0.6;
+}
+
 .game-reset:hover::after {
   content: attr(data-tooltip);
   position: absolute;
