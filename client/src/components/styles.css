@@ -236,6 +236,9 @@
 }
 
 @media (max-width: 480px) {
+  .game-board {
+    margin-top: 0;
+  }
   .game-dashboard-top {
     left: 0;
     top: 1rem;
