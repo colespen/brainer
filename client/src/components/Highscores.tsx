@@ -23,11 +23,6 @@ const Highscores = () => {
     );
   };
 
-  console.log(
-    "sessionStorage.getItem highscoreAdded",
-    sessionStorage.getItem("highscoreAdded") === "true"
-  );
-
   useEffect(() => {
     const opacityTimer = setTimeout(() => {
       setOpacity({ opacity: 1 });
