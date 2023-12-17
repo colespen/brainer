@@ -1,0 +1,15 @@
+{
+  "short_name": "BRAINER",
+  "name": "B R A I NER - a memory game",
+  "icons": [
+    {
+      "src": "./brainericon.png",
+      "sizes": "160x160",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000"
+}
