@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 const useCheckViewport = (
-  widthThresholdLarge = 900,
-  widthThresholdSmall = 400
+  widthThresholdLarge = 1000,
+  widthThresholdSmall = 480
 ) => {
   const [isLarge, setIsLarge] = useState<boolean>(false);
   const [isSmall, setIsSmall] = useState<boolean>(false);

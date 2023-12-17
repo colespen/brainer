@@ -16,7 +16,7 @@ const Settings = ({ resetUserName }: { resetUserName: () => void }) => {
   const { gridN, userName, roundAmount, isNewGame, isGameEnd, showSettings } =
     gameBoard;
 
-  const { isLarge, isSmall } = useCheckViewport();
+  const { isLarge, isSmall } = useCheckViewport(750, 540);
 
   const disabledInput = !!userName && !isGameEnd;
 

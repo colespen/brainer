@@ -33,7 +33,7 @@ const DashboardSide = ({
   } = gameBoard;
   const dispatch = useDispatch();
 
-  const { isLarge, isSmall } = useCheckViewport(990, 480);
+  const { isLarge, isSmall } = useCheckViewport();
 
   const handleNewGameClick = () => {
     handleNewGame(gameBoard, dispatch, newGameReset, newGameSet);

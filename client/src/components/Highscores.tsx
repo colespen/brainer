@@ -13,7 +13,7 @@ const Highscores = () => {
   const [opacity, setOpacity] = useState({ opacity: 0 });
   const [latestUserId, setLatestUserId] = useState<string | null>(null);
 
-  const { isLarge, isSmall } = useCheckViewport(1050, 400);
+  const { isLarge, isSmall } = useCheckViewport();
 
   const isMostRecent = (score: Highscore) => {
     const identifier = `${score.user_name}-${score.created_at}`;

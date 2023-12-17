@@ -90,7 +90,7 @@
   top: 1.5rem;
   left: 1.5rem;
   flex-direction: column;
-  transition: opacity 100ms ease;
+  transition: opacity 125ms ease;
 }
 .dashboard-item {
   box-sizing: border-box;
@@ -165,7 +165,7 @@
   opacity: 0.6;
 }
 
-@media (max-width: 990px) {
+@media (max-width: 1200px) {
   .name-input {
     font-size: 35px;
     height: 90px;
@@ -190,7 +190,8 @@
     right: -2rem;
   }
 }
-@media (max-width: 750px) {
+
+@media (max-width: 1000px) {
   .name-input {
     font-size: 24px;
     height: 60px;
@@ -199,6 +200,16 @@
   .title-item {
     font-size: 26px;
   }
+  .game-dashboard-side {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 2rem;
+    top: auto;
+    left: auto;
+    flex-direction: row;
+  }
+
   .dashboard-item {
     width: 60px;
     height: 60px;
@@ -208,9 +219,7 @@
   .name-btn {
     font-size: 16px;
   }
-
-  .game-board {
-    margin-top: 200px;
+  .game-dashboard-side {
   }
   .new-game {
     width: 60px;
@@ -235,10 +244,6 @@
     font-size: 16px;
     height: 45px;
     color: #d6ecff;
-  }
-  .game-dashboard-side {
-    top: 1rem;
-    left: 1rem;
   }
   .dashboard-item {
     width: 45px;
