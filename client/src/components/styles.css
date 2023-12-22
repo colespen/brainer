@@ -44,12 +44,16 @@
   width: 100%;
   z-index: 20;
 }
+.game-dashboard-top.non-interactive {
+  pointer-events: none;
+  top: 2rem;
+}
 
 .title-item {
   width: 100%;
 }
 .game-alert {
-  margin-top: 6px;
+  margin: 0;
 }
 
 .name-container {
@@ -234,6 +238,12 @@
   }
 }
 
+@media (max-width: 540px) {
+  .game-dashboard-top.non-interactive {
+    left: 0;
+    top: 7.5rem;
+  }
+}
 @media (max-width: 480px) {
   .game-board {
     margin-top: 0;

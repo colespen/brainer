@@ -15,9 +15,13 @@ const DashboardTop = ({
     setUserNameChange(upperCase);
   };
 
+  const showInput = !gameBoard.userName;
+
   return (
-    <div className="game-dashboard-top">
-      {!gameBoard.userName ? (
+    <div
+      className={"game-dashboard-top" + (!showInput ? " non-interactive" : "")}
+    >
+      {showInput ? (
         <div className="name-container">
           <input
             ref={nameInputFocus}
