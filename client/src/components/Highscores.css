@@ -76,7 +76,7 @@
 }
 
 .highscore-highlight {
-  animation: highlight-fade 7s ease;
+  animation: highlight-fade 8500ms ease;
 }
 
 @keyframes highlight-fade {
