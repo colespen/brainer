@@ -42,8 +42,8 @@ const GameCard3D = ({
   // Convert hex colors to Three.js Color objects
   const faceColorThree = new THREE.Color(faceColor);
   
-  // Enhanced shine effect for better visibility and depth
-  const emissiveColor = hovered ? new THREE.Color(faceColor).multiplyScalar(0.15) : new THREE.Color(faceColor).multiplyScalar(0.05);
+  // Enhanced inner glow effect on hover - brighter and more centered
+  const emissiveColor = hovered ? new THREE.Color(faceColor).multiplyScalar(0.5) : new THREE.Color(faceColor).multiplyScalar(0.08);
 
   const handleClick = () => {
     if (isRevealed || isLoss || isWin || isNewRound) return;
@@ -79,11 +79,13 @@ const GameCard3D = ({
       >
         <boxGeometry args={[0.9, 0.9, 0.9]} />
         <meshStandardMaterial 
-          color={faceColorThree}
+          color={faceColorThree.multiplyScalar(1.2)} // Slightly brighter base color
           emissive={emissiveColor}
-          roughness={0.4}
-          metalness={0.0}
-          envMapIntensity={0.05}
+          roughness={0.3} // Smoother surface for better light reflection
+          metalness={0.1} // Subtle metallic sheen
+          envMapIntensity={0.15} // More environment reflection
+          clearcoat={0.3} // Adds depth and interest to surface
+          clearcoatRoughness={0.1} // Smooth clear coat
           side={THREE.FrontSide}
         />
       </mesh>
@@ -94,8 +96,7 @@ const GameCard3D = ({
         <lineBasicMaterial 
           color={borderColorThree}
           transparent
-          opacity={0.2}
-          linewidth={2}
+          opacity={0.6}
         />
       </lineSegments>
     </group>
