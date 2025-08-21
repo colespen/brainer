@@ -79,10 +79,10 @@ const GameCard3D = ({
       >
         <boxGeometry args={[0.9, 0.9, 0.9]} />
         <meshStandardMaterial 
-          color={faceColorThree.multiplyScalar(1.2)} // Slightly brighter base color
+          color={faceColorThree.multiplyScalar(1.25)} // Very subtly brighter base color
           emissive={emissiveColor}
           roughness={0.3} // Smoother surface for better light reflection
-          metalness={0.1} // Subtle metallic sheen
+          metalness={0.08} // Subtle metallic sheen
           envMapIntensity={0.15} // More environment reflection
           side={THREE.FrontSide}
         />

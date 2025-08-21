@@ -292,7 +292,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         shadows
       >
         {/* Subtle lighting for consistent depth and color visibility */}
-        <ambientLight intensity={0.6} color="#ffffff" />
+        <ambientLight intensity={0.65} color="#ffffff" />
         
         {/* Single consistent directional light from top-left */}
         <directionalLight 
