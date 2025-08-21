@@ -9,7 +9,7 @@ export const pool = new Pool({
   database: process.env.DB_DATABASE_PROD,
   host: process.env.DB_HOST_PROD,
   port: Number(process.env.DB_PORT_PROD),
-  ssl: true
+  ssl: true,
 });
 // export const pool = new Pool({
 //   user: process.env.DB_USER,
