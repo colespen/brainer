@@ -9,34 +9,6 @@ import { useAppDispatch } from "../hooks/redux";
 import GameCard3D from "./GameCard3D";
 import * as THREE from "three";
 
-// Component to handle subtle mouse-following camera movement
-function CameraController() {
-  const { camera } = useThree();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      const x = (event.clientX / window.innerWidth) * 2 - 1;
-      const y = -(event.clientY / window.innerHeight) * 2 + 1;
-      setMousePosition({ x, y });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useFrame(() => {
-    // Very subtle camera movement based on mouse position
-    const targetX = mousePosition.x * 0.3;
-    const targetY = mousePosition.y * 0.2;
-    
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.02);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.02);
-    camera.lookAt(0, 0, 0);
-  });
-
-  return null;
-}
 
 // Component to set up clean rendering settings
 function RenderSettings() {
@@ -59,14 +31,18 @@ function GridRotationController({
   isWaitingForPlayer,
   shouldResetOnPrepare,
   isWin,
-  isLoss 
+  isLoss,
+  mousePosition,
+  isMouseOverGrid
 }: { 
   gridGroupRef: React.RefObject<THREE.Group>, 
   isGameActive: boolean,
   isWaitingForPlayer: boolean,
   shouldResetOnPrepare: boolean,
   isWin: boolean,
-  isLoss: boolean 
+  isLoss: boolean,
+  mousePosition: { x: number, y: number },
+  isMouseOverGrid: boolean
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [previousMouse, setPreviousMouse] = useState({ x: 0, y: 0 });
@@ -75,7 +51,7 @@ function GridRotationController({
   const [lossStartTime, setLossStartTime] = useState<number | null>(null);
 
   // Track victory and loss state changes
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (!gridGroupRef.current) return;
     
     // Start victory animation when win occurs
@@ -120,11 +96,23 @@ function GridRotationController({
         
         gridGroupRef.current.rotation.y = progress * Math.PI * easing; // 180-degree spin
         return;
+      } else if (victoryDuration < 1.5) {
+        // Spring-damped return to zero (0.7 seconds of spring damping)
+        const dampingDuration = victoryDuration - 0.8;
+        const dampingProgress = dampingDuration / 0.7;
+        
+        // Spring damping function with overshoot and settle
+        const springDamping = Math.exp(-dampingProgress * 4) * Math.cos(dampingProgress * 8 * Math.PI);
+        
+        gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(gridGroupRef.current.rotation.x, 0, 0.15);
+        gridGroupRef.current.rotation.y = springDamping * 0.1; // Small spring oscillation
+        gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(gridGroupRef.current.rotation.z, 0, 0.15);
+        return;
       } else {
-        // Ensure clean return to zero rotation
-        gridGroupRef.current.rotation.x = 0;
-        gridGroupRef.current.rotation.y = 0;
-        gridGroupRef.current.rotation.z = 0;
+        // Final settle to zero
+        gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(gridGroupRef.current.rotation.x, 0, 0.2);
+        gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(gridGroupRef.current.rotation.y, 0, 0.2);
+        gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(gridGroupRef.current.rotation.z, 0, 0.2);
       }
     }
     
@@ -151,8 +139,17 @@ function GridRotationController({
       setUserInterrupted(false);
     }
     
-    // Reset rotation when gameplay is active
-    if (isGameActive && gridGroupRef.current) {
+    // Subtle mouse-following grid rotation when gameplay is active AND mouse is over grid
+    if (isGameActive && isMouseOverGrid && gridGroupRef.current) {
+      // More subtle rotation based on mouse position
+      const targetRotationX = mousePosition.y * 0.07;  // Reduced for subtlety
+      const targetRotationY = mousePosition.x * 0.10;  // Reduced for subtlety
+      
+      gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(gridGroupRef.current.rotation.x, targetRotationX, 0.05);
+      gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(gridGroupRef.current.rotation.y, targetRotationY, 0.05);
+      gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(gridGroupRef.current.rotation.z, 0, 0.08);
+    } else if (isGameActive && !isMouseOverGrid && gridGroupRef.current) {
+      // Return to neutral position when mouse leaves grid
       gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(gridGroupRef.current.rotation.x, 0, 0.08);
       gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(gridGroupRef.current.rotation.y, 0, 0.08);
       gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(gridGroupRef.current.rotation.z, 0, 0.08);
@@ -203,7 +200,7 @@ function GridRotationController({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, previousMouse, isGameActive, isWaitingForPlayer]);
+  }, [isDragging, previousMouse, isGameActive, isWaitingForPlayer, gridGroupRef, mousePosition]);
 
   return null;
 }
@@ -212,6 +209,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const dispatch = useAppDispatch();
   const [hoveredCubes, setHoveredCubes] = useState<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[]>([]);
   const gridGroupRef = useRef<THREE.Group>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMouseOverGrid, setIsMouseOverGrid] = useState(false);
 
   // Turn clicked cards face up
   const handleCardClick = (id: number) => {
@@ -232,8 +231,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     const row = Math.floor(index / gridN);
     const col = index % gridN;
     // Center the grid and add spacing
-    const x = (col - (gridN - 1) / 2) * 1.1;
-    const y = ((gridN - 1) / 2 - row) * 1.1;
+    const x = (col - (gridN - 1) / 2) * 1.08; // Increased spacing to reduce edge collisions
+    const y = ((gridN - 1) / 2 - row) * 1.08;
     return [x, y, 0];
   };
 
@@ -259,7 +258,19 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   };
 
   return (
-    <div style={{ width: "100%", height: "100vh", minHeight: "600px" }}>
+    <div 
+      style={{ width: "100%", height: "100vh", minHeight: "600px" }}
+      onMouseEnter={() => setIsMouseOverGrid(true)}
+      onMouseLeave={() => setIsMouseOverGrid(false)}
+      onMouseMove={(event) => {
+        if (isMouseOverGrid) {
+          const rect = event.currentTarget.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+          setMousePosition({ x, y });
+        }
+      }}
+    >
       <Canvas
         camera={{ 
           position: [0, 0, Math.max(gridN * 2, 8)], 
@@ -277,7 +288,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           stencil: false,
           depth: true
         }}
-        dpr={[1, Math.min(window.devicePixelRatio, 2)]}
+        dpr={[1, Math.min(window.devicePixelRatio, 3)]}
         shadows
       >
         {/* Subtle lighting for consistent depth and color visibility */}
@@ -331,19 +342,19 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         {/* Grid rotation controller */}
         <GridRotationController 
           key="grid-rotation-controller" // Stable key to prevent remounting when gridN changes
-          gridGroupRef={gridGroupRef} 
+          gridGroupRef={gridGroupRef as React.RefObject<THREE.Group>} 
           isGameActive={!gameBoard.isLoss && !gameBoard.isWin && !gameBoard.isNewRound && !gameBoard.isRevealed}
           isWaitingForPlayer={!gameBoard.userName} // Only animate when no username is set (before first game)
           shouldResetOnPrepare={gameBoard.alert === "prepare yourself . . ." || gameBoard.alert === "Here we go!"}
           isWin={gameBoard.isWin}
           isLoss={gameBoard.isLoss}
+          mousePosition={mousePosition}
+          isMouseOverGrid={isMouseOverGrid}
         />
         
-        {/* Subtle mouse-following camera movement */}
-        <CameraController />
         
         {/* Professional post-processing effects */}
-        <EffectComposer multisampling={8}>
+        <EffectComposer multisampling={16}>
           <SMAA />
           <Outline 
             selection={[]} // We'll implement a different approach for all cubes

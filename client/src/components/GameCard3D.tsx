@@ -84,8 +84,6 @@ const GameCard3D = ({
           roughness={0.3} // Smoother surface for better light reflection
           metalness={0.1} // Subtle metallic sheen
           envMapIntensity={0.15} // More environment reflection
-          clearcoat={0.3} // Adds depth and interest to surface
-          clearcoatRoughness={0.1} // Smooth clear coat
           side={THREE.FrontSide}
         />
       </mesh>
@@ -97,6 +95,7 @@ const GameCard3D = ({
           color={borderColorThree}
           transparent
           opacity={0.6}
+          linewidth={1.5}
         />
       </lineSegments>
     </group>

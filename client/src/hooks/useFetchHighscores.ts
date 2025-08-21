@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
+ 
 import { useEffect, useState } from "react";
 import { Highscore } from "../services/fetchHighscores";
 
