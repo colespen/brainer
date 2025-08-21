@@ -11,7 +11,7 @@ const useCheckViewport = (
     const checkViewportWidth = () => {
       const viewportWidth = window.innerWidth;
       setIsLarge(viewportWidth > widthThresholdLarge);
-      setIsSmall(viewportWidth > widthThresholdSmall);
+      setIsSmall(viewportWidth < widthThresholdSmall);
     };
 
     checkViewportWidth();

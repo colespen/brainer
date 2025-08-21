@@ -1,9 +1,8 @@
 // color choices
 export const colorMap = {
-  faceDown: "#000128",
-  none: "#262948",
-  blue: "#0006ea",
-  // blue: "#0007f1",
-  notFound: "#d5007d",
-  win: "#00e9ff"
+  faceDown: "#000135",
+  none: "#272a52",
+  blue: "#0008f5",
+  notFound: "#da0080",
+  win: "#05ecff"
 };

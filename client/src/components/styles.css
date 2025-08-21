@@ -2,7 +2,7 @@
   box-sizing: border-box;
   height: 107px;
   width: 107px;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   padding: 0.6em 0.5em;
   font-size: 1em;
   font-weight: 500;
@@ -13,12 +13,14 @@
 }
 
 .gameboard-main {
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #d6ecff;
+  position: relative;
 }
 
 .game-board {
@@ -68,7 +70,7 @@
   margin-right: 6px;
   width: 11em;
   border: 2px solid #585aa9;
-  background-color: #161821;
+  background-color: rgba(26, 26, 26, 0.6);
 }
 .name-input:hover {
   border-color: #9294ff;
@@ -99,7 +101,7 @@
   box-sizing: border-box;
   width: 107px;
   height: 107px;
-  border: 2px solid #585aa9;
+  border: 1px solid #585aa9;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -143,11 +145,11 @@
   cursor: default;
   color: #ffffff4d;
   border: 2px solid #585aa9;
-  background-color: #1a1a1a;
+  background-color: #151515ff;
 }
 
 .new-game {
-  border: 2px solid #585aa9;
+  border: 1px solid #585aa9;
   bottom: 2em;
   font-weight: 400;
   color: #d6ecff;
@@ -164,7 +166,7 @@
   user-select: none;
   cursor: default;
   border-color: #585aa9;
-  background-color: #1a1a1a;
+  background-color: #151515ff;
   opacity: 0.6;
 }
 

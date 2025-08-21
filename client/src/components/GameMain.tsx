@@ -1,7 +1,7 @@
 import "./styles.css";
 import "./NewGameBtn.css";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useBoardUpdate } from "../hooks/useBoardUpdate";
 import { selectedRoundState } from "./roundDataSlice";
@@ -18,15 +18,15 @@ import {
 } from "../handlers/eventHandlers";
 
 import Settings from "./Settings";
-import GameBoard from "./GameBoard";
+import GameBoard3D from "./GameBoard3D";
 import DashboardTop from "./DashboardTop";
 import DashboardSide from "./DashboardSide";
 
 const GameMain = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [userNameState, setUserNameState] = useState<string>("");
-  const { roundData } = useSelector(selectedRoundState);
-  const { gameBoard } = useSelector(selectedGameState);
+  const { roundData } = useAppSelector(selectedRoundState);
+  const { gameBoard } = useAppSelector(selectedGameState);
   const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
 
   // TODO: display roundData stats
@@ -58,7 +58,7 @@ const GameMain = () => {
           handleNameClick(userNameState, dispatch, userNameSet)
         }
       />
-      <GameBoard
+      <GameBoard3D
         cardData={cardData}
         gameBoard={gameBoard}
         gridN={Math.sqrt(cardData.length)}
