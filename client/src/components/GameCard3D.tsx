@@ -28,7 +28,11 @@ const GameCard3D = ({
   useFrame(() => {
     if (groupRef.current) {
       const targetScale = hovered ? 1.08 : 1.0;
-      const scaleVector = new THREE.Vector3(targetScale, targetScale, targetScale);
+      const scaleVector = new THREE.Vector3(
+        targetScale,
+        targetScale,
+        targetScale
+      );
       groupRef.current.scale.lerp(scaleVector, 0.15);
     }
   });
@@ -41,9 +45,11 @@ const GameCard3D = ({
 
   // Convert hex colors to Three.js Color objects
   const faceColorThree = new THREE.Color(faceColor);
-  
+
   // Enhanced inner glow effect on hover - brighter and more centered
-  const emissiveColor = hovered ? new THREE.Color(faceColor).multiplyScalar(0.5) : new THREE.Color(faceColor).multiplyScalar(0.08);
+  const emissiveColor = hovered
+    ? new THREE.Color(faceColor).multiplyScalar(0.5)
+    : new THREE.Color(faceColor).multiplyScalar(0.08);
 
   const handleClick = () => {
     if (isRevealed || isLoss || isWin || isNewRound) return;
@@ -56,9 +62,9 @@ const GameCard3D = ({
   return (
     <group ref={groupRef}>
       {/* Main cube */}
-      <mesh 
-        ref={meshRef} 
-        castShadow 
+      <mesh
+        ref={meshRef}
+        castShadow
         receiveShadow
         onClick={handleClick}
         onPointerOver={(e) => {
@@ -71,27 +77,30 @@ const GameCard3D = ({
           setHovered(false);
           document.body.style.cursor = "auto";
         }}
-        userData={{ 
-          id, 
-          hovered, 
-          borderColor: hovered ? "#9294ff" : "#585aa9" 
+        userData={{
+          id,
+          hovered,
+          borderColor: hovered ? "#9294ff" : "#585aa9",
         }}
       >
         <boxGeometry args={[0.9, 0.9, 0.9]} />
-        <meshStandardMaterial 
-          color={faceColorThree.multiplyScalar(1.25)} // Very subtly brighter base color
+        <meshPhysicalMaterial
+          color={faceColorThree.multiplyScalar(1.2)} // Subtly brighter base color
           emissive={emissiveColor}
-          roughness={0.3} // Smoother surface for better light reflection
-          metalness={0.08} // Subtle metallic sheen
-          envMapIntensity={0.15} // More environment reflection
+          roughness={0.25} // Smoother surface for enhanced reflections
+          metalness={0.12} // Slightly more metallic for realistic sheen
+          envMapIntensity={0.25} // Enhanced environment reflections
+          clearcoat={0.15} // Subtle clear coat for realistic surface
+          clearcoatRoughness={0.1} // Smooth clear coat
+          reflectivity={0.6} // Enhanced surface reflectivity
           side={THREE.FrontSide}
         />
       </mesh>
-      
+
       {/* Clean cube edges - only the 12 edges of a cube */}
       <lineSegments>
         <edgesGeometry args={[new THREE.BoxGeometry(0.901, 0.901, 0.901)]} />
-        <lineBasicMaterial 
+        <lineBasicMaterial
           color={borderColorThree}
           transparent
           opacity={0.6}

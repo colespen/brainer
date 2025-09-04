@@ -43,6 +43,19 @@ npm run build
 
 ## In /server:
 
+### setup database:
+
+1. Create free account at [neon.tech](https://neon.tech)
+2. Create new project, get connection details
+3. Update `/server/.env` with your Neon credentials:
+
+```bash
+DB_USER_PROD="your_username"
+DB_PASSWORD_PROD="your_password" 
+DB_DATABASE_PROD="your_database"
+DB_HOST_PROD="your-project.neon.tech"
+```
+
 ### run locally:
 
 ```bash
