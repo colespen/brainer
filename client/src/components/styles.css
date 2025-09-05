@@ -88,6 +88,7 @@
 .name-btn {
   font-size: 34px;
 }
+
 .game-dashboard-top > h3 {
   margin: 0;
 }
@@ -113,6 +114,10 @@
   justify-content: center;
 }
 
+.dashboard-item.name-btn {
+  border: 2px solid #585aa9;
+}
+
 .dashboard-item > h2 {
   margin: 0;
 }
@@ -134,9 +139,7 @@
   color: #d6ecff;
   font-weight: 400;
   border-color: #585aa9;
-  transition:
-    border-color,
-    color 1.5s ease;
+  transition: border-color, color 1.5s ease;
 }
 .highscores:hover {
   background-color: #000128;
