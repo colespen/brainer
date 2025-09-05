@@ -9,6 +9,8 @@ html {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  /* Eliminate 300ms touch delay on mobile */
+  touch-action: manipulation;
 }
 .highscores-container {
   font-family: videophreak, system-ui, sans-serif;

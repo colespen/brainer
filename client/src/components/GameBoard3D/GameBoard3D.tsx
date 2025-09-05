@@ -32,14 +32,16 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Detect low-power mobile devices for performance optimization
   const isMobileLowPower = () => {
     const ua = navigator.userAgent;
-    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isMobile =
+      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
     if (!isMobile) return false;
-    
+
     // Check for older/lower-power devices
     const isOlderiOS = /iPhone.*OS [5-9]_|iPhone.*OS 1[0-3]_/i.test(ua);
     const isOlderAndroid = /Android [4-7]\./i.test(ua);
-    const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-    
+    const isLowEndDevice =
+      navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+
     return isOlderiOS || isOlderAndroid || isLowEndDevice;
   };
 
@@ -58,12 +60,12 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Component to detect when first frames are rendered (proper R3F approach)
   const SceneReadyDetector = () => {
     const frameCount = useRef(0);
-    
+
     useFrame(() => {
       if (!isLoading) return;
-      
+
       frameCount.current += 1;
-      
+
       // After a few frames have been rendered, scene is ready
       if (frameCount.current > 3) {
         setIsLoading(false);
@@ -90,7 +92,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Calculate positions for grid layout
   const getPosition = (
     index: number,
-    spacing: number
+    spacing: number,
   ): [number, number, number] => {
     const row = Math.floor(index / gridN);
     const col = index % gridN;
@@ -115,7 +117,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
             child as THREE.Mesh<
               THREE.BufferGeometry,
               THREE.Material | THREE.Material[]
-            >
+            >,
           );
         }
       });
@@ -131,10 +133,9 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     return null;
   };
 
-
   return (
     <div
-      style={{ 
+      style={{
         position: "fixed",
         top: 0,
         left: 0,
@@ -149,7 +150,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
             #07080f 50%, 
             #030306 100%
           )
-        `
+        `,
       }}
       onMouseEnter={() => setIsMouseOverGrid(true)}
       onMouseLeave={() => setIsMouseOverGrid(false)}
@@ -171,10 +172,11 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           near: 0.1,
           far: 1000,
         }}
-        style={{ 
+        style={{
           background: "transparent",
           pointerEvents: "auto",
-          zIndex: 2
+          zIndex: 2,
+          touchAction: "manipulation", // Eliminate 300ms touch delay
         }}
         gl={{
           antialias: !shouldUseLowPerformanceMode,
@@ -185,13 +187,17 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           stencil: false,
           depth: true,
         }}
-        dpr={[1, shouldUseLowPerformanceMode ? 1.5 : Math.min(window.devicePixelRatio, 3)]}
+        dpr={[
+          1,
+          shouldUseLowPerformanceMode
+            ? 1.5
+            : Math.min(window.devicePixelRatio, 3),
+        ]}
         shadows={!shouldUseLowPerformanceMode}
       >
-
         {/* Lighting - consistent across all devices */}
         <ambientLight intensity={1} color="rgba(255, 246, 238, 1)" />
-        
+
         {/* Main directional light - shadows only on high-end devices */}
         <directionalLight
           position={[2, 2, 4]}
@@ -206,7 +212,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           shadow-camera-top={10}
           shadow-camera-bottom={-10}
         />
-        
+
         {/* Fill light - no shadows needed */}
         <directionalLight
           position={[-1, -1.5, 1.5]}

@@ -57,6 +57,14 @@ const GameCard3D = ({
     setIsClicked(true);
   };
 
+  const handlePointerDown = (e: any) => {
+    e.stopPropagation();
+    // Immediate visual feedback on touch start - no delay
+    if (isRevealed || isLoss || isWin || isNewRound) return;
+    handleCardClick(id);
+    setIsClicked(true);
+  };
+
   const borderColorThree = new THREE.Color(hovered ? "#9294ff" : "#585aa9");
 
   return (
@@ -67,6 +75,7 @@ const GameCard3D = ({
         castShadow
         receiveShadow
         onClick={handleClick}
+        onPointerDown={handlePointerDown}
         onPointerOver={(e) => {
           e.stopPropagation();
           setHovered(true);
