@@ -20,7 +20,6 @@ export interface GameCardProps
   handleCardClick: (id: number) => void;
 }
 
-
 export interface DashboardTopProps {
   gameBoard: GameBoardData;
   cardData: CardData[];

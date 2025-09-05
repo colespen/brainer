@@ -5,7 +5,7 @@ const listenForEnter = (
   e: React.KeyboardEvent<HTMLInputElement>,
   userNameChange: string,
   dispatch: Dispatch<AnyAction>,
-  userNameSet: (userName: string) => AnyAction
+  userNameSet: (userName: string) => AnyAction,
 ) => {
   if (e.key === "Enter" && userNameChange) {
     dispatch(newGameSet(false));
@@ -16,7 +16,7 @@ const listenForEnter = (
 const handleNameClick = (
   userNameChange: string,
   dispatch: Dispatch<AnyAction>,
-  userNameSet: (userName: string) => AnyAction
+  userNameSet: (userName: string) => AnyAction,
 ) => {
   if (userNameChange) {
     dispatch(newGameSet(false));

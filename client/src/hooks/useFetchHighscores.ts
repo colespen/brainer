@@ -1,11 +1,10 @@
- 
 import { useEffect, useState } from "react";
 import { Highscore } from "../services/fetchHighscores";
 
 const fetchHighscores = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_PROD_SERVER_URL}/api/highscores`
+      `${import.meta.env.VITE_PROD_SERVER_URL}/api/highscores`,
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

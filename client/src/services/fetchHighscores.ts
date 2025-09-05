@@ -1,15 +1,13 @@
- 
-
 export interface Highscore {
-    user_name: string;
-    total_points: number;
-    created_at: string;
-  }
+  user_name: string;
+  total_points: number;
+  created_at: string;
+}
 
 export const fetchHighscores = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_PROD_SERVER_URL}/api/highscores`
+      `${import.meta.env.VITE_PROD_SERVER_URL}/api/highscores`,
     );
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

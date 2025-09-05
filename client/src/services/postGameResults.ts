@@ -1,8 +1,6 @@
- 
-
 export const postGameResults = async (
   userName: string,
-  totalPoints: number
+  totalPoints: number,
 ) => {
   if (!userName || !totalPoints) return;
   try {
@@ -18,7 +16,7 @@ export const postGameResults = async (
           user_name: userName,
           total_points: totalPoints,
         }),
-      }
+      },
     );
 
     if (response.status === 201) {

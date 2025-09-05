@@ -21,7 +21,7 @@ import { RoundDataState } from "../components/roundDataSlice";
 
 const useBoardUpdate = (
   gameBoard: GameBoardData,
-  roundData: RoundDataState[]
+  roundData: RoundDataState[],
 ) => {
   const dispatch = useDispatch();
   const {
@@ -38,7 +38,7 @@ const useBoardUpdate = (
   const { cardData, revealDelay } = useGenerateCardData(
     gridN,
     isNewRound,
-    isNewGame
+    isNewGame,
   );
 
   // handle board reset on win/loss and new rounds
@@ -79,9 +79,12 @@ const useBoardUpdate = (
       };
     } else if (roundCount <= roundAmount) {
       // Round Starts: Reveal Cards
-      const faceUpDelay = setTimeout(() => {
-        dispatch(cardsFaceUp({ flippedCards: cardIdList }));
-      }, Math.max(Math.min(250, revealDelay - 100), 0));
+      const faceUpDelay = setTimeout(
+        () => {
+          dispatch(cardsFaceUp({ flippedCards: cardIdList }));
+        },
+        Math.max(Math.min(250, revealDelay - 100), 0),
+      );
 
       // then turn down after delay
       const boardResetTimeout = setTimeout(() => {

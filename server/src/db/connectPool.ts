@@ -11,7 +11,7 @@ export const pool = new Pool({
   host: process.env.DB_HOST_PROD,
   port: Number(process.env.DB_PORT_PROD) || 5432,
   ssl: {
-    rejectUnauthorized: false // Required for Neon connections
+    rejectUnauthorized: false, // Required for Neon connections
   },
 });
 

@@ -12,7 +12,7 @@ import { CardData } from "../datatypes/gameDatatypes";
 function useGenerateCardData(
   gridN: number,
   isNewRound: boolean,
-  isNewGame: boolean
+  isNewGame: boolean,
 ): { cardData: CardData[]; revealDelay: number } {
   const [cardData, setCardData] = useState<CardData[]>([]);
   const [paintMultiplier, setPaintMultiplier] = useState<number>(0.1);
@@ -69,13 +69,13 @@ function useGenerateCardData(
     // create new array of all indexes to later splice from, exluding first index
     const availableIndexes = Array.from(
       { length: totalCards },
-      (_, i) => i
+      (_, i) => i,
     ).filter((index) => index !== randomIndex);
     // const availableIndexes = Array.from({ length: totalCards }, (_, i) => i); // ***
 
     const maxColorCards = Math.min(
       Math.floor(totalCards * paintMultiplier),
-      Math.floor(totalCards * 0.5) // restrict no more than 50% of total cards
+      Math.floor(totalCards * 0.5), // restrict no more than 50% of total cards
     );
 
     // assign colors until max

@@ -8,7 +8,7 @@ export function formatDate(date: string): string {
   // if day or month is less than 10, add a '0' before it
   const formattedDay = day < 10 ? `0${day}` : `${day}`;
   const formattedMonth = month < 10 ? `0${month}` : `${month}`;
-  const formattedYear = year.toString().slice(-2)
+  const formattedYear = year.toString().slice(-2);
 
   // now we have day, month, and year
   // use the separator to join them

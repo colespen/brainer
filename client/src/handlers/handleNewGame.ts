@@ -5,7 +5,7 @@ export const handleNewGame = (
   gameBoard: GameBoardData,
   dispatch: Dispatch<AnyAction>,
   resetCB: () => AnyAction,
-  newGameCB: (isNewGame: boolean) => AnyAction
+  newGameCB: (isNewGame: boolean) => AnyAction,
 ) => {
   if (
     !gameBoard.userName ||

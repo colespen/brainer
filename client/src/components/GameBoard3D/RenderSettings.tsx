@@ -8,7 +8,7 @@ interface RenderSettingsProps {
 
 const RenderSettings = ({ gridN }: RenderSettingsProps) => {
   const { gl, camera, viewport } = useThree();
-  
+
   useEffect(() => {
     gl.toneMapping = THREE.NoToneMapping;
     gl.shadowMap.enabled = true;
@@ -21,9 +21,9 @@ const RenderSettings = ({ gridN }: RenderSettingsProps) => {
     const isMobile = viewport.width < 768;
     const isTablet = viewport.width >= 768 && viewport.width < 1024;
     const isDesktop = viewport.width >= 1024;
-    
+
     let cameraDistance;
-    
+
     if (isMobile) {
       // Mobile: Scale distance with grid size to maintain consistent appearance
       const baseDistance = Math.max(gridN * 2, 8);
@@ -36,11 +36,11 @@ const RenderSettings = ({ gridN }: RenderSettingsProps) => {
       // Desktop: FIXED distance - let larger grids naturally appear bigger
       cameraDistance = 15; // Fixed distance regardless of grid size
     }
-    
+
     // Smoothly adjust camera position
     const targetPosition = new THREE.Vector3(0, 0, cameraDistance);
     camera.position.lerp(targetPosition, 0.05);
-    
+
     // Update camera's projection matrix
     camera.updateProjectionMatrix();
   });

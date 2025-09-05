@@ -3,7 +3,7 @@ import { RoundDataState } from "../components/roundDataSlice";
 
 const alertRoundUpdate = (
   roundData: RoundDataState[],
-  gameBoard: GameBoardData
+  gameBoard: GameBoardData,
 ) => {
   if (!roundData.length) {
     return "Here we go!";
@@ -19,7 +19,7 @@ const alertRoundUpdate = (
 const alertWinMessage = (
   isLoss: boolean,
   winCount: number,
-  roundAmount: number
+  roundAmount: number,
 ) => {
   let message = "";
   if (isLoss) {

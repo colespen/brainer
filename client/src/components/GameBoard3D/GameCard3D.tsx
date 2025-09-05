@@ -31,7 +31,7 @@ const GameCard3D = ({
       const scaleVector = new THREE.Vector3(
         targetScale,
         targetScale,
-        targetScale
+        targetScale,
       );
       groupRef.current.scale.lerp(scaleVector, 0.15);
     }

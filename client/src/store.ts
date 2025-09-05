@@ -4,7 +4,7 @@ import gameBoardReducer from "./components/gameBoardSlice";
 import { GameBoardState } from "./datatypes/gameDatatypes";
 
 export interface RootState {
-  roundDataSlice:  { roundData: RoundDataState[] };
+  roundDataSlice: { roundData: RoundDataState[] };
   gameBoardSlice: GameBoardState;
 }
 

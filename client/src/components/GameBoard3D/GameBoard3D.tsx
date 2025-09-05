@@ -12,27 +12,30 @@ import ResponsiveGridCalculator from "./ResponsiveGridCalculator";
 import GridRotationController from "./GridRotationController";
 import * as THREE from "three";
 
-
-
-
 function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const dispatch = useAppDispatch();
-  const [hoveredCubes, setHoveredCubes] = useState<THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[]>([]);
+  const [hoveredCubes, setHoveredCubes] = useState<
+    THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[]
+  >([]);
   const gridGroupRef = useRef<THREE.Group>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMouseOverGrid, setIsMouseOverGrid] = useState(false);
-  const [responsiveValues, setResponsiveValues] = useState({ spacing: 1.08, cubeScale: 1.0, gridScale: 1.0 });
-  
+  const [responsiveValues, setResponsiveValues] = useState({
+    spacing: 1.08,
+    cubeScale: 1.0,
+    gridScale: 1.0,
+  });
+
   // Initialize responsive values on mount
   useEffect(() => {
     const checkInitialViewport = () => {
       const isMobile = window.innerWidth < 768;
       const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-      
+
       let spacing = 1.08;
       let cubeScale = 1.0;
       let gridScale = 1.0;
-      
+
       if (isMobile) {
         spacing = 0.85;
         cubeScale = 0.75;
@@ -46,10 +49,10 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         cubeScale = 1.0;
         gridScale = 1.3;
       }
-      
+
       setResponsiveValues({ spacing, cubeScale, gridScale });
     };
-    
+
     checkInitialViewport();
   }, []);
 
@@ -67,9 +70,11 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     }
   };
 
-  
   // Calculate positions for grid layout
-  const getPosition = (index: number, spacing: number): [number, number, number] => {
+  const getPosition = (
+    index: number,
+    spacing: number,
+  ): [number, number, number] => {
     const row = Math.floor(index / gridN);
     const col = index % gridN;
     // Center the grid and add responsive spacing
@@ -81,26 +86,36 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Component to track hovered cubes for outline effect
   const OutlineTracker = () => {
     const { scene } = useThree();
-    
+
     useFrame(() => {
-      const newHoveredCubes: THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[] = [];
+      const newHoveredCubes: THREE.Mesh<
+        THREE.BufferGeometry,
+        THREE.Material | THREE.Material[]
+      >[] = [];
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh && child.userData.hovered) {
-          newHoveredCubes.push(child as THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>);
+          newHoveredCubes.push(
+            child as THREE.Mesh<
+              THREE.BufferGeometry,
+              THREE.Material | THREE.Material[]
+            >,
+          );
         }
       });
-      
-      if (newHoveredCubes.length !== hoveredCubes.length || 
-          !newHoveredCubes.every(cube => hoveredCubes.includes(cube))) {
+
+      if (
+        newHoveredCubes.length !== hoveredCubes.length ||
+        !newHoveredCubes.every((cube) => hoveredCubes.includes(cube))
+      ) {
         setHoveredCubes(newHoveredCubes);
       }
     });
-    
+
     return null;
   };
 
   return (
-    <div 
+    <div
       style={{ width: "100%", height: "100vh", minHeight: "600px" }}
       onMouseEnter={() => setIsMouseOverGrid(true)}
       onMouseLeave={() => setIsMouseOverGrid(false)}
@@ -114,32 +129,32 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
       }}
     >
       <Canvas
-        camera={{ 
-          position: [0, 0, 15], 
+        camera={{
+          position: [0, 0, 15],
           fov: 50,
           near: 0.1,
-          far: 1000
+          far: 1000,
         }}
         style={{ background: "transparent" }}
-        gl={{ 
+        gl={{
           antialias: true,
           alpha: true,
           powerPreference: "high-performance",
           precision: "highp",
           preserveDrawingBuffer: false,
           stencil: false,
-          depth: true
+          depth: true,
         }}
         dpr={[1, Math.min(window.devicePixelRatio, 3)]}
         shadows
       >
         {/* Subtle lighting for consistent depth and color visibility */}
         <ambientLight intensity={0.75} color="#ffffff" />
-        
+
         {/* Single consistent directional light from top-left */}
-        <directionalLight 
-          position={[2, 2, 4]} 
-          intensity={0.4} 
+        <directionalLight
+          position={[2, 2, 4]}
+          intensity={0.4}
           color="#ffffff"
           castShadow
           shadow-mapSize-width={2048}
@@ -150,11 +165,11 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           shadow-camera-top={10}
           shadow-camera-bottom={-10}
         />
-        
+
         {/* Very gentle fill light to prevent pure black shadows */}
-        <directionalLight 
-          position={[-1, -1.5, 1.5]} 
-          intensity={0.25} 
+        <directionalLight
+          position={[-1, -1.5, 1.5]}
+          intensity={0.25}
           color="#ffffff"
         />
 
@@ -162,7 +177,11 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         <group ref={gridGroupRef} scale={responsiveValues.gridScale}>
           {/* Cards */}
           {cardData.map((card, index) => (
-            <group key={card.id} position={getPosition(index, responsiveValues.spacing)} scale={responsiveValues.cubeScale}>
+            <group
+              key={card.id}
+              position={getPosition(index, responsiveValues.spacing)}
+              scale={responsiveValues.cubeScale}
+            >
               <GameCard3D
                 id={card.id}
                 color={card.color}
@@ -178,33 +197,40 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
 
         {/* Minimal environment for clean appearance */}
         <Environment preset="city" environmentIntensity={0.05} />
-        
+
         {/* Clean rendering settings and responsive camera */}
         <RenderSettings gridN={gridN} />
-        
+
         {/* Responsive grid calculator */}
         <ResponsiveGridCalculator onUpdate={setResponsiveValues} />
-        
+
         {/* Track hovered cubes */}
         <OutlineTracker />
-        
+
         {/* Grid rotation controller */}
-        <GridRotationController 
+        <GridRotationController
           gridGroupRef={gridGroupRef}
-          isGameActive={!gameBoard.isLoss && !gameBoard.isWin && !gameBoard.isNewRound && !gameBoard.isRevealed}
+          isGameActive={
+            !gameBoard.isLoss &&
+            !gameBoard.isWin &&
+            !gameBoard.isNewRound &&
+            !gameBoard.isRevealed
+          }
           isWaitingForPlayer={!gameBoard.userName}
-          shouldResetOnPrepare={gameBoard.alert === "prepare yourself . . ." || gameBoard.alert === "Here we go!"}
+          shouldResetOnPrepare={
+            gameBoard.alert === "prepare yourself . . ." ||
+            gameBoard.alert === "Here we go!"
+          }
           isWin={gameBoard.isWin}
           isLoss={gameBoard.isLoss}
           mousePosition={mousePosition}
           isMouseOverGrid={isMouseOverGrid}
         />
-        
-        
+
         {/* Professional post-processing effects */}
         <EffectComposer multisampling={16}>
           <SMAA />
-          <Outline 
+          <Outline
             selection={[]} // We'll implement a different approach for all cubes
             selectionLayer={10}
             blendFunction={BlendFunction.SCREEN}
