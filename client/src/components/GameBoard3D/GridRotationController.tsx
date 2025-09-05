@@ -31,27 +31,33 @@ const GridRotationController = ({
   const raycasterRef = useRef(new THREE.Raycaster());
 
   // Helper function to check if mouse is actually over the 3D grid objects
-  const isMouseOverGrid3D = useCallback((clientX: number, clientY: number): boolean => {
-    if (!gridGroupRef.current) return false;
+  const isMouseOverGrid3D = useCallback(
+    (clientX: number, clientY: number): boolean => {
+      if (!gridGroupRef.current) return false;
 
-    const rect = gl.domElement.getBoundingClientRect();
-    const mouse = new THREE.Vector2();
-    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      const rect = gl.domElement.getBoundingClientRect();
+      const mouse = new THREE.Vector2();
+      mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
-    raycasterRef.current.setFromCamera(mouse, camera);
+      raycasterRef.current.setFromCamera(mouse, camera);
 
-    // Get all mesh objects from the grid group
-    const gridMeshes: THREE.Object3D[] = [];
-    gridGroupRef.current.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        gridMeshes.push(child);
-      }
-    });
+      // Get all mesh objects from the grid group
+      const gridMeshes: THREE.Object3D[] = [];
+      gridGroupRef.current.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          gridMeshes.push(child);
+        }
+      });
 
-    const intersects = raycasterRef.current.intersectObjects(gridMeshes, true);
-    return intersects.length > 0;
-  }, [gridGroupRef, gl, camera]);
+      const intersects = raycasterRef.current.intersectObjects(
+        gridMeshes,
+        true,
+      );
+      return intersects.length > 0;
+    },
+    [gridGroupRef, gl, camera],
+  );
 
   // Track victory and loss state changes
   useFrame((state) => {

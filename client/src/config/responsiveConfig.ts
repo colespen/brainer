@@ -14,7 +14,7 @@ export const RESPONSIVE_CONFIG: ResponsiveConfig = {
   mobile: {
     spacing: 0.85,
     cubeScale: 0.75,
-    gridScale: 1.475,
+    gridScale: 1.4,
   },
   tablet: {
     spacing: 0.95,

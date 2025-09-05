@@ -98,7 +98,14 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     const col = index % gridN;
     // Center the grid and add responsive spacing
     const x = (col - (gridN - 1) / 2) * spacing;
-    const y = ((gridN - 1) / 2 - row) * spacing;
+    let y = ((gridN - 1) / 2 - row) * spacing;
+
+    // Mobile-specific Y offset to move cubes up slightly for small mobile devices
+    // Only apply to devices < 768px (mobile breakpoint) to avoid affecting tablets/desktop
+    if (window.innerWidth < 768) {
+      y += 0.2; // Bump up position slightly for mobile browsers
+    }
+
     return [x, y, 0];
   };
 
@@ -140,6 +147,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         top: 0,
         left: 0,
         width: "100vw",
+        // height: "100svh",
         height: "100vh",
         zIndex: 0,
         pointerEvents: "none",

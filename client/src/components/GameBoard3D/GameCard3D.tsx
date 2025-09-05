@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import type { ThreeEvent } from "@react-three/fiber";
 import { colorMap } from "../../datatypes/colortypes";
 import { GameCardProps } from "../../datatypes/proptypes";
 import * as THREE from "three";
@@ -51,13 +52,7 @@ const GameCard3D = ({
     ? new THREE.Color(faceColor).multiplyScalar(0.6)
     : new THREE.Color(faceColor).multiplyScalar(0.08);
 
-  const handleClick = () => {
-    if (isRevealed || isLoss || isWin || isNewRound) return;
-    handleCardClick(id);
-    setIsClicked(true);
-  };
-
-  const handlePointerDown = (e: any) => {
+  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
     // Immediate visual feedback on touch start - no delay
     if (isRevealed || isLoss || isWin || isNewRound) return;
@@ -74,7 +69,6 @@ const GameCard3D = ({
         ref={meshRef}
         castShadow
         receiveShadow
-        onClick={handleClick}
         onPointerDown={handlePointerDown}
         onPointerOver={(e) => {
           e.stopPropagation();
