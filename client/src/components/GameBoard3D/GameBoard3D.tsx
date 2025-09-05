@@ -54,7 +54,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Calculate positions for grid layout
   const getPosition = (
     index: number,
-    spacing: number,
+    spacing: number
   ): [number, number, number] => {
     const row = Math.floor(index / gridN);
     const col = index % gridN;
@@ -79,7 +79,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
             child as THREE.Mesh<
               THREE.BufferGeometry,
               THREE.Material | THREE.Material[]
-            >,
+            >
           );
         }
       });
@@ -136,7 +136,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         <directionalLight
           position={[2, 2, 4]}
           intensity={0.5}
-          color="#ffffff"
+          color="#ffffffff"
           castShadow
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}

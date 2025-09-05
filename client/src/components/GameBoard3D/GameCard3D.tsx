@@ -48,7 +48,7 @@ const GameCard3D = ({
 
   // Enhanced inner glow effect on hover - brighter and more centered
   const emissiveColor = hovered
-    ? new THREE.Color(faceColor).multiplyScalar(0.5)
+    ? new THREE.Color(faceColor).multiplyScalar(0.6)
     : new THREE.Color(faceColor).multiplyScalar(0.08);
 
   const handleClick = () => {
