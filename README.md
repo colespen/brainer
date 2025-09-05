@@ -5,7 +5,7 @@
 #### . . .and also just for fun
 
 - React + TypeScript scaffolded with Vite
-- React Three Fibre, ostprocessing, drei
+- React Three Fiber, postprocessing, drei
 - Redux
 - Jest
 - React Testing Library

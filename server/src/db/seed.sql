@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS game(
 );
 
 -- use below for dev
--- DROP TABLE IF EXISTS game;
 -- INSERT INTO
 --   game (user_name, total_points)
 -- VALUES
@@ -44,4 +43,25 @@ CREATE TABLE IF NOT EXISTS game(
 --   ('MALLO', 450),
 --   ('MELT', 230),
 --   ('PANTS', 310),
---   ('TILLY', 760);
+--   ('TILLY', 760),
+--   ('ALEX', 1200),
+--   ('SARA', 340),
+--   ('MIKE', 670),
+--   ('LUNA', 890),
+--   ('ZARA', 123),
+--   ('KYLE', 456),
+--   ('NOVA', 789),
+--   ('ECHO', 234),
+--   ('JADE', 567),
+--   ('FINN', 890),
+--   ('IRIS', 345),
+--   ('OWEN', 678),
+--   ('RUBY', 901),
+--   ('COLE', 234),
+--   ('SAGE', 567),
+--   ('DREW', 890),
+--   ('LYRA', 123),
+--   ('KNOX', 456),
+--   ('WREN', 789),
+--   ('BLUE', 345)
+-- ON CONFLICT DO NOTHING;

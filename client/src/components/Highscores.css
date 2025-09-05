@@ -3,10 +3,17 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   min-height: 100vh;
   width: 100%;
   transition: opacity 350ms ease-out;
+  /* Prevent mobile overscroll/elastic scrolling */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  /* Allow normal scrolling but prevent overscroll */
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .highscores-container {
@@ -67,8 +74,10 @@
 }
 
 .game-link {
-  position: sticky;
+  position: fixed;
   bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10;
 }
 .game-link button {
@@ -125,6 +134,9 @@
     font-size: 1.2rem;
   }
   .game-link {
+    /* Ensure it stays centered on mobile */
+    left: 50%;
+    transform: translateX(-50%);
   }
   #new-game-highscore {
     font-size: 14px;

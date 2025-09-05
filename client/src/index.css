@@ -2,6 +2,14 @@
   font-family: videophreak;
   src: url(/fonts/videophreak.ttf) format("truetype");
 }
+
+/* Prevent mobile overscroll at the document level */
+html {
+  overscroll-behavior: none;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 .highscores-container {
   font-family: videophreak, system-ui, sans-serif;
 }
@@ -29,6 +37,10 @@
   text-align: center;
   display: flex;
   justify-content: center;
+  /* Prevent mobile overscroll in root container */
+  overscroll-behavior: none;
+  height: 100%;
+  overflow: hidden;
 }
 
 a {
@@ -48,6 +60,13 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #11131aff;
+  /* Prevent mobile overscroll/bounce effect */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  /* Fix iOS Safari and Chrome mobile scrolling issues */
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 h1 {

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useState, useEffect, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface GridRotationControllerProps {
@@ -23,12 +23,37 @@ const GridRotationController = ({
   mousePosition,
   isMouseOverGrid,
 }: GridRotationControllerProps) => {
+  const { camera, scene, gl } = useThree();
   const [isDragging, setIsDragging] = useState(false);
   const [previousMouse, setPreviousMouse] = useState({ x: 0, y: 0 });
   const [userInterrupted, setUserInterrupted] = useState(false);
   const [victoryStartTime, setVictoryStartTime] = useState<number | null>(null);
   const [lossStartTime, setLossStartTime] = useState<number | null>(null);
   const [victoryAnimationType, setVictoryAnimationType] = useState<number>(0);
+  const raycasterRef = useRef(new THREE.Raycaster());
+
+  // Helper function to check if mouse is actually over the 3D grid objects
+  const isMouseOverGrid3D = (clientX: number, clientY: number): boolean => {
+    if (!gridGroupRef.current) return false;
+
+    const rect = gl.domElement.getBoundingClientRect();
+    const mouse = new THREE.Vector2();
+    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycasterRef.current.setFromCamera(mouse, camera);
+
+    // Get all mesh objects from the grid group
+    const gridMeshes: THREE.Object3D[] = [];
+    gridGroupRef.current.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        gridMeshes.push(child);
+      }
+    });
+
+    const intersects = raycasterRef.current.intersectObjects(gridMeshes, true);
+    return intersects.length > 0;
+  };
 
   // Track victory and loss state changes
   useFrame((state) => {
@@ -193,53 +218,64 @@ const GridRotationController = ({
       setUserInterrupted(false);
     }
 
-    // Subtle mouse-following grid rotation when gameplay is active AND mouse is over grid
-    if (isGameActive && isMouseOverGrid && gridGroupRef.current) {
-      // More subtle rotation based on mouse position
-      const targetRotationX = mousePosition.y * 0.07; // Reduced for subtlety
-      const targetRotationY = mousePosition.x * 0.1; // Reduced for subtlety
+    // Subtle mouse-following grid rotation when gameplay is active AND mouse is actually over 3D objects
+    if (isGameActive && gridGroupRef.current) {
+      // Check if mouse is over actual 3D grid objects using raycasting
+      const rect = gl.domElement.getBoundingClientRect();
+      const clientX = ((mousePosition.x + 1) * rect.width) / 2 + rect.left;
+      const clientY = ((-mousePosition.y + 1) * rect.height) / 2 + rect.top;
+      const isOver3DGrid = isMouseOverGrid3D(clientX, clientY);
 
-      gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.x,
-        targetRotationX,
-        0.05,
-      );
-      gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.y,
-        targetRotationY,
-        0.05,
-      );
-      gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.z,
-        0,
-        0.08,
-      );
-    } else if (isGameActive && !isMouseOverGrid && gridGroupRef.current) {
-      // Return to neutral position when mouse leaves grid
-      gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.x,
-        0,
-        0.08,
-      );
-      gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.y,
-        0,
-        0.08,
-      );
-      gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(
-        gridGroupRef.current.rotation.z,
-        0,
-        0.08,
-      );
+      if (isOver3DGrid) {
+        // More subtle rotation based on mouse position
+        const targetRotationX = mousePosition.y * 0.07; // Up/down reversed (moves toward user)
+        const targetRotationY = -mousePosition.x * 0.1; // Left/right reversed for natural feel
+
+        gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.x,
+          targetRotationX,
+          0.05,
+        );
+        gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.y,
+          targetRotationY,
+          0.05,
+        );
+        gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.z,
+          0,
+          0.08,
+        );
+      } else {
+        // Return to neutral position when mouse is not over 3D objects
+        gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.x,
+          0,
+          0.08,
+        );
+        gridGroupRef.current.rotation.y = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.y,
+          0,
+          0.08,
+        );
+        gridGroupRef.current.rotation.z = THREE.MathUtils.lerp(
+          gridGroupRef.current.rotation.z,
+          0,
+          0.08,
+        );
+      }
     }
   });
 
   useEffect(() => {
     const handleMouseDown = (event: MouseEvent) => {
+      // Use precise 3D raycasting to check if mouse is over actual grid objects
+      if (!isMouseOverGrid3D(event.clientX, event.clientY)) return;
+
       // Allow rotation interruption when waiting for player, or normal rotation when game stopped
       if (isGameActive) return;
 
-      // If waiting for player, interrupt the auto-rotation
+      // If waiting for player, interrupt the auto-rotation only when clicking on the grid
       if (isWaitingForPlayer) {
         setUserInterrupted(true);
       }
@@ -284,7 +320,8 @@ const GridRotationController = ({
     isGameActive,
     isWaitingForPlayer,
     gridGroupRef,
-    mousePosition,
+    camera,
+    gl,
   ]);
 
   return null;

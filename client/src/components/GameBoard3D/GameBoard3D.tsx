@@ -10,6 +10,7 @@ import GameCard3D from "./GameCard3D";
 import RenderSettings from "./RenderSettings";
 import ResponsiveGridCalculator from "./ResponsiveGridCalculator";
 import GridRotationController from "./GridRotationController";
+import { getResponsiveValues } from "../../config/responsiveConfig";
 import * as THREE from "three";
 
 function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
@@ -29,28 +30,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   // Initialize responsive values on mount
   useEffect(() => {
     const checkInitialViewport = () => {
-      const isMobile = window.innerWidth < 768;
-      const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
-
-      let spacing = 1.08;
-      let cubeScale = 1.0;
-      let gridScale = 1.0;
-
-      if (isMobile) {
-        spacing = 0.85;
-        cubeScale = 0.75;
-        gridScale = 1.0;
-      } else if (isTablet) {
-        spacing = 0.95;
-        cubeScale = 0.9;
-        gridScale = 1.15;
-      } else {
-        spacing = 1.08;
-        cubeScale = 1.0;
-        gridScale = 1.3;
-      }
-
-      setResponsiveValues({ spacing, cubeScale, gridScale });
+      const responsiveValues = getResponsiveValues(window.innerWidth);
+      setResponsiveValues(responsiveValues);
     };
 
     checkInitialViewport();
@@ -149,12 +130,12 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         shadows
       >
         {/* Subtle lighting for consistent depth and color visibility */}
-        <ambientLight intensity={0.75} color="#ffffff" />
+        <ambientLight intensity={1} color="rgba(255, 246, 238, 1)" />
 
         {/* Single consistent directional light from top-left */}
         <directionalLight
           position={[2, 2, 4]}
-          intensity={0.4}
+          intensity={0.5}
           color="#ffffff"
           castShadow
           shadow-mapSize-width={2048}

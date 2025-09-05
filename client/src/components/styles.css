@@ -21,6 +21,9 @@
   justify-content: center;
   color: #d6ecff;
   position: relative;
+  /* Fix mobile viewport and scrolling issues */
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .game-board {
@@ -198,14 +201,15 @@
   }
 }
 
-@media (max-width: 1000px) {
+/* Large tablets (iPad Pro, etc.) - desktop-sized elements with tablet layout */
+@media (max-width: 1200px) and (min-width: 1000px) {
   .name-input {
-    font-size: 24px;
-    height: 60px;
+    font-size: 35px;
+    height: 90px;
     color: #d6ecff;
   }
   .title-item {
-    font-size: 26px;
+    font-size: 32px;
   }
   .game-dashboard-side {
     width: 100%;
@@ -215,27 +219,72 @@
     top: auto;
     left: auto;
     flex-direction: row;
+    position: fixed;
+    z-index: 30;
   }
-
   .dashboard-item {
-    width: 60px;
-    height: 60px;
-    font-size: 12px;
+    width: 90px;
+    height: 90px;
+    font-size: 14px;
     color: #d6ecff;
   }
   .name-btn {
-    font-size: 16px;
-  }
-  .game-dashboard-side {
+    font-size: 26px;
   }
   .new-game {
-    width: 60px;
-    height: 60px;
-    font-size: 12px;
+    width: 90px;
+    height: 90px;
+    font-size: 14px;
   }
   .btn {
-    height: 60px;
-    width: 60px;
+    height: 90px;
+    width: 90px;
+  }
+  .settings-container {
+    scale: 0.85;
+    top: 1rem;
+    right: -2rem;
+  }
+}
+
+/* Regular tablets - slightly larger than previous mobile size */
+@media (max-width: 1000px) {
+  .name-input {
+    font-size: 28px;
+    height: 75px;
+    color: #d6ecff;
+  }
+  .title-item {
+    font-size: 28px;
+  }
+  .game-dashboard-side {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 2rem;
+    top: auto;
+    left: auto;
+    flex-direction: row;
+    position: fixed;
+    z-index: 30;
+  }
+  .dashboard-item {
+    width: 75px;
+    height: 75px;
+    font-size: 13px;
+    color: #d6ecff;
+  }
+  .name-btn {
+    font-size: 20px;
+  }
+  .new-game {
+    width: 75px;
+    height: 75px;
+    font-size: 13px;
+  }
+  .btn {
+    height: 75px;
+    width: 75px;
   }
   .settings-container {
     top: 0.5rem;
@@ -249,11 +298,25 @@
   }
 }
 @media (max-width: 480px) {
+  .gameboard-main {
+    /* Use device height instead of viewport height on mobile */
+    height: 100dvh;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
   .game-board {
     margin-top: 0;
   }
   .game-dashboard-top {
     left: 0;
+  }
+  .game-dashboard-side {
+    /* Ensure dashboard stays visible on mobile */
+    bottom: 1rem;
+    position: fixed;
+    z-index: 30;
   }
   .name-input {
     font-size: 16px;
