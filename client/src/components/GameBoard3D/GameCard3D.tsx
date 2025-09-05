@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { colorMap } from "../datatypes/colortypes";
-import { GameCardProps } from "../datatypes/proptypes";
+import { colorMap } from "../../datatypes/colortypes";
+import { GameCardProps } from "../../datatypes/proptypes";
 import * as THREE from "three";
 
 const GameCard3D = ({

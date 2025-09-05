@@ -3,13 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, Outline, SMAA } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
-import { cardFlipped, cardFound, lossSet } from "./gameBoardSlice";
-import { GameBoardProps } from "../datatypes/proptypes";
-import { useAppDispatch } from "../hooks/redux";
+import { cardFlipped, cardFound, lossSet } from "../gameBoardSlice";
+import { GameBoardProps } from "../../datatypes/proptypes";
+import { useAppDispatch } from "../../hooks/redux";
 import GameCard3D from "./GameCard3D";
-import RenderSettings from "./GameBoard3D/RenderSettings";
-import ResponsiveGridCalculator from "./GameBoard3D/ResponsiveGridCalculator";
-import GridRotationController from "./GameBoard3D/GridRotationController";
+import RenderSettings from "./RenderSettings";
+import ResponsiveGridCalculator from "./ResponsiveGridCalculator";
+import GridRotationController from "./GridRotationController";
 import * as THREE from "three";
 
 
@@ -21,7 +21,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const gridGroupRef = useRef<THREE.Group>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMouseOverGrid, setIsMouseOverGrid] = useState(false);
-  const [responsiveValues, setResponsiveValues] = useState({ spacing: 1.08, cubeScale: 1.0 });
+  const [responsiveValues, setResponsiveValues] = useState({ spacing: 1.08, cubeScale: 1.0, gridScale: 1.0 });
   
   // Initialize responsive values on mount
   useEffect(() => {
@@ -31,16 +31,23 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
       
       let spacing = 1.08;
       let cubeScale = 1.0;
+      let gridScale = 1.0;
       
       if (isMobile) {
         spacing = 0.85;
         cubeScale = 0.75;
+        gridScale = 1.0;
       } else if (isTablet) {
         spacing = 0.95;
         cubeScale = 0.9;
+        gridScale = 1.15;
+      } else {
+        spacing = 1.08;
+        cubeScale = 1.0;
+        gridScale = 1.3;
       }
       
-      setResponsiveValues({ spacing, cubeScale });
+      setResponsiveValues({ spacing, cubeScale, gridScale });
     };
     
     checkInitialViewport();
@@ -108,7 +115,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     >
       <Canvas
         camera={{ 
-          position: [0, 0, Math.max(gridN * 2, 8)], 
+          position: [0, 0, 15], 
           fov: 50,
           near: 0.1,
           far: 1000
@@ -152,7 +159,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         />
 
         {/* Rotatable grid group */}
-        <group ref={gridGroupRef}>
+        <group ref={gridGroupRef} scale={responsiveValues.gridScale}>
           {/* Cards */}
           {cardData.map((card, index) => (
             <group key={card.id} position={getPosition(index, responsiveValues.spacing)} scale={responsiveValues.cubeScale}>

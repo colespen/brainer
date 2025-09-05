@@ -20,17 +20,21 @@ const RenderSettings = ({ gridN }: RenderSettingsProps) => {
   useFrame(() => {
     const isMobile = viewport.width < 768;
     const isTablet = viewport.width >= 768 && viewport.width < 1024;
+    const isDesktop = viewport.width >= 1024;
     
-    // Calculate responsive camera distance based on grid size and viewport
-    const baseDistance = Math.max(gridN * 2, 8);
-    let cameraDistance = baseDistance;
+    let cameraDistance;
     
     if (isMobile) {
-      // Increase distance on mobile for better fit
+      // Mobile: Scale distance with grid size to maintain consistent appearance
+      const baseDistance = Math.max(gridN * 2, 8);
       cameraDistance = baseDistance * 1.4;
     } else if (isTablet) {
-      // Slightly increase distance on tablets
+      // Tablet: Scale distance with grid size to maintain consistent appearance
+      const baseDistance = Math.max(gridN * 2, 8);
       cameraDistance = baseDistance * 1.2;
+    } else if (isDesktop) {
+      // Desktop: FIXED distance - let larger grids naturally appear bigger
+      cameraDistance = 15; // Fixed distance regardless of grid size
     }
     
     // Smoothly adjust camera position

@@ -18,7 +18,7 @@ import {
 } from "../handlers/eventHandlers";
 
 import Settings from "./Settings";
-import GameBoard3D from "./GameBoard3D";
+import GameBoard3D from "./GameBoard3D/GameBoard3D";
 import DashboardTop from "./DashboardTop";
 import DashboardSide from "./DashboardSide";
 
