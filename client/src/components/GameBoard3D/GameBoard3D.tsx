@@ -10,6 +10,7 @@ import GameCard3D from "./GameCard3D";
 import RenderSettings from "./RenderSettings";
 import ResponsiveGridCalculator from "./ResponsiveGridCalculator";
 import GridRotationController from "./GridRotationController";
+import LoadingSpinner from "./LoadingSpinner";
 import { getResponsiveValues } from "../../config/responsiveConfig";
 import * as THREE from "three";
 
@@ -21,11 +22,28 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const gridGroupRef = useRef<THREE.Group>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMouseOverGrid, setIsMouseOverGrid] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [responsiveValues, setResponsiveValues] = useState({
     spacing: 1.08,
     cubeScale: 1.0,
     gridScale: 1.0,
   });
+
+  // Detect low-power mobile devices for performance optimization
+  const isMobileLowPower = () => {
+    const ua = navigator.userAgent;
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    if (!isMobile) return false;
+    
+    // Check for older/lower-power devices
+    const isOlderiOS = /iPhone.*OS [5-9]_|iPhone.*OS 1[0-3]_/i.test(ua);
+    const isOlderAndroid = /Android [4-7]\./i.test(ua);
+    const isLowEndDevice = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+    
+    return isOlderiOS || isOlderAndroid || isLowEndDevice;
+  };
+
+  const shouldUseLowPerformanceMode = isMobileLowPower();
 
   // Initialize responsive values on mount
   useEffect(() => {
@@ -36,6 +54,24 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
 
     checkInitialViewport();
   }, []);
+
+  // Component to detect when first frames are rendered (proper R3F approach)
+  const SceneReadyDetector = () => {
+    const frameCount = useRef(0);
+    
+    useFrame(() => {
+      if (!isLoading) return;
+      
+      frameCount.current += 1;
+      
+      // After a few frames have been rendered, scene is ready
+      if (frameCount.current > 3) {
+        setIsLoading(false);
+      }
+    });
+
+    return null;
+  };
 
   // Turn clicked cards face up
   const handleCardClick = (id: number) => {
@@ -95,9 +131,26 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     return null;
   };
 
+
   return (
     <div
-      style={{ width: "100%", height: "100vh", minHeight: "600px" }}
+      style={{ 
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 0,
+        pointerEvents: "none",
+        background: `
+          radial-gradient(ellipse 70% 120% at center center, 
+            #11131a 0%, 
+            #0b0d16 25%, 
+            #07080f 50%, 
+            #030306 100%
+          )
+        `
+      }}
       onMouseEnter={() => setIsMouseOverGrid(true)}
       onMouseLeave={() => setIsMouseOverGrid(false)}
       onMouseMove={(event) => {
@@ -109,6 +162,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         }
       }}
     >
+      {/* Loading spinner positioned behind Canvas */}
+      <LoadingSpinner isVisible={isLoading} />
       <Canvas
         camera={{
           position: [0, 0, 15],
@@ -116,28 +171,33 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           near: 0.1,
           far: 1000,
         }}
-        style={{ background: "transparent" }}
+        style={{ 
+          background: "transparent",
+          pointerEvents: "auto",
+          zIndex: 2
+        }}
         gl={{
-          antialias: true,
+          antialias: !shouldUseLowPerformanceMode,
           alpha: true,
           powerPreference: "high-performance",
-          precision: "highp",
+          precision: shouldUseLowPerformanceMode ? "mediump" : "highp",
           preserveDrawingBuffer: false,
           stencil: false,
           depth: true,
         }}
-        dpr={[1, Math.min(window.devicePixelRatio, 3)]}
-        shadows
+        dpr={[1, shouldUseLowPerformanceMode ? 1.5 : Math.min(window.devicePixelRatio, 3)]}
+        shadows={!shouldUseLowPerformanceMode}
       >
-        {/* Subtle lighting for consistent depth and color visibility */}
-        <ambientLight intensity={1} color="rgba(255, 246, 238, 1)" />
 
-        {/* Single consistent directional light from top-left */}
+        {/* Lighting - consistent across all devices */}
+        <ambientLight intensity={1} color="rgba(255, 246, 238, 1)" />
+        
+        {/* Main directional light - shadows only on high-end devices */}
         <directionalLight
           position={[2, 2, 4]}
           intensity={0.5}
-          color="#ffffffff"
-          castShadow
+          color="#ffffff"
+          castShadow={!shouldUseLowPerformanceMode}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           shadow-bias={-0.0001}
@@ -146,11 +206,11 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           shadow-camera-top={10}
           shadow-camera-bottom={-10}
         />
-
-        {/* Very gentle fill light to prevent pure black shadows */}
+        
+        {/* Fill light - no shadows needed */}
         <directionalLight
           position={[-1, -1.5, 1.5]}
-          intensity={0.25}
+          intensity={0.2}
           color="#ffffff"
         />
 
@@ -188,6 +248,9 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         {/* Track hovered cubes */}
         <OutlineTracker />
 
+        {/* Detect when scene is ready */}
+        <SceneReadyDetector />
+
         {/* Grid rotation controller */}
         <GridRotationController
           gridGroupRef={gridGroupRef}
@@ -207,22 +270,24 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           mousePosition={mousePosition}
         />
 
-        {/* Professional post-processing effects */}
-        <EffectComposer multisampling={16}>
-          <SMAA />
-          <Outline
-            selection={[]} // We'll implement a different approach for all cubes
-            selectionLayer={10}
-            blendFunction={BlendFunction.SCREEN}
-            edgeStrength={4.0}
-            pulseSpeed={0.0}
-            visibleEdgeColor={0x585aa9}
-            hiddenEdgeColor={0x404040}
-            height={512}
-            blur={false}
-            xRay={false}
-          />
-        </EffectComposer>
+        {/* Post-processing effects - disabled on low-power devices */}
+        {!shouldUseLowPerformanceMode && (
+          <EffectComposer multisampling={16}>
+            <SMAA />
+            <Outline
+              selection={[]}
+              selectionLayer={10}
+              blendFunction={BlendFunction.SCREEN}
+              edgeStrength={4.0}
+              pulseSpeed={0.0}
+              visibleEdgeColor={0x585aa9}
+              hiddenEdgeColor={0x404040}
+              height={512}
+              blur={false}
+              xRay={false}
+            />
+          </EffectComposer>
+        )}
       </Canvas>
     </div>
   );

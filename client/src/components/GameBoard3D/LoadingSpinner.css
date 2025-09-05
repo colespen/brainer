@@ -1,0 +1,131 @@
+.loading-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+  pointer-events: none;
+}
+
+.loading-overlay.fade-out {
+  opacity: 0;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loading-spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.spinner-ring {
+  position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.spinner-ring:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  border-top-color: #585aa9;
+  animation-delay: -0.45s;
+}
+
+.spinner-ring:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  top: 10px;
+  left: 10px;
+  border-top-color: #9294ff;
+  animation-delay: -0.3s;
+  animation-direction: reverse;
+}
+
+.spinner-ring:nth-child(3) {
+  width: 40px;
+  height: 40px;
+  top: 20px;
+  left: 20px;
+  border-top-color: #00fff7;
+  animation-delay: -0.15s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+  }
+
+  .spinner-ring:nth-child(1) {
+    width: 60px;
+    height: 60px;
+  }
+
+  .spinner-ring:nth-child(2) {
+    width: 45px;
+    height: 45px;
+    top: 7.5px;
+    left: 7.5px;
+  }
+
+  .spinner-ring:nth-child(3) {
+    width: 30px;
+    height: 30px;
+    top: 15px;
+    left: 15px;
+  }
+
+  .loading-container {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+  }
+
+  .spinner-ring:nth-child(1) {
+    width: 50px;
+    height: 50px;
+  }
+
+  .spinner-ring:nth-child(2) {
+    width: 38px;
+    height: 38px;
+    top: 6px;
+    left: 6px;
+  }
+
+  .spinner-ring:nth-child(3) {
+    width: 26px;
+    height: 26px;
+    top: 12px;
+    left: 12px;
+  }
+
+}

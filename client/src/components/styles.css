@@ -24,6 +24,8 @@
   /* Fix mobile viewport and scrolling issues */
   overflow: hidden;
   overscroll-behavior: none;
+  /* Background color matching the visible gradient result */
+  background: #11131a;
 }
 
 .game-board {
