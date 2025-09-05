@@ -179,7 +179,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           touchAction: "manipulation", // Eliminate 300ms touch delay
         }}
         gl={{
-          antialias: !shouldUseLowPerformanceMode,
+          antialias: true,
           alpha: true,
           powerPreference: "high-performance",
           precision: shouldUseLowPerformanceMode ? "mediump" : "highp",
