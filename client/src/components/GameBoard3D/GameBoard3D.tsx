@@ -205,7 +205,6 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           isWin={gameBoard.isWin}
           isLoss={gameBoard.isLoss}
           mousePosition={mousePosition}
-          isMouseOverGrid={isMouseOverGrid}
         />
 
         {/* Professional post-processing effects */}

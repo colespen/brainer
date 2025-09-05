@@ -29,7 +29,6 @@ const GameMain = () => {
   const { gameBoard } = useAppSelector(selectedGameState);
   const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
 
-  // TODO: display roundData stats
   const { cardData } = useGenerateCardData(gridN, isNewRound, isNewGame);
 
   useBoardUpdate(gameBoard, roundData);
@@ -37,7 +36,7 @@ const GameMain = () => {
   useNewGameDelayAlert();
   const { loading } = usePostGameResult();
 
-  // temp hack - fix vh issue
+  // Ensure consistent viewport positioning
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

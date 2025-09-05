@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -10,7 +10,6 @@ interface GridRotationControllerProps {
   isWin: boolean;
   isLoss: boolean;
   mousePosition: { x: number; y: number };
-  isMouseOverGrid: boolean;
 }
 
 const GridRotationController = ({
@@ -21,9 +20,8 @@ const GridRotationController = ({
   isWin,
   isLoss,
   mousePosition,
-  isMouseOverGrid,
 }: GridRotationControllerProps) => {
-  const { camera, scene, gl } = useThree();
+  const { camera, gl } = useThree();
   const [isDragging, setIsDragging] = useState(false);
   const [previousMouse, setPreviousMouse] = useState({ x: 0, y: 0 });
   const [userInterrupted, setUserInterrupted] = useState(false);
@@ -33,7 +31,7 @@ const GridRotationController = ({
   const raycasterRef = useRef(new THREE.Raycaster());
 
   // Helper function to check if mouse is actually over the 3D grid objects
-  const isMouseOverGrid3D = (clientX: number, clientY: number): boolean => {
+  const isMouseOverGrid3D = useCallback((clientX: number, clientY: number): boolean => {
     if (!gridGroupRef.current) return false;
 
     const rect = gl.domElement.getBoundingClientRect();
@@ -53,7 +51,7 @@ const GridRotationController = ({
 
     const intersects = raycasterRef.current.intersectObjects(gridMeshes, true);
     return intersects.length > 0;
-  };
+  }, [gridGroupRef, gl, camera]);
 
   // Track victory and loss state changes
   useFrame((state) => {
@@ -322,6 +320,7 @@ const GridRotationController = ({
     gridGroupRef,
     camera,
     gl,
+    isMouseOverGrid3D,
   ]);
 
   return null;

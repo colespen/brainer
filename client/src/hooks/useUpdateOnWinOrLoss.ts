@@ -18,12 +18,10 @@ const useUpdateOnWinOrLoss = () => {
       cardData.length !== 0 &&
       gameBoard.cardsFound === totalColorCards.length // .length
     ) {
-      console.log("WIN");
       dispatch(winSet(true)); //    ***WIN
       dispatch(winAdded(roundResultAdd(gameBoard)));
     }
     if (gameBoard.isLoss) {
-      console.log("LOSS");
       dispatch(lossAdded(roundResultAdd(gameBoard)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
