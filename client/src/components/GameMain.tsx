@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
 import { useBoardUpdate } from "../hooks/useBoardUpdate";
-import { selectedRoundState } from "./roundDataSlice";
-import { selectedGameState, userNameSet } from "./gameBoardSlice";
+import { selectedRoundState } from "../store/slices/roundDataSlice";
+import { selectedGameState, userNameSet } from "../store/slices/gameBoardSlice";
 
 import useUpdateOnWinOrLoss from "../hooks/useUpdateOnWinOrLoss";
 import useNewGameDelayAlert from "../hooks/useNewGameDelayAlert";

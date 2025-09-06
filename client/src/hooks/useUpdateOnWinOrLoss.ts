@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGenerateCardData } from "../hooks/useGenerateCardData";
-import { winAdded, lossAdded } from "../components/roundDataSlice";
-import { selectedGameState, winSet } from "../components/gameBoardSlice";
+import { winAdded, lossAdded } from "../store/slices/roundDataSlice";
+import { selectedGameState, winSet } from "../store/slices/gameBoardSlice";
 import { roundResultAdd } from "../actionHelpers.ts/gameBoardActions";
 
 const useUpdateOnWinOrLoss = () => {

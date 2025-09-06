@@ -1,5 +1,5 @@
 import { GameBoardData } from "../datatypes/gameDatatypes";
-import { RoundDataState } from "../components/roundDataSlice";
+import { RoundDataState } from "../store/slices/roundDataSlice";
 
 const alertRoundUpdate = (
   roundData: RoundDataState[],

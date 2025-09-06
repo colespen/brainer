@@ -1,5 +1,5 @@
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
-import { newGameSet } from "../components/gameBoardSlice";
+import { newGameSet } from "../store/slices/gameBoardSlice";
 
 const listenForEnter = (
   e: React.KeyboardEvent<HTMLInputElement>,

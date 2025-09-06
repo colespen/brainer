@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GameBoardState } from "../datatypes/gameDatatypes";
-import { RootState } from "../store";
+import { GameBoardState } from "../../datatypes/gameDatatypes";
+import { RootState } from "../index";
 
 const initialState: GameBoardState = {
   gameBoard: {

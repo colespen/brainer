@@ -25,9 +25,9 @@ const GridRotationController = ({
   const [isDragging, setIsDragging] = useState(false);
   const [previousMouse, setPreviousMouse] = useState({ x: 0, y: 0 });
   const [userInterrupted, setUserInterrupted] = useState(false);
-  const [victoryStartTime, setVictoryStartTime] = useState<number | null>(null);
-  const [lossStartTime, setLossStartTime] = useState<number | null>(null);
-  const [victoryAnimationType, setVictoryAnimationType] = useState<number>(0);
+  const victoryStartTimeRef = useRef<number | null>(null);
+  const lossStartTimeRef = useRef<number | null>(null);
+  const victoryAnimationTypeRef = useRef<number>(0);
   const raycasterRef = useRef(new THREE.Raycaster());
 
   // Helper function to check if mouse is actually over the 3D grid objects
@@ -64,30 +64,30 @@ const GridRotationController = ({
     if (!gridGroupRef.current) return;
 
     // Start victory animation when win occurs
-    if (isWin && victoryStartTime === null) {
-      setVictoryStartTime(state.clock.elapsedTime);
+    if (isWin && victoryStartTimeRef.current === null) {
+      victoryStartTimeRef.current = state.clock.elapsedTime;
       // Choose random animation type (0-3 for 4 variations)
-      setVictoryAnimationType(Math.floor(Math.random() * 4));
+      victoryAnimationTypeRef.current = Math.floor(Math.random() * 4);
     }
 
     // Start loss animation when loss occurs
-    if (isLoss && lossStartTime === null) {
-      setLossStartTime(state.clock.elapsedTime);
+    if (isLoss && lossStartTimeRef.current === null) {
+      lossStartTimeRef.current = state.clock.elapsedTime;
     }
 
     // Reset victory timer when no longer winning
-    if (!isWin && victoryStartTime !== null) {
-      setVictoryStartTime(null);
+    if (!isWin && victoryStartTimeRef.current !== null) {
+      victoryStartTimeRef.current = null;
     }
 
     // Reset loss timer when no longer losing
-    if (!isLoss && lossStartTime !== null) {
-      setLossStartTime(null);
+    if (!isLoss && lossStartTimeRef.current !== null) {
+      lossStartTimeRef.current = null;
     }
 
     // Loss shake animation (0.5 second duration)
-    if (isLoss && lossStartTime !== null && gridGroupRef.current) {
-      const lossDuration = state.clock.elapsedTime - lossStartTime;
+    if (isLoss && lossStartTimeRef.current !== null && gridGroupRef.current) {
+      const lossDuration = state.clock.elapsedTime - lossStartTimeRef.current;
       if (lossDuration < 0.5) {
         // Simple quick shake
         const intensity = (1 - lossDuration / 0.5) * 0.05; // Small, decreasing shake
@@ -100,14 +100,15 @@ const GridRotationController = ({
     }
 
     // Victory playful spin animation with variations (0.8 second 180-degree spin)
-    if (isWin && victoryStartTime !== null && gridGroupRef.current) {
-      const victoryDuration = state.clock.elapsedTime - victoryStartTime;
+    if (isWin && victoryStartTimeRef.current !== null && gridGroupRef.current) {
+      const victoryDuration =
+        state.clock.elapsedTime - victoryStartTimeRef.current;
       if (victoryDuration < 0.8) {
         // Simple 180-degree spin with smooth easing - 4 variations
         const progress = victoryDuration / 0.8;
         const easing = Math.sin(progress * Math.PI); // Smooth start and stop
 
-        switch (victoryAnimationType) {
+        switch (victoryAnimationTypeRef.current) {
           case 0: // Original Y-axis spin
             gridGroupRef.current.rotation.y = progress * Math.PI * easing;
             break;
@@ -149,7 +150,7 @@ const GridRotationController = ({
         );
 
         // Add small spring oscillation based on animation type
-        switch (victoryAnimationType) {
+        switch (victoryAnimationTypeRef.current) {
           case 0:
           case 1:
             gridGroupRef.current.rotation.y += springDamping * 0.1;

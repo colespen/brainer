@@ -1,5 +1,9 @@
 import { useDispatch } from "react-redux";
-import { cardFlipped, cardFound, lossSet } from "../components/gameBoardSlice";
+import {
+  cardFlipped,
+  cardFound,
+  lossSet,
+} from "../store/slices/gameBoardSlice";
 import { GameBoardProps } from "../datatypes/proptypes";
 import GameCard from "./GameCard";
 

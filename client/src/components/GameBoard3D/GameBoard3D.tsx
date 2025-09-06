@@ -1,9 +1,13 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, Outline, SMAA } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
-import { cardFlipped, cardFound, lossSet } from "../gameBoardSlice";
+import {
+  cardFlipped,
+  cardFound,
+  lossSet,
+} from "../../store/slices/gameBoardSlice";
 import { GameBoardProps } from "../../datatypes/proptypes";
 import { useAppDispatch } from "../../hooks/redux";
 import GameCard3D from "./GameCard3D";
@@ -16,7 +20,7 @@ import * as THREE from "three";
 
 function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
   const dispatch = useAppDispatch();
-  const [hoveredCubes, setHoveredCubes] = useState<
+  const hoveredCubesRef = useRef<
     THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[]
   >([]);
   const gridGroupRef = useRef<THREE.Group>(null);
@@ -59,18 +63,12 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
 
   // Component to detect when first frames are rendered (proper R3F approach)
   const SceneReadyDetector = () => {
-    const frameCount = useRef(0);
+    const { scene, gl } = useThree();
 
-    useFrame(() => {
-      if (!isLoading) return;
-
-      frameCount.current += 1;
-
-      // After a few frames have been rendered, scene is ready
-      if (frameCount.current > 3) {
-        setIsLoading(false);
-      }
-    });
+    useLayoutEffect(() => {
+      // Scene is ready after first layout pass
+      setIsLoading(false);
+    }, [scene, gl]);
 
     return null;
   };
@@ -130,10 +128,10 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
       });
 
       if (
-        newHoveredCubes.length !== hoveredCubes.length ||
-        !newHoveredCubes.every((cube) => hoveredCubes.includes(cube))
+        newHoveredCubes.length !== hoveredCubesRef.current.length ||
+        !newHoveredCubes.every((cube) => hoveredCubesRef.current.includes(cube))
       ) {
-        setHoveredCubes(newHoveredCubes);
+        hoveredCubesRef.current = newHoveredCubes;
       }
     });
 
@@ -190,7 +188,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           antialias: true,
           alpha: true,
           powerPreference: "high-performance",
-          precision: shouldUseLowPerformanceMode ? "mediump" : "highp",
+          precision: "highp",
+          // precision: shouldUseLowPerformanceMode ? "mediump" : "highp",
           preserveDrawingBuffer: false,
           stencil: false,
           depth: true,

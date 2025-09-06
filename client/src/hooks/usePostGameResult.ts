@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { postGameResults } from "../services/postGameResults";
-import { selectedGameState } from "../components/gameBoardSlice";
+import { selectedGameState } from "../store/slices/gameBoardSlice";
 
 const usePostGameResult = () => {
   const { gameBoard } = useSelector(selectedGameState);

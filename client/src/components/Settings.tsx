@@ -7,7 +7,7 @@ import {
   hardReset,
   showSettingsSet,
   selectedGameState,
-} from "./gameBoardSlice";
+} from "../store/slices/gameBoardSlice";
 import useCheckViewport from "../hooks/useCheckViewport";
 
 const Settings = ({ resetUserName }: { resetUserName: () => void }) => {

@@ -8,7 +8,7 @@ import {
   newRoundUpdated,
   resultsUpdated,
   gameEndSet,
-} from "../components/gameBoardSlice";
+} from "../store/slices/gameBoardSlice";
 import {
   alertWinMessage,
   alertRoundUpdate,
@@ -17,7 +17,7 @@ import {
 import { useDispatch } from "react-redux";
 import { GameBoardData } from "../datatypes/gameDatatypes";
 import { useGenerateCardData } from "./useGenerateCardData";
-import { RoundDataState } from "../components/roundDataSlice";
+import { RoundDataState } from "../store/slices/roundDataSlice";
 
 const useBoardUpdate = (
   gameBoard: GameBoardData,

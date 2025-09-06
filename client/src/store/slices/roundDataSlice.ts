@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import { RoundData } from "../datatypes/gameDatatypes";
+import { RootState } from "../index";
+import { RoundData } from "../../datatypes/gameDatatypes";
 
 export interface RoundDataState extends RoundData {
   win: boolean;

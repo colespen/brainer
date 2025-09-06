@@ -4,7 +4,11 @@ import SquareLoader from "react-spinners/SquareLoader";
 import { GameBoardData } from "../datatypes/gameDatatypes";
 import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
-import { alertUpdated, newGameReset, newGameSet } from "./gameBoardSlice";
+import {
+  alertUpdated,
+  newGameReset,
+  newGameSet,
+} from "../store/slices/gameBoardSlice";
 import useCheckViewport from "../hooks/useCheckViewport";
 
 const loaderOverride: CSSProperties = {

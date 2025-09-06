@@ -4,7 +4,7 @@ import {
   selectedGameState,
   alertUpdated,
   newGameSet,
-} from "../components/gameBoardSlice";
+} from "../store/slices/gameBoardSlice";
 
 const useNewGameDelayAlert = () => {
   const dispatch = useDispatch();
