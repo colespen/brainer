@@ -25,7 +25,6 @@ const GameCard3D = ({
     setIsClicked(false);
   }, [isNewRound]);
 
-  // Smooth hover animation for the entire group
   useFrame(() => {
     if (groupRef.current) {
       const targetScale = hovered ? 1.08 : 1.0;
@@ -44,17 +43,16 @@ const GameCard3D = ({
   const cardColor = isLoss && notFound ? colorMap.notFound : winColor;
   const faceColor = isFlipped ? cardColor : colorMap.faceDown;
 
-  // Convert hex colors to Three.js Color objects
   const faceColorThree = new THREE.Color(faceColor);
 
-  // Enhanced inner glow effect on hover - brighter and more centered
+  // enhanced inner glow effect on hover
   const emissiveColor = hovered
     ? new THREE.Color(faceColor).multiplyScalar(0.6)
     : new THREE.Color(faceColor).multiplyScalar(0.08);
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    // Immediate visual feedback on touch start - no delay
+    // immediate visual feedback on touch start
     if (isRevealed || isLoss || isWin || isNewRound) return;
     handleCardClick(id);
     setIsClicked(true);

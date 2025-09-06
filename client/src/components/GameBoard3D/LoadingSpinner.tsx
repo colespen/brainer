@@ -12,7 +12,7 @@ const LoadingSpinner = ({ isVisible }: LoadingSpinnerProps) => {
     if (isVisible) {
       setShouldRender(true);
     } else {
-      // Delay unmounting to allow fade-out animation
+      // delay unmounting to allow fade-out animation
       const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }

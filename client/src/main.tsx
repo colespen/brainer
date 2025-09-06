@@ -13,11 +13,6 @@ import GameMain from "./components/GameMain.tsx";
 import Highscores from "./components/Highscores.tsx";
 
 const router = createBrowserRouter([
-  // {
-  //   path: "/", // TODO: landing page
-  //   element: <GameMain />,
-  //   errorElement: <ErrorPage />,
-  // },
   {
     path: "/", // temp redirect
     element: <React.Fragment />,

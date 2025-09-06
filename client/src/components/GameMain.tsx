@@ -36,7 +36,6 @@ const GameMain = () => {
   useNewGameDelayAlert();
   const { loading } = usePostGameResult();
 
-  // Ensure consistent viewport positioning
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

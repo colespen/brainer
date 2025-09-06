@@ -16,7 +16,7 @@ const RenderSettings = ({ gridN }: RenderSettingsProps) => {
     gl.outputColorSpace = THREE.SRGBColorSpace;
   }, [gl]);
 
-  // Responsive camera positioning based on viewport and grid size
+  // responsive camera positioning based on viewport and grid size
   useFrame(() => {
     const isMobile = viewport.width < 768;
     const isTablet = viewport.width >= 768 && viewport.width < 1024;
@@ -25,23 +25,22 @@ const RenderSettings = ({ gridN }: RenderSettingsProps) => {
     let cameraDistance;
 
     if (isMobile) {
-      // Mobile: Scale distance with grid size to maintain consistent appearance
+      // mobile: scale distance with grid size to maintain consistent appearance
       const baseDistance = Math.max(gridN * 2, 8);
       cameraDistance = baseDistance * 1.4;
     } else if (isTablet) {
-      // Tablet: Scale distance with grid size to maintain consistent appearance
+      // tablet: scale distance with grid size to maintain consistent appearance
       const baseDistance = Math.max(gridN * 2, 8);
       cameraDistance = baseDistance * 1.2;
     } else if (isDesktop) {
-      // Desktop: FIXED distance - let larger grids naturally appear bigger
+      // desktop: fixed distance - let larger grids naturally appear bigger
       cameraDistance = 15; // Fixed distance regardless of grid size
     }
 
-    // Smoothly adjust camera position
+    // smoothly adjust camera position
     const targetPosition = new THREE.Vector3(0, 0, cameraDistance);
     camera.position.lerp(targetPosition, 0.05);
 
-    // Update camera's projection matrix
     camera.updateProjectionMatrix();
   });
 

@@ -30,7 +30,7 @@ const GridRotationController = ({
   const victoryAnimationTypeRef = useRef<number>(0);
   const raycasterRef = useRef(new THREE.Raycaster());
 
-  // Helper function to check if mouse is actually over the 3D grid objects
+  // helper function to check if mouse is actually over the 3D grid objects
   const isMouseOverGrid3D = useCallback(
     (clientX: number, clientY: number): boolean => {
       if (!gridGroupRef.current) return false;
@@ -42,7 +42,7 @@ const GridRotationController = ({
 
       raycasterRef.current.setFromCamera(mouse, camera);
 
-      // Get all mesh objects from the grid group
+      // get all mesh objects from the grid group
       const gridMeshes: THREE.Object3D[] = [];
       gridGroupRef.current.traverse((child) => {
         if (child instanceof THREE.Mesh) {
@@ -59,37 +59,37 @@ const GridRotationController = ({
     [gridGroupRef, gl, camera],
   );
 
-  // Track victory and loss state changes
+  // track victory and loss state changes
   useFrame((state) => {
     if (!gridGroupRef.current) return;
 
-    // Start victory animation when win occurs
+    // start victory animation when win occurs
     if (isWin && victoryStartTimeRef.current === null) {
       victoryStartTimeRef.current = state.clock.elapsedTime;
-      // Choose random animation type (0-3 for 4 variations)
+      // choose random animation type (0-3 for 4 variations)
       victoryAnimationTypeRef.current = Math.floor(Math.random() * 4);
     }
 
-    // Start loss animation when loss occurs
+    // start loss animation when loss occurs
     if (isLoss && lossStartTimeRef.current === null) {
       lossStartTimeRef.current = state.clock.elapsedTime;
     }
 
-    // Reset victory timer when no longer winning
+    // reset victory timer when no longer winning
     if (!isWin && victoryStartTimeRef.current !== null) {
       victoryStartTimeRef.current = null;
     }
 
-    // Reset loss timer when no longer losing
+    // reset loss timer when no longer losing
     if (!isLoss && lossStartTimeRef.current !== null) {
       lossStartTimeRef.current = null;
     }
 
-    // Loss shake animation (0.5 second duration)
+    // loss shake animation (0.5 second duration)
     if (isLoss && lossStartTimeRef.current !== null && gridGroupRef.current) {
       const lossDuration = state.clock.elapsedTime - lossStartTimeRef.current;
       if (lossDuration < 0.5) {
-        // Simple quick shake
+        // simple quick shake
         const intensity = (1 - lossDuration / 0.5) * 0.05; // Small, decreasing shake
         gridGroupRef.current.rotation.x +=
           Math.sin(lossDuration * 30) * intensity;
@@ -99,12 +99,12 @@ const GridRotationController = ({
       }
     }
 
-    // Victory playful spin animation with variations (0.8 second 180-degree spin)
+    // victory playful spin animation with variations (0.8 second 180-degree spin)
     if (isWin && victoryStartTimeRef.current !== null && gridGroupRef.current) {
       const victoryDuration =
         state.clock.elapsedTime - victoryStartTimeRef.current;
       if (victoryDuration < 0.8) {
-        // Simple 180-degree spin with smooth easing - 4 variations
+        // simple 180-degree spin with smooth easing - 4 variations
         const progress = victoryDuration / 0.8;
         const easing = Math.sin(progress * Math.PI); // Smooth start and stop
 
@@ -124,11 +124,11 @@ const GridRotationController = ({
         }
         return;
       } else if (victoryDuration < 1.5) {
-        // Spring-damped return to zero (0.7 seconds of spring damping)
+        // spring-damped return to zero (0.7 seconds of spring damping)
         const dampingDuration = victoryDuration - 0.8;
         const dampingProgress = dampingDuration / 0.7;
 
-        // Spring damping function with overshoot and settle
+        // spring damping function with overshoot and settle
         const springDamping =
           Math.exp(-dampingProgress * 4) *
           Math.cos(dampingProgress * 8 * Math.PI);
@@ -149,7 +149,7 @@ const GridRotationController = ({
           0.15,
         );
 
-        // Add small spring oscillation based on animation type
+        // add small spring oscillation based on animation type
         switch (victoryAnimationTypeRef.current) {
           case 0:
           case 1:
@@ -164,7 +164,7 @@ const GridRotationController = ({
         }
         return;
       } else {
-        // Final settle to zero
+        // final settle to zero
         gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
           gridGroupRef.current.rotation.x,
           0,
@@ -183,7 +183,7 @@ const GridRotationController = ({
       }
     }
 
-    // Reset rotation when "prepare yourself" appears
+    // reset rotation when "prepare yourself" appears
     if (shouldResetOnPrepare && gridGroupRef.current) {
       gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
         gridGroupRef.current.rotation.x,
@@ -203,7 +203,7 @@ const GridRotationController = ({
       return;
     }
 
-    // Auto-rotate when waiting for player to begin game (unless user interrupted)
+    // auto-rotate when waiting for player to begin game (unless user interrupted)
     if (
       isWaitingForPlayer &&
       !userInterrupted &&
@@ -211,28 +211,28 @@ const GridRotationController = ({
       gridGroupRef.current
     ) {
       const time = state.clock.elapsedTime;
-      // Create interesting 3D orbital rotation that showcases depth
+      // create interesting 3D orbital rotation that showcases depth
       gridGroupRef.current.rotation.x = Math.sin(time * 0.3) * 0.4; // Gentle tilt forward/back
       gridGroupRef.current.rotation.y = time * 0.2; // Main rotation around Y axis
       gridGroupRef.current.rotation.z = Math.sin(time * 0.5) * 0.2; // Subtle roll
       return;
     }
 
-    // Reset user interruption when no longer waiting
+    // reset user interruption when no longer waiting
     if (!isWaitingForPlayer && userInterrupted) {
       setUserInterrupted(false);
     }
 
-    // Subtle mouse-following grid rotation when gameplay is active AND mouse is actually over 3D objects
+    // subtle mouse-following grid rotation when gameplay is active and mouse is actually over 3D objects
     if (isGameActive && gridGroupRef.current) {
-      // Check if mouse is over actual 3D grid objects using raycasting
+      // check if mouse is over actual 3D grid objects using raycasting
       const rect = gl.domElement.getBoundingClientRect();
       const clientX = ((mousePosition.x + 1) * rect.width) / 2 + rect.left;
       const clientY = ((-mousePosition.y + 1) * rect.height) / 2 + rect.top;
       const isOver3DGrid = isMouseOverGrid3D(clientX, clientY);
 
       if (isOver3DGrid) {
-        // More subtle rotation based on mouse position
+        // more subtle rotation based on mouse position
         const targetRotationX = mousePosition.y * 0.07; // Up/down reversed (moves toward user)
         const targetRotationY = -mousePosition.x * 0.1; // Left/right reversed for natural feel
 
@@ -252,7 +252,7 @@ const GridRotationController = ({
           0.08,
         );
       } else {
-        // Return to neutral position when mouse is not over 3D objects
+        // return to neutral position when mouse is not over 3D objects
         gridGroupRef.current.rotation.x = THREE.MathUtils.lerp(
           gridGroupRef.current.rotation.x,
           0,
@@ -274,13 +274,13 @@ const GridRotationController = ({
 
   useEffect(() => {
     const handleMouseDown = (event: MouseEvent) => {
-      // Use precise 3D raycasting to check if mouse is over actual grid objects
+      // use precise 3D raycasting to check if mouse is over actual grid objects
       if (!isMouseOverGrid3D(event.clientX, event.clientY)) return;
 
-      // Allow rotation interruption when waiting for player, or normal rotation when game stopped
+      // allow rotation interruption when waiting for player, or normal rotation when game stopped
       if (isGameActive) return;
 
-      // If waiting for player, interrupt the auto-rotation only when clicking on the grid
+      // if waiting for player, interrupt the auto-rotation only when clicking on the grid
       if (isWaitingForPlayer) {
         setUserInterrupted(true);
       }
@@ -298,7 +298,7 @@ const GridRotationController = ({
 
       const rotationSpeed = 0.005; // Reduced speed for better control
 
-      // Fix rotation direction - drag up should rotate up
+      // fix rotation direction - drag up should rotate up
       gridGroupRef.current.rotation.y += deltaX * rotationSpeed;
       gridGroupRef.current.rotation.x += deltaY * rotationSpeed;
 

@@ -33,14 +33,14 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     gridScale: 1.0,
   });
 
-  // Detect low-power mobile devices for performance optimization
+  // detect low-power mobile devices for performance optimization
   const isMobileLowPower = () => {
     const ua = navigator.userAgent;
     const isMobile =
       /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
     if (!isMobile) return false;
 
-    // Check for older/lower-power devices
+    // check for older/lower-power devices
     const isOlderiOS = /iPhone.*OS [5-9]_|iPhone.*OS 1[0-3]_/i.test(ua);
     const isOlderAndroid = /Android [4-7]\./i.test(ua);
     const isLowEndDevice =
@@ -51,7 +51,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
 
   const shouldUseLowPerformanceMode = isMobileLowPower();
 
-  // Initialize responsive values on mount
+  // initialize responsive values on mount
   useEffect(() => {
     const checkInitialViewport = () => {
       const responsiveValues = getResponsiveValues(window.innerWidth);
@@ -61,45 +61,45 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     checkInitialViewport();
   }, []);
 
-  // Component to detect when first frames are rendered (proper R3F approach)
+  // component to detect when first frames are rendered (proper R3F approach)
   const SceneReadyDetector = () => {
     const { scene, gl } = useThree();
 
     useLayoutEffect(() => {
-      // Scene is ready after first layout pass
+      // scene is ready after first layout pass
       setIsLoading(false);
     }, [scene, gl]);
 
     return null;
   };
 
-  // Turn clicked cards face up
+  // turn clicked cards face up
   const handleCardClick = (id: number) => {
     if (!gameBoard.flippedCards.includes(id)) {
       dispatch(cardFlipped(id));
       if (cardData[id].isColor) {
-        // If correct card, cardsFound++
+        // if correct card, cardsFound++
         dispatch(cardFound());
       } else {
-        // If wrong card, isLoss
+        // if wrong card, isLoss
         dispatch(lossSet(true));
       }
     }
   };
 
-  // Calculate positions for grid layout
+  // calculate positions for grid layout
   const getPosition = (
     index: number,
     spacing: number,
   ): [number, number, number] => {
     const row = Math.floor(index / gridN);
     const col = index % gridN;
-    // Center the grid and add responsive spacing
+    // center the grid and add responsive spacing
     const x = (col - (gridN - 1) / 2) * spacing;
     let y = ((gridN - 1) / 2 - row) * spacing;
 
-    // Mobile-specific Y offset to move cubes up slightly for small mobile devices
-    // Only apply to devices < 768px (mobile breakpoint) to avoid affecting tablets/desktop
+    // mobile-specific Y offset to move cubes up slightly for small mobile devices
+    // only apply to devices < 768px (mobile breakpoint) to avoid affecting tablets/desktop
     if (window.innerWidth < 768) {
       y += 0.2; // Bump up position slightly for mobile browsers
     }
@@ -107,7 +107,7 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
     return [x, y, 0];
   };
 
-  // Component to track hovered cubes for outline effect
+  // component to track hovered cubes for outline effect
   const OutlineTracker = () => {
     const { scene } = useThree();
 

@@ -78,7 +78,7 @@ const useBoardUpdate = (
         clearTimeout(newRoundTimeout);
       };
     } else if (roundCount <= roundAmount) {
-      // Round Starts: Reveal Cards
+      // round starts: reveal cards
       const faceUpDelay = setTimeout(
         () => {
           dispatch(cardsFaceUp({ flippedCards: cardIdList }));
