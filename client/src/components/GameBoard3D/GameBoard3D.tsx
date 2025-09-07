@@ -19,16 +19,16 @@ import LoadingSpinner from "./LoadingSpinner";
 import { getResponsiveValues } from "../../config/responsiveConfig";
 import * as THREE from "three";
 
-function GameBoard3D({ 
-  gridN, 
-  cardData, 
-  ...rest 
-}: { 
-  gridN: number; 
-  cardData: CardData[]; 
-  isLoss: boolean; 
-  isWin: boolean; 
-  isNewRound: boolean; 
+function GameBoard3D({
+  gridN,
+  cardData,
+  ...rest
+}: {
+  gridN: number;
+  cardData: CardData[];
+  isLoss: boolean;
+  isWin: boolean;
+  isNewRound: boolean;
 }) {
   const dispatch = useAppDispatch();
   const { gameBoard } = useAppSelector(selectedGameState);

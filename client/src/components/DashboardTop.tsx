@@ -9,7 +9,7 @@ const DashboardTop = ({
   listenForEnter,
   setUserNameChange,
   handleNameClick,
-}: Omit<DashboardTopProps, 'gameBoard'>) => {
+}: Omit<DashboardTopProps, "gameBoard">) => {
   const { gameBoard } = useAppSelector(selectedGameState);
   const handleSetUserNameChange = (e: string) => {
     if (e.length > 9) return;

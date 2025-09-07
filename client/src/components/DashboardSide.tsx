@@ -16,11 +16,7 @@ const loaderOverride: CSSProperties = {
   position: "absolute",
 };
 
-const DashboardSide = ({
-  loadingScore,
-}: {
-  loadingScore: boolean;
-}) => {
+const DashboardSide = ({ loadingScore }: { loadingScore: boolean }) => {
   const { gameBoard } = useAppSelector(selectedGameState);
   const {
     roundCount,
