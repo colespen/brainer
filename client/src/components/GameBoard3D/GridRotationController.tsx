@@ -24,7 +24,7 @@ const GridRotationController = ({
   const { camera, gl } = useThree();
   const [isDragging, setIsDragging] = useState(false);
   const [previousMouse, setPreviousMouse] = useState({ x: 0, y: 0 });
-  const [userInterrupted, setUserInterrupted] = useState(false);
+  const userInterruptedRef = useRef(false);
   const victoryStartTimeRef = useRef<number | null>(null);
   const lossStartTimeRef = useRef<number | null>(null);
   const victoryAnimationTypeRef = useRef<number>(0);
@@ -206,7 +206,7 @@ const GridRotationController = ({
     // auto-rotate when waiting for player to begin game (unless user interrupted)
     if (
       isWaitingForPlayer &&
-      !userInterrupted &&
+      !userInterruptedRef.current &&
       !shouldResetOnPrepare &&
       gridGroupRef.current
     ) {
@@ -219,8 +219,8 @@ const GridRotationController = ({
     }
 
     // reset user interruption when no longer waiting
-    if (!isWaitingForPlayer && userInterrupted) {
-      setUserInterrupted(false);
+    if (!isWaitingForPlayer && userInterruptedRef.current) {
+      userInterruptedRef.current = false;
     }
 
     // subtle mouse-following grid rotation when gameplay is active and mouse is actually over 3D objects
@@ -282,7 +282,7 @@ const GridRotationController = ({
 
       // if waiting for player, interrupt the auto-rotation only when clicking on the grid
       if (isWaitingForPlayer) {
-        setUserInterrupted(true);
+        userInterruptedRef.current = true;
       }
 
       setIsDragging(true);

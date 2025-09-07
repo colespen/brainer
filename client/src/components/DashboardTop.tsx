@@ -1,14 +1,16 @@
 import { DashboardTopProps } from "../datatypes/proptypes";
+import { useAppSelector } from "../hooks/redux";
+import { selectedGameState } from "../store/slices/gameBoardSlice";
 
 const DashboardTop = ({
-  gameBoard,
   cardData,
   nameInputFocus,
   userName,
   listenForEnter,
   setUserNameChange,
   handleNameClick,
-}: DashboardTopProps) => {
+}: Omit<DashboardTopProps, 'gameBoard'>) => {
+  const { gameBoard } = useAppSelector(selectedGameState);
   const handleSetUserNameChange = (e: string) => {
     if (e.length > 9) return;
     const upperCase = e.toUpperCase();

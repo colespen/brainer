@@ -7,9 +7,10 @@ import {
   cardFlipped,
   cardFound,
   lossSet,
+  selectedGameState,
 } from "../../store/slices/gameBoardSlice";
-import { GameBoardProps } from "../../datatypes/proptypes";
-import { useAppDispatch } from "../../hooks/redux";
+import { CardData } from "../../datatypes/gameDatatypes";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import GameCard3D from "./GameCard3D";
 import RenderSettings from "./RenderSettings";
 import ResponsiveGridCalculator from "./ResponsiveGridCalculator";
@@ -18,8 +19,19 @@ import LoadingSpinner from "./LoadingSpinner";
 import { getResponsiveValues } from "../../config/responsiveConfig";
 import * as THREE from "three";
 
-function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
+function GameBoard3D({ 
+  gridN, 
+  cardData, 
+  ...rest 
+}: { 
+  gridN: number; 
+  cardData: CardData[]; 
+  isLoss: boolean; 
+  isWin: boolean; 
+  isNewRound: boolean; 
+}) {
   const dispatch = useAppDispatch();
+  const { gameBoard } = useAppSelector(selectedGameState);
   const hoveredCubesRef = useRef<
     THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>[]
   >([]);
@@ -149,9 +161,12 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
         height: "100vh",
         zIndex: 0,
         pointerEvents: "none",
+        //#11131aff
         background: `
           radial-gradient(ellipse 70% 120% at center center, 
-            #11131a 0%, 
+            #13151c 0%,
+            #12141b 5%,
+            #101219ff 12%, 
             #0b0d16 25%, 
             #07080f 50%, 
             #030306 100%
@@ -183,6 +198,8 @@ function GameBoard3D({ gridN, cardData, gameBoard, ...rest }: GameBoardProps) {
           pointerEvents: "auto",
           zIndex: 2,
           touchAction: "manipulation", // Eliminate 300ms touch delay
+          opacity: isLoading ? 0 : 1,
+          transition: "opacity 0.3s ease-in-out",
         }}
         gl={{
           antialias: true,

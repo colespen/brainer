@@ -30,11 +30,11 @@ const GameMain = () => {
   const { gridN, isNewGame, isNewRound, isLoss, isWin } = gameBoard;
 
   const { cardData } = useGenerateCardData(gridN, isNewRound, isNewGame);
+  const { loading } = usePostGameResult();
 
   useBoardUpdate(gameBoard, roundData);
   useUpdateOnWinOrLoss();
   useNewGameDelayAlert();
-  const { loading } = usePostGameResult();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,7 +44,6 @@ const GameMain = () => {
     <div className="gameboard-main">
       <Settings resetUserName={() => setUserNameState("")} />
       <DashboardTop
-        gameBoard={gameBoard}
         cardData={cardData}
         nameInputFocus={nameInputFocus}
         userName={userNameState}
@@ -58,13 +57,12 @@ const GameMain = () => {
       />
       <GameBoard3D
         cardData={cardData}
-        gameBoard={gameBoard}
         gridN={Math.sqrt(cardData.length)}
         isLoss={isLoss}
         isWin={isWin}
         isNewRound={isNewRound}
       />
-      <DashboardSide gameBoard={gameBoard} loadingScore={loading} />
+      <DashboardSide loadingScore={loading} />
     </div>
   );
 };

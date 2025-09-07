@@ -1,27 +1,27 @@
 import { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import SquareLoader from "react-spinners/SquareLoader";
-import { GameBoardData } from "../datatypes/gameDatatypes";
 import { handleNewGame } from "../handlers/handleNewGame";
 import { useDispatch } from "react-redux";
 import {
   alertUpdated,
   newGameReset,
   newGameSet,
+  selectedGameState,
 } from "../store/slices/gameBoardSlice";
 import useCheckViewport from "../hooks/useCheckViewport";
+import { useAppSelector } from "../hooks/redux";
 
 const loaderOverride: CSSProperties = {
   position: "absolute",
 };
 
 const DashboardSide = ({
-  gameBoard,
   loadingScore,
 }: {
-  gameBoard: GameBoardData;
   loadingScore: boolean;
 }) => {
+  const { gameBoard } = useAppSelector(selectedGameState);
   const {
     roundCount,
     roundAmount,
@@ -84,8 +84,8 @@ const DashboardSide = ({
           <p style={{ zIndex: 1 }}>high scores</p>
           {loadingScore && (
             <SquareLoader
-              size={isLarge ? 105 : isSmall ? 60 : 45}
-              color="#585aa961"
+              size={isLarge ? 105 : isSmall ? 45 : 75}
+              color="#3436a261"
               cssOverride={loaderOverride}
             />
           )}

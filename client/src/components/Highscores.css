@@ -16,6 +16,88 @@
   overflow-y: auto;
 }
 
+.highscores-root::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 100, 0.015) 2px,
+      rgba(0, 255, 100, 0.015) 4px
+    );
+  animation: 
+    crt-flicker 12.3s infinite ease-in-out,
+    crt-noise 8.7s infinite linear;
+}
+
+@keyframes crt-flicker {
+  0%, 73% { 
+    background-color: transparent;
+  }
+  73.2% { 
+    background-color: rgba(255, 255, 255, 0.003);
+  }
+  73.8% { 
+    background-color: transparent;
+  }
+  84.5% { 
+    background-color: rgba(255, 255, 255, 0.002);
+  }
+  85% { 
+    background-color: rgba(255, 255, 255, 0.005);
+  }
+  85.1% { 
+    background-color: transparent;
+  }
+  91.7% { 
+    background-color: rgba(255, 255, 255, 0.007);
+  }
+  92.1% { 
+    background-color: rgba(255, 255, 255, 0.002);
+  }
+  92.3% { 
+    background-color: rgba(255, 255, 255, 0.004);
+  }
+  92.9% { 
+    background-color: transparent;
+  }
+}
+
+@keyframes crt-noise {
+  0% { 
+    filter: brightness(1) contrast(1);
+  }
+  7% { 
+    filter: brightness(1.01) contrast(1.005);
+  }
+  19% { 
+    filter: brightness(0.99) contrast(1.01);
+  }
+  34% { 
+    filter: brightness(1.005) contrast(0.995);
+  }
+  58% { 
+    filter: brightness(0.995) contrast(1.015);
+  }
+  73% { 
+    filter: brightness(1.01) contrast(0.99);
+  }
+  89% { 
+    filter: brightness(0.98) contrast(1.02);
+  }
+  100% { 
+    filter: brightness(1) contrast(1);
+  }
+}
+
 .highscores-container {
   display: flex;
   align-items: center;

@@ -2,6 +2,10 @@
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
   transform: scale(1);
   animation: pulse 2s infinite;
+  transform-origin: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* .new-game.true:hover {

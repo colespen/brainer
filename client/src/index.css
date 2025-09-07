@@ -61,7 +61,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #11131aff;
+  background-color: #0b0d16 ;
+  /* background-color: #11131aff; */
   /* Prevent mobile overscroll/bounce effect */
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
