@@ -164,12 +164,12 @@ function GameBoard3D({
         //#11131aff
         background: `
           radial-gradient(ellipse 70% 120% at center center, 
-            #13151c 0%,
-            #12141b 5%,
-            #101219ff 12%, 
-            #0b0d16 25%, 
-            #07080f 50%, 
-            #030306 100%
+            #181a22 0%,
+            #171921 5%,
+            #15171eff 12%, 
+            #10121a 25%, 
+            #0c0e15 50%, 
+            #06080b 100%
           )
         `,
       }}
@@ -305,15 +305,15 @@ function GameBoard3D({
           <EffectComposer multisampling={16}>
             <SMAA />
             <Outline
-              selection={[]}
+              selection={hoveredCubesRef.current}
               selectionLayer={10}
               blendFunction={BlendFunction.SCREEN}
-              edgeStrength={4.0}
+              edgeStrength={8.0}
               pulseSpeed={0.0}
-              visibleEdgeColor={0x585aa9}
-              hiddenEdgeColor={0x404040}
-              height={512}
-              blur={false}
+              visibleEdgeColor={0xa3a6ff}
+              hiddenEdgeColor={0xa3a6ff}
+              height={1024}
+              blur={true}
               xRay={false}
             />
           </EffectComposer>

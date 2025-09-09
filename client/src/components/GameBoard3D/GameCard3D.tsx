@@ -20,6 +20,9 @@ const GameCard3D = ({
   const meshRef = useRef<THREE.Mesh>(null);
   const [isClicked, setIsClicked] = useState(false);
   const [hovered, setHovered] = useState(false);
+  
+  // reuse vector3 to avoid garbage collection
+  const scaleVector = useRef(new THREE.Vector3());
 
   useEffect(() => {
     setIsClicked(false);
@@ -28,12 +31,8 @@ const GameCard3D = ({
   useFrame(() => {
     if (groupRef.current) {
       const targetScale = hovered ? 1.08 : 1.0;
-      const scaleVector = new THREE.Vector3(
-        targetScale,
-        targetScale,
-        targetScale,
-      );
-      groupRef.current.scale.lerp(scaleVector, 0.15);
+      scaleVector.current.set(targetScale, targetScale, targetScale);
+      groupRef.current.scale.lerp(scaleVector.current, 0.15);
     }
   });
 
@@ -47,7 +46,7 @@ const GameCard3D = ({
 
   // enhanced inner glow effect on hover
   const emissiveColor = hovered
-    ? new THREE.Color(faceColor).multiplyScalar(0.6)
+    ? new THREE.Color(faceColor).multiplyScalar(0.75)
     : new THREE.Color(faceColor).multiplyScalar(0.08);
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
@@ -58,7 +57,8 @@ const GameCard3D = ({
     setIsClicked(true);
   };
 
-  const borderColorThree = new THREE.Color(hovered ? "#9294ff" : "#585aa9");
+  // always-visible borders + post-processing glow on hover
+  const borderColorThree = new THREE.Color("#6366b8");  // brightened from #585aa9
 
   return (
     <group ref={groupRef}>
@@ -81,7 +81,6 @@ const GameCard3D = ({
         userData={{
           id,
           hovered,
-          borderColor: hovered ? "#9294ff" : "#585aa9",
         }}
       >
         <boxGeometry args={[0.9, 0.9, 0.9]} />
@@ -98,14 +97,14 @@ const GameCard3D = ({
         />
       </mesh>
 
-      {/* Clean cube edges - only the 12 edges of a cube */}
+      {/* Always-visible cube edges - subtle default borders */}
       <lineSegments>
         <edgesGeometry args={[new THREE.BoxGeometry(0.901, 0.901, 0.901)]} />
         <lineBasicMaterial
           color={borderColorThree}
           transparent
-          opacity={0.6}
-          linewidth={1.5}
+          opacity={0.5}
+          linewidth={1}
         />
       </lineSegments>
     </group>
