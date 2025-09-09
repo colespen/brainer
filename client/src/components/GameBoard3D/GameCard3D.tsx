@@ -20,7 +20,7 @@ const GameCard3D = ({
   const meshRef = useRef<THREE.Mesh>(null);
   const [isClicked, setIsClicked] = useState(false);
   const [hovered, setHovered] = useState(false);
-  
+
   // reuse vector3 to avoid garbage collection
   const scaleVector = useRef(new THREE.Vector3());
 
@@ -58,7 +58,7 @@ const GameCard3D = ({
   };
 
   // always-visible borders + post-processing glow on hover
-  const borderColorThree = new THREE.Color("#6366b8");  // brightened from #585aa9
+  const borderColorThree = new THREE.Color("#6366b8"); // brightened from #585aa9
 
   return (
     <group ref={groupRef}>
